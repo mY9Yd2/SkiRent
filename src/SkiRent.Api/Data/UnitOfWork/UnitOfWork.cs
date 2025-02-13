@@ -6,7 +6,7 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly DbContext _context;
 
-    public UnitOfWork(DbContext context)
+    public UnitOfWork(SkiRentContext context)
     {
         _context = context;
     }
