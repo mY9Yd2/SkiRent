@@ -1,6 +1,0 @@
-@SkiRent.Api_HostAddress = http://localhost:5101
-
-GET {{SkiRent.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
