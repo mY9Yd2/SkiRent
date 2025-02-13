@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+
+using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.ExceptionHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddDbContext<DbContext>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
