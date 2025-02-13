@@ -1,6 +1,9 @@
-﻿namespace SkiRent.Api.Data.UnitOfWork;
+﻿using SkiRent.Api.Data.Repositories.Users;
+
+namespace SkiRent.Api.Data.UnitOfWork;
 
 public interface IUnitOfWork : IDisposable
 {
     public Task SaveChangesAsync();
+    public IUserRepository Users { get; }
 }
