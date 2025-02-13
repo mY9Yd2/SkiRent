@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SkiRent.Api.Data;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.ExceptionHandlers;
+using SkiRent.Api.Extensions;
+using SkiRent.Api.Services.Auth;
 using SkiRent.Api.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.Configure<SkiRentContextSettings>(options =>
     options.ConnectionString = builder.Configuration.GetConnectionString("Default")
         ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 });
+
+builder.Services.ConfigureAuthentication();
+builder.Services.ConfigureAuthorization();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,6 +30,7 @@ builder.Services.AddDbContext<SkiRentContext>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
@@ -33,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

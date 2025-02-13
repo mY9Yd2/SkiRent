@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
+using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Services.Users;
 using SkiRent.Shared.Contracts.Users;
 
@@ -33,6 +34,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet("{userId:int}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ActionResult<GetUserResponse>> Get([FromRoute] int userId)
     {
         var result = await _userService.GetAsync(userId);
