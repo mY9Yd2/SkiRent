@@ -9,6 +9,7 @@ using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.ExceptionHandlers;
 using SkiRent.Api.Extensions;
 using SkiRent.Api.Services.Auth;
+using SkiRent.Api.Services.EquipmentCategories;
 using SkiRent.Api.Services.Equipments;
 using SkiRent.Api.Services.Users;
 
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<IEquipmentCategoryService, EquipmentCategoryService>();
 
 var app = builder.Build();
 
