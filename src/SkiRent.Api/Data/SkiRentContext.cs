@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
 using SkiRent.Api.Data.Models;
 
 namespace SkiRent.Api.Data;
@@ -12,6 +11,16 @@ public partial class SkiRentContext : DbContext
     {
     }
 
+    public virtual DbSet<Booking> Bookings { get; set; }
+
+    public virtual DbSet<Equipment> Equipments { get; set; }
+
+    public virtual DbSet<Equipmentcategory> Equipmentcategories { get; set; }
+
+    public virtual DbSet<Equipmentimage> Equipmentimages { get; set; }
+
+    public virtual DbSet<Invoice> Invoices { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,6 +28,61 @@ public partial class SkiRentContext : DbContext
         modelBuilder
             .UseCollation("utf8mb4_unicode_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<Booking>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.Property(e => e.Status).HasDefaultValueSql("'pending'");
+
+            entity.HasOne(d => d.Equipment).WithMany(p => p.Bookings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("bookings_ibfk_2");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Bookings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("bookings_ibfk_1");
+        });
+
+        modelBuilder.Entity<Equipment>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Equipment).HasConstraintName("equipments_ibfk_1");
+
+            entity.HasOne(d => d.MainImage).WithMany(p => p.Equipment)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("equipments_ibfk_2");
+        });
+
+        modelBuilder.Entity<Equipmentcategory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+        });
+
+        modelBuilder.Entity<Equipmentimage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.HasOne(d => d.EquipmentNavigation).WithMany(p => p.Equipmentimages)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("equipmentimages_ibfk_1");
+        });
+
+        modelBuilder.Entity<Invoice>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("current_timestamp()");
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.Invoices)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("invoices_ibfk_2");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Invoices)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("invoices_ibfk_1");
+        });
 
         modelBuilder.Entity<User>(entity =>
         {

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace SkiRent.Api.Data.Models;
@@ -22,4 +21,10 @@ public partial class User
 
     [Column(TypeName = "enum('admin','customer')")]
     public string UserRole { get; set; } = null!;
+
+    [InverseProperty("User")]
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 }
