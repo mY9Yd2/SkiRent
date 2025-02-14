@@ -25,6 +25,13 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
         public void Setup()
         {
             _fixture = new Fixture();
+
+            _fixture.Behaviors
+                .OfType<ThrowingRecursionBehavior>()
+                .ToList()
+                .ForEach(behavior => _fixture.Behaviors.Remove(behavior));
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
             _unitOfWork = Substitute.For<IUnitOfWork>();
             _passwordHasher = new PasswordHasher<User>();
             _authService = new AuthService(_unitOfWork);
@@ -43,9 +50,10 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             var email = _fixture.Create<string>();
             var password = _fixture.Create<string>();
             var user = _fixture.Build<User>()
-                               .With(user => user.Email, email)
-                               .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
-                               .Create();
+                .With(user => user.Id)
+                .With(user => user.Email, email)
+                .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
+                .Create();
             var request = new SignInRequest { Email = email, Password = password };
 
             _unitOfWork.Users.GetByEmailAsync(Arg.Any<string>()).Returns(user);
@@ -65,6 +73,7 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             Assert.That(claimsPrincipal, Is.Not.Null);
             Assert.Multiple(() =>
             {
+                Assert.That(claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value, Is.EqualTo(user.Id.ToString()));
                 Assert.That(claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value, Is.EqualTo(email));
                 Assert.That(claimsPrincipal.FindFirst(ClaimTypes.Role)?.Value, Is.EqualTo(user.UserRole));
             });
@@ -99,9 +108,9 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             var password = _fixture.Create<string>();
             var incorrectPassword = _fixture.Create<string>();
             var user = _fixture.Build<User>()
-                               .With(user => user.Email, email)
-                               .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
-                               .Create();
+                .With(user => user.Email, email)
+                .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
+                .Create();
             var request = new SignInRequest { Email = email, Password = incorrectPassword };
 
             _unitOfWork.Users.GetByEmailAsync(Arg.Any<string>()).Returns(user);
