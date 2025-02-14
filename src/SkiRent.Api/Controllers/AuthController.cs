@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using FluentValidation;
+
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +25,16 @@ public class AuthController : BaseController
 
     [HttpPost("sign-in")]
     [AllowAnonymous]
-    public async Task<ActionResult<CreateUserResponse>> SignIn([FromBody] SignInRequest request)
+    public async Task<ActionResult<CreateUserResponse>> SignIn(
+        [FromServices] IValidator<SignInRequest> validator, [FromBody] SignInRequest request)
     {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return validationResult;
+        }
+
         var result = await _authService.SignInAsync(request);
 
         if (result.IsFailed)

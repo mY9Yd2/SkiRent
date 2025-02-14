@@ -1,3 +1,7 @@
+using System.Reflection;
+
+using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
 
 using SkiRent.Api.Data;
@@ -23,6 +27,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails();
+
+builder.Services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 

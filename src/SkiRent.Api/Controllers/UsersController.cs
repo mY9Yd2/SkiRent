@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
@@ -21,8 +23,16 @@ public class UsersController : BaseController
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<CreateUserResponse>> Create([FromBody] CreateUserRequest request)
+    public async Task<ActionResult<CreateUserResponse>> Create(
+        [FromServices] IValidator<CreateUserRequest> validator, [FromBody] CreateUserRequest request)
     {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return validationResult;
+        }
+
         var result = await _userService.CreateAsync(request);
 
         if (result.IsFailed)
