@@ -9,4 +9,10 @@ public class UserNotFoundError : Error
     {
         Metadata.Add(nameof(email), email);
     }
+
+    public UserNotFoundError(int userId)
+        : base($"User with id '{userId}' not found.")
+    {
+        Metadata.Add(nameof(userId), userId);
+    }
 }

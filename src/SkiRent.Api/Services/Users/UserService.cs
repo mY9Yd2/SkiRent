@@ -47,8 +47,22 @@ public class UserService : IUserService
         return Result.Ok(result);
     }
 
-    public Task<Result<GetUserResponse>> GetAsync(int userId)
+    public async Task<Result<GetUserResponse>> GetAsync(int userId)
     {
-        throw new NotImplementedException();
+        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return Result.Fail(new UserNotFoundError(userId));
+        }
+
+        var result = new GetUserResponse
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Role = user.UserRole
+        };
+
+        return Result.Ok(result);
     }
 }

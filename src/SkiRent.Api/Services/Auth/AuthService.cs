@@ -40,15 +40,16 @@ public class AuthService : IAuthService
             return Result.Fail(new PasswordVerificationFailedError());
         }
 
-        var result = CreatePrincipal(user.Email, user.UserRole);
+        var result = CreatePrincipal(user.Id, user.Email, user.UserRole);
 
         return Result.Ok(result);
     }
 
-    private static ClaimsPrincipal CreatePrincipal(string email, string role)
+    private static ClaimsPrincipal CreatePrincipal(int userId, string email, string role)
     {
         var claims = new List<Claim>
             {
+                new(ClaimTypes.NameIdentifier, userId.ToString()),
                 new(ClaimTypes.Email, email),
                 new(ClaimTypes.Role, role),
             };

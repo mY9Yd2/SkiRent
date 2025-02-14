@@ -44,7 +44,7 @@ public class UsersController : BaseController
     }
 
     [HttpGet("{userId:int}")]
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Policy = Policies.SelfOrAdminAccess)]
     public async Task<ActionResult<GetUserResponse>> Get([FromRoute] int userId)
     {
         var result = await _userService.GetAsync(userId);

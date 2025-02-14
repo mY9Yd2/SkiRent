@@ -24,6 +24,7 @@ builder.Services.Configure<SkiRentContextSettings>(options =>
 
 builder.Services.ConfigureAuthentication();
 builder.Services.ConfigureAuthorization();
+builder.Services.ConfigurePolicies();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
