@@ -17,7 +17,7 @@ public class EquipmentService : IEquipmentService
 
     public async Task<Result<GetEquipmentResponse>> GetAsync(int equipmentId)
     {
-        var equipment = await _unitOfWork.Equipments.FindAsync(e => e.Id == equipmentId);
+        var equipment = await _unitOfWork.Equipments.GetByIdAsync(equipmentId);
 
         if (equipment is null)
         {
