@@ -17,6 +17,19 @@ public class EquipmentsController : BaseController
         _equipmentService = equipmentService;
     }
 
+    [HttpGet("{equipmentId:int}")]
+    public async Task<ActionResult<GetEquipmentResponse>> Get(int equipmentId)
+    {
+        var result = await _equipmentService.GetAsync(equipmentId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GetAllEquipmentResponse>>> GetAll()
     {
