@@ -44,6 +44,7 @@ public class EquipmentService : IEquipmentService
         var result = equipments.Select(equipment =>
             new GetAllEquipmentResponse
             {
+                Id = equipment.Id,
                 Name = equipment.Name,
                 CategoryId = equipment.CategoryId,
                 PricePerDay = equipment.PricePerDay
