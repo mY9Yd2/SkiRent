@@ -33,7 +33,7 @@ public class AuthController : BaseController
 
         if (validationResult is not null)
         {
-            return validationResult;
+            return ValidationProblem(validationResult);
         }
 
         var result = await _authService.SignInAsync(request);

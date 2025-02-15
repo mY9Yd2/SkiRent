@@ -30,7 +30,7 @@ public class UsersController : BaseController
 
         if (validationResult is not null)
         {
-            return validationResult;
+            return ValidationProblem(validationResult);
         }
 
         var result = await _userService.CreateAsync(request);
@@ -80,7 +80,7 @@ public class UsersController : BaseController
 
         if (validationResult is not null)
         {
-            return validationResult;
+            return ValidationProblem(validationResult);
         }
 
         var result = await _userService.UpdateAsync(userId, request, User.IsInRole);

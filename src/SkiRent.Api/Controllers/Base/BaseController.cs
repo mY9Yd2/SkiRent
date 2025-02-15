@@ -3,6 +3,7 @@
 using FluentValidation;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using SkiRent.Api.Errors;
 using SkiRent.Api.Exceptions;
@@ -40,7 +41,7 @@ public abstract class BaseController : ControllerBase
     }
 
     [NonAction]
-    protected async Task<ActionResult?> ValidateRequestAsync<T>(IValidator<T> validator, T request)
+    protected async Task<ModelStateDictionary?> ValidateRequestAsync<T>(IValidator<T> validator, T request)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -51,6 +52,6 @@ public abstract class BaseController : ControllerBase
         }
 
         var modelState = validationResult.ToModelStateDictionary();
-        return ValidationProblem(modelState);
+        return modelState;
     }
 }
