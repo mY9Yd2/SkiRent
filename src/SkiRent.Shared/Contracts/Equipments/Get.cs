@@ -13,5 +13,7 @@
         public required decimal PricePerDay { get; init; }
 
         public required int AvailableQuantity { get; init; }
+
+        public bool IsAvaiable => AvailableQuantity > 0;
     }
 }

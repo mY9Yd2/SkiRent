@@ -47,7 +47,8 @@ public class EquipmentService : IEquipmentService
                 Id = equipment.Id,
                 Name = equipment.Name,
                 CategoryId = equipment.CategoryId,
-                PricePerDay = equipment.PricePerDay
+                PricePerDay = equipment.PricePerDay,
+                IsAvaiable = equipment.AvailableQuantity > 0
             });
 
         return Result.Ok(result);
