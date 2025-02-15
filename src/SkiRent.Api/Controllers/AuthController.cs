@@ -2,8 +2,6 @@
 
 using FluentValidation;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +26,7 @@ public class AuthController : BaseController
 
     [HttpPost("sign-in")]
     [AllowAnonymous]
-    public async Task<ActionResult<CreateUserResponse>> SignIn(
+    public async Task<IActionResult> AuthSignIn(
         [FromServices] IValidator<SignInRequest> validator, [FromBody] SignInRequest request)
     {
         var validationResult = await ValidateRequestAsync(validator, request);
@@ -45,14 +43,24 @@ public class AuthController : BaseController
             return Problem(result.Errors[0]);
         }
 
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Value);
+        return SignIn(result.Value);
+    }
 
-        return Ok();
+    [HttpPost("sign-out")]
+    [Authorize]
+    public IActionResult AuthSignOut([FromBody] object empty)
+    {
+        if (empty is not null)
+        {
+            return SignOut();
+        }
+
+        return Unauthorized();
     }
 
     [HttpGet("me")]
     [Authorize]
-    public async Task<ActionResult<GetUserResponse>> Me([FromServices] IUserService userService)
+    public async Task<ActionResult<GetUserResponse>> AuthMe([FromServices] IUserService userService)
     {
         var nameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!int.TryParse(nameIdentifier, out int userId))
