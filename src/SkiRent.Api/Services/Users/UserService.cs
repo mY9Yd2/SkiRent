@@ -9,6 +9,8 @@ using SkiRent.Api.Errors;
 using SkiRent.Api.Extensions;
 using SkiRent.Shared.Contracts.Users;
 
+using ResponseRoles = SkiRent.Shared.Contracts.Common.Roles;
+
 namespace SkiRent.Api.Services.Users;
 
 public class UserService : IUserService
@@ -61,7 +63,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = user.UserRole
+            Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
         };
 
         return Result.Ok(result);
@@ -76,7 +78,7 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email,
-                Role = user.UserRole
+                Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
             });
 
         return Result.Ok(result);
@@ -116,7 +118,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = user.UserRole
+            Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
         };
 
         return Result.Ok(result);
