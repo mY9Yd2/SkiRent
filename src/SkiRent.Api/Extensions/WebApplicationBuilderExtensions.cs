@@ -37,8 +37,8 @@ public static class WebApplicationBuilderExtensions
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.SelfOrAdminAccess, policy => policy.RequireAssertion(context =>
                 {
-                    var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    var roleClaim = context.User.FindFirst(ClaimTypes.Role)?.Value;
+                    var userIdClaim = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    var roleClaim = context.User.FindFirstValue(ClaimTypes.Role);
 
                     if (roleClaim == Roles.Admin)
                     {

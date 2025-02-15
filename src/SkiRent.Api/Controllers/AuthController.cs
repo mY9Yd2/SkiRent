@@ -62,7 +62,7 @@ public class AuthController : BaseController
     [Authorize]
     public async Task<ActionResult<GetUserResponse>> AuthMe([FromServices] IUserService userService)
     {
-        var nameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!int.TryParse(nameIdentifier, out int userId))
         {
             return Unauthorized();

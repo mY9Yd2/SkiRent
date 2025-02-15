@@ -73,9 +73,9 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             Assert.That(claimsPrincipal, Is.Not.Null);
             Assert.Multiple(() =>
             {
-                Assert.That(claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value, Is.EqualTo(user.Id.ToString()));
-                Assert.That(claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value, Is.EqualTo(email));
-                Assert.That(claimsPrincipal.FindFirst(ClaimTypes.Role)?.Value, Is.EqualTo(user.UserRole));
+                Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier), Is.EqualTo(user.Id.ToString()));
+                Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.Email), Is.EqualTo(email));
+                Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.Role), Is.EqualTo(user.UserRole));
             });
         }
 
