@@ -19,7 +19,7 @@ public partial class User
     [StringLength(255)]
     public string PasswordHash { get; set; } = null!;
 
-    [Column(TypeName = "enum('admin','customer')")]
+    [Column(TypeName = "enum('Admin','Customer')")]
     public string UserRole { get; set; } = null!;
 
     [InverseProperty("User")]

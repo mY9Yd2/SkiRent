@@ -63,7 +63,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
+            Role = Enum.Parse<ResponseRoles>(user.UserRole)
         };
 
         return Result.Ok(result);
@@ -78,7 +78,7 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email,
-                Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
+                Role = Enum.Parse<ResponseRoles>(user.UserRole)
             });
 
         return Result.Ok(result);
@@ -118,7 +118,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = Enum.Parse<ResponseRoles>(user.UserRole, true)
+            Role = Enum.Parse<ResponseRoles>(user.UserRole)
         };
 
         return Result.Ok(result);

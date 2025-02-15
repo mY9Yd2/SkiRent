@@ -2,8 +2,8 @@ USE SkiRent;
 
 INSERT INTO Users (Email, PasswordHash, UserRole) VALUES
 -- https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core/src/PasswordHasher.cs
-('admin@example.com', 'AQAAAAIAAYagAAAAENew/SuQlJ+phKSg6bhiGnQiJe3TBYDfUvY7KSaaN4T8wDKvETd7mGv+ZSO11lB0oQ==', 'admin'), -- Password: Admin1234
-('teszt@example.com', 'AQAAAAIAAYagAAAAENGMc5UQKipvQgKP1Cbfz8c3d9AZkeh8PcLji9xrprohYkRb+7ysAsFspsN2LhegRA==', 'customer'); -- Password: Teszt1234
+('admin@example.com', 'AQAAAAIAAYagAAAAENew/SuQlJ+phKSg6bhiGnQiJe3TBYDfUvY7KSaaN4T8wDKvETd7mGv+ZSO11lB0oQ==', 'Admin'), -- Password: Admin1234
+('teszt@example.com', 'AQAAAAIAAYagAAAAENGMc5UQKipvQgKP1Cbfz8c3d9AZkeh8PcLji9xrprohYkRb+7ysAsFspsN2LhegRA==', 'Customer'); -- Password: Teszt1234
 
 INSERT INTO EquipmentCategories (Id, Name) VALUES
 (1, 'Síléc'),

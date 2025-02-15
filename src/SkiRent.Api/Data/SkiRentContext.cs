@@ -88,7 +88,7 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.Property(e => e.UserRole).HasDefaultValueSql("'customer'");
+            entity.Property(e => e.UserRole).HasDefaultValueSql("'Customer'");
         });
 
         OnModelCreatingPartial(modelBuilder);

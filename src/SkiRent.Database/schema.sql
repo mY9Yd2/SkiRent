@@ -8,7 +8,7 @@ CREATE TABLE Users (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
-    UserRole ENUM('admin', 'customer') NOT NULL DEFAULT 'customer'
+    UserRole ENUM('Admin', 'Customer') NOT NULL DEFAULT 'Customer'
 );
 
 CREATE TABLE EquipmentCategories (
