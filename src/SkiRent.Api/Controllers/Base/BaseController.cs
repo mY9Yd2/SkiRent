@@ -17,6 +17,7 @@ public abstract class BaseController : ControllerBase
     {
         switch (error)
         {
+            case UnauthorizedModificationError:
             case PasswordVerificationFailedError:
                 return Problem(
                         title: "Unauthorized",

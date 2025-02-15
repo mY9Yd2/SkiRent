@@ -6,6 +6,7 @@ using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
+using SkiRent.Api.Extensions;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Api.Services.Users;
@@ -77,6 +78,46 @@ public class UserService : IUserService
                 Email = user.Email,
                 Role = user.UserRole
             });
+
+        return Result.Ok(result);
+    }
+
+    public async Task<Result<GetUserResponse>> UpdateAsync(int userId, UpdateUserRequest request, Func<string, bool> isInRole)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return Result.Fail(new UserNotFoundError(userId));
+        }
+
+        if (request.Email is not null)
+        {
+            user.Email = request.Email;
+        }
+
+        if (request.Password is not null)
+        {
+            user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
+        }
+
+        if (request.Role.HasValue)
+        {
+            if (!isInRole(Roles.Admin))
+            {
+                return Result.Fail(new UnauthorizedModificationError(nameof(request.Role)));
+            }
+            user.UserRole = request.Role.Value.ToRoleString();
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+
+        var result = new GetUserResponse
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Role = user.UserRole
+        };
 
         return Result.Ok(result);
     }

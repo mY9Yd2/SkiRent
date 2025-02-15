@@ -70,4 +70,26 @@ public class UsersController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpPut("{userId:int}")]
+    [Authorize(Policy = Policies.SelfOrAdminAccess)]
+    public async Task<ActionResult<GetUserResponse>> Update(
+        [FromServices] IValidator<UpdateUserRequest> validator, [FromRoute] int userId, UpdateUserRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return validationResult;
+        }
+
+        var result = await _userService.UpdateAsync(userId, request, User.IsInRole);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace SkiRent.Shared.Validators.Common
 {
-    public class EmailValidator : AbstractValidator<string>
+    public class EmailValidator : AbstractValidator<string?>
     {
         public EmailValidator()
         {
