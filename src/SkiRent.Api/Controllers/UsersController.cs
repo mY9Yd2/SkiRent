@@ -51,7 +51,7 @@ public class UsersController : BaseController
 
         if (result.IsFailed)
         {
-            return NotFound(result.Errors[0]);
+            return Problem(result.Errors[0]);
         }
 
         return Ok(result.Value);
@@ -65,7 +65,7 @@ public class UsersController : BaseController
 
         if (result.IsFailed)
         {
-            return NotFound(result.Errors[0]);
+            return Problem(result.Errors[0]);
         }
 
         return Ok(result.Value);
