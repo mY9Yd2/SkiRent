@@ -56,4 +56,18 @@ public class UsersController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpGet]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<IEnumerable<GetAllUserResponse>>> GetAll()
+    {
+        var result = await _userService.GetAllAsync();
+
+        if (result.IsFailed)
+        {
+            return NotFound(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
 }

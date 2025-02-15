@@ -65,4 +65,19 @@ public class UserService : IUserService
 
         return Result.Ok(result);
     }
+
+    public async Task<Result<IEnumerable<GetAllUserResponse>>> GetAllAsync()
+    {
+        var users = await _unitOfWork.Users.GetAllAsync();
+
+        var result = users.Select(user =>
+            new GetAllUserResponse
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Role = user.UserRole
+            });
+
+        return Result.Ok(result);
+    }
 }

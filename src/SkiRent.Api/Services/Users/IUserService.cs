@@ -8,4 +8,5 @@ public interface IUserService
 {
     public Task<Result<CreateUserResponse>> CreateAsync(CreateUserRequest request);
     public Task<Result<GetUserResponse>> GetAsync(int userId);
+    public Task<Result<IEnumerable<GetAllUserResponse>>> GetAllAsync();
 }
