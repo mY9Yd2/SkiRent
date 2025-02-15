@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+
+using FluentValidation;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
 using SkiRent.Api.Services.Auth;
+using SkiRent.Api.Services.Users;
 using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Users;
 
@@ -45,5 +48,25 @@ public class AuthController : BaseController
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Value);
 
         return Ok();
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<GetUserResponse>> Me([FromServices] IUserService userService)
+    {
+        var nameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(nameIdentifier, out int userId))
+        {
+            return Unauthorized();
+        }
+
+        var result = await userService.GetAsync(userId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
     }
 }
