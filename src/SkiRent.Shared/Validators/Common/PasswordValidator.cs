@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 
-using SkiRent.Shared.Extensions;
-
 namespace SkiRent.Shared.Validators.Common
 {
     public class PasswordValidator : AbstractValidator<string>
@@ -10,8 +8,9 @@ namespace SkiRent.Shared.Validators.Common
         {
             RuleFor(password => password)
                 .NotEmpty()
-                .NoWhitespace()
-                .Length(6, 16);
+                .Length(8, 16)
+                .Matches(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d\!\?\*\.\@\#\$%^&+=]*$")
+                .WithMessage("Password must contain at least one uppercase letter, one lowercase letter, and one number. Special characters (!?*.@#$%^&+=) are optional.");
         }
     }
 }
