@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace SkiRent.Shared.Validators.Common
+namespace SkiRent.Shared.Validators.Common.Users
 {
-    public class EmailValidator : AbstractValidator<string?>
+    public class EmailValidator : AbstractValidator<string>
     {
         public EmailValidator()
         {

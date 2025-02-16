@@ -5,7 +5,8 @@ namespace SkiRent.Shared.Contracts.Common
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Roles
     {
-        Customer,
-        Admin
+        Invalid,
+        Admin,
+        Customer
     }
 }

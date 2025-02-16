@@ -45,7 +45,7 @@ public class EquipmentsController : BaseController
 
     [HttpGet("{equipmentId:int}")]
     [AllowAnonymous]
-    public async Task<ActionResult<GetEquipmentResponse>> Get(int equipmentId)
+    public async Task<ActionResult<GetEquipmentResponse>> Get([FromRoute] int equipmentId)
     {
         var result = await _equipmentService.GetAsync(equipmentId);
 
@@ -62,6 +62,28 @@ public class EquipmentsController : BaseController
     public async Task<ActionResult<IEnumerable<GetAllEquipmentResponse>>> GetAll()
     {
         var result = await _equipmentService.GetAllAsync();
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
+
+    [HttpPut("{equipmentId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<GetEquipmentResponse>> Update(
+        [FromServices] IValidator<UpdateEquipmentRequest> validator, [FromRoute] int equipmentId, [FromBody] UpdateEquipmentRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return ValidationProblem(validationResult);
+        }
+
+        var result = await _equipmentService.UpdateAsync(equipmentId, request);
 
         if (result.IsFailed)
         {

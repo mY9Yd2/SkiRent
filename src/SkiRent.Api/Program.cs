@@ -32,9 +32,10 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         options.AllowInputFormatterExceptionMessages = false;
+        options.JsonSerializerOptions.AllowTrailingCommas = true;
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => options.SupportNonNullableReferenceTypes());
 builder.Services.AddProblemDetails();
 
 builder.Services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);

@@ -1,4 +1,6 @@
-﻿namespace SkiRent.Shared.Contracts.Equipments
+﻿using System.Text.Json.Serialization;
+
+namespace SkiRent.Shared.Contracts.Equipments
 {
     public record CreateEquipmentRequest
     {
@@ -11,6 +13,9 @@
         public required decimal PricePerDay { get; init; }
 
         public required int AvailableQuantity { get; init; }
+
+        [JsonIgnore]
+        public string DescriptionAsNonNull => Description ?? string.Empty;
     }
 
     public record CreateEquipmentResponse

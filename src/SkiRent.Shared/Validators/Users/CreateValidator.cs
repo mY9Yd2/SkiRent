@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 using SkiRent.Shared.Contracts.Users;
-using SkiRent.Shared.Validators.Common;
+using SkiRent.Shared.Validators.Common.Users;
 
 namespace SkiRent.Shared.Validators.Users
 {
@@ -10,6 +10,7 @@ namespace SkiRent.Shared.Validators.Users
         public CreateUserRequestValidator()
         {
             RuleFor(request => request.Email).SetValidator(new EmailValidator());
+
             RuleFor(request => request.Password).SetValidator(new PasswordValidator());
         }
     }
