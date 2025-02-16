@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
+using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Services.Equipments;
 using SkiRent.Shared.Contracts.Equipments;
 
@@ -17,7 +21,30 @@ public class EquipmentsController : BaseController
         _equipmentService = equipmentService;
     }
 
+    [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<CreateEquipmentResponse>> Create(
+        [FromServices] IValidator<CreateEquipmentRequest> validator, [FromBody] CreateEquipmentRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return ValidationProblem(validationResult);
+        }
+
+        var result = await _equipmentService.CreateAsync(request);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return CreatedAtAction(nameof(Get), new { equipmentId = result.Value.Id }, result.Value);
+    }
+
     [HttpGet("{equipmentId:int}")]
+    [AllowAnonymous]
     public async Task<ActionResult<GetEquipmentResponse>> Get(int equipmentId)
     {
         var result = await _equipmentService.GetAsync(equipmentId);
@@ -31,6 +58,7 @@ public class EquipmentsController : BaseController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<GetAllEquipmentResponse>>> GetAll()
     {
         var result = await _equipmentService.GetAllAsync();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
 using SkiRent.Api.Services.EquipmentCategories;
@@ -18,6 +19,7 @@ public class EquipmentCategoriesController : BaseController
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<GetAllEquipmentCategoryResponse>>> GetAll()
     {
         var result = await _equipmentCategoryService.GetAllAsync();

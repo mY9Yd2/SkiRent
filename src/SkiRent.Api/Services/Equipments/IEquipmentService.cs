@@ -6,6 +6,7 @@ namespace SkiRent.Api.Services.Equipments;
 
 public interface IEquipmentService
 {
+    public Task<Result<CreateEquipmentResponse>> CreateAsync(CreateEquipmentRequest request);
     public Task<Result<GetEquipmentResponse>> GetAsync(int equipmentId);
     public Task<Result<IEnumerable<GetAllEquipmentResponse>>> GetAllAsync();
 }
