@@ -71,6 +71,8 @@ app.UseExceptionHandler();
 
 app.MapControllers();
 
+app.MapGet("api", () => TypedResults.Ok());
+
 await app.RunAsync();
 
 public partial class Program

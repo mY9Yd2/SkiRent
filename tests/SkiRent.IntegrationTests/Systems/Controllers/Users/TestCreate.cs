@@ -1,9 +1,11 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 
 using AutoFixture;
 
+using Refit;
+
 using SkiRent.IntegrationTests.Utils;
+using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.Users;
 
@@ -12,14 +14,14 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
     public class TestCreate
     {
         private SkiRentWebApplicationFactory<Program> _factory;
-        private HttpClient _client;
+        private ISkiRentApi _client;
         private IFixture _fixture;
 
         [SetUp]
         public void Setup()
         {
             _factory = new SkiRentWebApplicationFactory<Program>();
-            _client = _factory.CreateClient();
+            _client = RestService.For<ISkiRentApi>(_factory.CreateClient());
 
             _fixture = new Fixture();
         }
@@ -27,7 +29,6 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         [TearDown]
         public void TearDown()
         {
-            _client.Dispose();
             _factory.Dispose();
         }
 
@@ -41,7 +42,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
                 .Create();
 
             // Act
-            var response = await _client.PostAsJsonAsync("api/users", request);
+            var response = await _client.Users.CreateAsync(request);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
@@ -63,11 +64,10 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             };
 
             // Act
-            var response = await _client.PostAsJsonAsync("api/users", request);
-            var content = await response.Content.ReadFromJsonAsync<CreateUserResponse>();
+            var response = await _client.Users.CreateAsync(request);
 
             // Assert
-            Assert.That(content, Is.EqualTo(expectedResponse));
+            Assert.That(response.Content, Is.EqualTo(expectedResponse));
         }
     }
 }
