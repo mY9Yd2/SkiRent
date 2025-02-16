@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace SkiRent.Shared.Validators.Common
+namespace SkiRent.Shared.Validators.Common.Users
 {
-    public class PasswordValidator : AbstractValidator<string?>
+    public class PasswordValidator : AbstractValidator<string>
     {
         public PasswordValidator()
         {

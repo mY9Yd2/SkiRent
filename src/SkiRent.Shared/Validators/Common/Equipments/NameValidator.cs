@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace SkiRent.Shared.Validators.Common
+namespace SkiRent.Shared.Validators.Common.Equipments
 {
-    public class EquipmentNameValidator : AbstractValidator<string>
+    public class NameValidator : AbstractValidator<string>
     {
-        public EquipmentNameValidator()
+        public NameValidator()
         {
             RuleFor(name => name)
                 .NotEmpty()

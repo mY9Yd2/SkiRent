@@ -1,4 +1,6 @@
-﻿using SkiRent.Shared.Contracts.Common;
+﻿using System.Text.Json.Serialization;
+
+using SkiRent.Shared.Contracts.Common;
 
 namespace SkiRent.Shared.Contracts.Users
 {
@@ -9,5 +11,14 @@ namespace SkiRent.Shared.Contracts.Users
         public string? Password { get; init; }
 
         public Roles? Role { get; init; }
+
+        [JsonIgnore]
+        public string EmailAsNonNull => Email ?? string.Empty;
+
+        [JsonIgnore]
+        public string PasswordAsNonNull => Password ?? string.Empty;
+
+        [JsonIgnore]
+        public Roles RoleAsNonNull => Role.GetValueOrDefault(Roles.Invalid);
     }
 }

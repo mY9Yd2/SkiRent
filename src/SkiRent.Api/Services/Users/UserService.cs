@@ -94,10 +94,7 @@ public class UserService : IUserService
             return Result.Fail(new UserNotFoundError(userId));
         }
 
-        if (request.Email is not null)
-        {
-            user.Email = request.Email;
-        }
+        user.Email = request.Email ?? user.Email;
 
         if (request.Password is not null)
         {

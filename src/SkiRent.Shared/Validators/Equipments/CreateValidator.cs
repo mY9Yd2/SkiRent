@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 using SkiRent.Shared.Contracts.Equipments;
-using SkiRent.Shared.Validators.Common;
+using SkiRent.Shared.Validators.Common.Equipments;
 
 namespace SkiRent.Shared.Validators.Equipments
 {
@@ -9,13 +9,16 @@ namespace SkiRent.Shared.Validators.Equipments
     {
         public CreateEquipmentRequestValidator()
         {
-            RuleFor(request => request.Name).SetValidator(new EquipmentNameValidator());
-            RuleFor(request => request.Description)
-                .SetValidator(new EquipmentDescriptionValidator())
+            RuleFor(request => request.Name).SetValidator(new NameValidator());
+
+            RuleFor(request => request.DescriptionAsNonNull).SetValidator(new DescriptionValidator())
                 .When(request => request.Description is not null);
-            RuleFor(request => request.CategoryId).SetValidator(new EquipmentCategoryIdValidator());
-            RuleFor(request => request.PricePerDay).SetValidator(new EquipmentPricePerDayValidator());
-            RuleFor(request => request.AvailableQuantity).SetValidator(new EquipmentAvailableQuantityValidator());
+
+            RuleFor(request => request.CategoryId).SetValidator(new CategoryIdValidator());
+
+            RuleFor(request => request.PricePerDay).SetValidator(new PricePerDayValidator());
+
+            RuleFor(request => request.AvailableQuantity).SetValidator(new AvailableQuantityValidator());
         }
     }
 }
