@@ -22,7 +22,11 @@ public partial class SkiRentContext : DbContext
     {
         base.OnConfiguring(optionsBuilder);
 
-        optionsBuilder.UseMySql(_settings.ConnectionString, ServerVersion.AutoDetect(_settings.ConnectionString));
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseMySql(_settings.ConnectionString, ServerVersion.AutoDetect(_settings.ConnectionString));
+        }
+
         optionsBuilder.EnableDetailedErrors();
 
         if (_settings.IsDevelopment)
