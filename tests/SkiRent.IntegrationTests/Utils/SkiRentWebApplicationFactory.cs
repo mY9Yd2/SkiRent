@@ -23,9 +23,10 @@ namespace SkiRent.IntegrationTests.Utils
                     services.Remove(dbContextDescriptor);
                 }
 
+                var databaseName = Guid.NewGuid().ToString();
+
                 services.AddDbContext<SkiRentContext>(options =>
                 {
-                    var databaseName = Guid.NewGuid().ToString();
                     options.UseInMemoryDatabase(databaseName);
                 });
             });

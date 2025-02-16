@@ -1,5 +1,6 @@
 ﻿using Refit;
 
+using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Shared.Clients
@@ -13,7 +14,14 @@ namespace SkiRent.Shared.Clients
         [Get("/api")]
         public Task<IApiResponse> PingAsync();
 
+        public IAuthApi Auth => RestService.For<IAuthApi>(Client);
         public IUsersApi Users => RestService.For<IUsersApi>(Client);
+    }
+
+    public interface IAuthApi
+    {
+        [Post("/api/auth/sign-in")]
+        public Task<IApiResponse> SignInAsync(SignInRequest request);
     }
 
     public interface IUsersApi

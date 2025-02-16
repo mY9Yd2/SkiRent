@@ -15,7 +15,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
     {
         private SkiRentWebApplicationFactory<Program> _factory;
         private ISkiRentApi _client;
-        private IFixture _fixture;
+        private Fixture _fixture;
 
         [SetUp]
         public void Setup()
