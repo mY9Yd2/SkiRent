@@ -24,7 +24,7 @@ CREATE TABLE Equipments (
     PricePerDay DECIMAL(10,2) NOT NULL,
     AvailableQuantity INT NOT NULL,
     FOREIGN KEY (CategoryId) REFERENCES EquipmentCategories(Id)
-        ON DELETE CASCADE
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE EquipmentImages (
@@ -44,13 +44,20 @@ ADD FOREIGN KEY (MainImageId) REFERENCES EquipmentImages(Id)
 CREATE TABLE Bookings (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     UserId INT NOT NULL,
-    EquipmentId INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NOT NULL,
     TotalPrice DECIMAL(10,2) NOT NULL,
-    Status ENUM('pending', 'confirmed', 'cancelled', 'returned') NOT NULL DEFAULT 'pending',
+    Status ENUM('Pending', 'Confirmed', 'Cancelled', 'Returned') NOT NULL DEFAULT 'Pending',
     FOREIGN KEY (UserId) REFERENCES Users(Id)
-        ON DELETE RESTRICT,
+        ON DELETE RESTRICT
+);
+
+CREATE TABLE BookingItems (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    BookingId INT NOT NULL,
+    EquipmentId INT NOT NULL,
+    FOREIGN KEY (BookingId) REFERENCES Bookings(Id)
+        ON DELETE CASCADE,
     FOREIGN KEY (EquipmentId) REFERENCES Equipments(Id)
         ON DELETE RESTRICT
 );

@@ -13,6 +13,8 @@ public partial class SkiRentContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
+    public virtual DbSet<Bookingitem> Bookingitems { get; set; }
+
     public virtual DbSet<Equipment> Equipments { get; set; }
 
     public virtual DbSet<Equipmentcategory> Equipmentcategories { get; set; }
@@ -33,22 +35,31 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.Property(e => e.Status).HasDefaultValueSql("'pending'");
-
-            entity.HasOne(d => d.Equipment).WithMany(p => p.Bookings)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("bookings_ibfk_2");
+            entity.Property(e => e.Status).HasDefaultValueSql("'Pending'");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("bookings_ibfk_1");
         });
 
+        modelBuilder.Entity<Bookingitem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.Bookingitems).HasConstraintName("bookingitems_ibfk_1");
+
+            entity.HasOne(d => d.Equipment).WithMany(p => p.Bookingitems)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("bookingitems_ibfk_2");
+        });
+
         modelBuilder.Entity<Equipment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.Equipment).HasConstraintName("equipments_ibfk_1");
+            entity.HasOne(d => d.Category).WithMany(p => p.Equipment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("equipments_ibfk_1");
 
             entity.HasOne(d => d.MainImage).WithMany(p => p.Equipment)
                 .OnDelete(DeleteBehavior.SetNull)

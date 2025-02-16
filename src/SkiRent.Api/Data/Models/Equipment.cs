@@ -33,7 +33,7 @@ public partial class Equipment
     public int? MainImageId { get; set; }
 
     [InverseProperty("Equipment")]
-    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+    public virtual ICollection<Bookingitem> Bookingitems { get; set; } = new List<Bookingitem>();
 
     [ForeignKey("CategoryId")]
     [InverseProperty("Equipment")]
