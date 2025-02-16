@@ -44,7 +44,8 @@ public class UserService : IUserService
         var result = new CreateUserResponse
         {
             Id = user.Id,
-            Email = user.Email
+            Email = user.Email,
+            Role = Enum.Parse<ResponseRoles>(user.UserRole)
         };
 
         return Result.Ok(result);

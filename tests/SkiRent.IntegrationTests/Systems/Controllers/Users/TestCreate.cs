@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using AutoFixture;
 
 using SkiRent.IntegrationTests.Utils;
+using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.IntegrationTests.Systems.Controllers.Users
@@ -57,7 +58,8 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             var expectedResponse = new CreateUserResponse
             {
                 Id = 1,
-                Email = request.Email
+                Email = request.Email,
+                Role = Roles.Customer
             };
 
             // Act
