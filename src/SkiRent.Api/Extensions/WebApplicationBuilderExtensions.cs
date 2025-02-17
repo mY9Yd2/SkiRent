@@ -82,6 +82,7 @@ public static class WebApplicationBuilderExtensions
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.MaxAge = TimeSpan.FromDays(7);
 
                 options.Events = new CookieAuthenticationEvents
                 {
