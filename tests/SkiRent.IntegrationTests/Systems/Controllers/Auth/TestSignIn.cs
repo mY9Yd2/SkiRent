@@ -7,7 +7,6 @@ using Refit;
 using SkiRent.IntegrationTests.Utils;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Auth;
-using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
 {
@@ -36,16 +35,10 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
         public async Task WhenSuccessful_ReturnsOKStatus()
         {
             // Arrange
-            var createRequest = _fixture.Build<CreateUserRequest>()
-                .With(request => request.Email, "teszt@example.com")
-                .With(request => request.Password, "Teszt1234")
-                .Create();
+            var createRequest = TestDataCustomizationHelper.CreateUser(_fixture);
             await _client.Users.CreateAsync(createRequest);
 
-            var request = _fixture.Build<SignInRequest>()
-                .With(request => request.Email, createRequest.Email)
-                .With(request => request.Password, createRequest.Password)
-                .Create();
+            var request = _fixture.Create<SignInRequest>();
 
             // Act
             var response = await _client.Auth.SignInAsync(request);

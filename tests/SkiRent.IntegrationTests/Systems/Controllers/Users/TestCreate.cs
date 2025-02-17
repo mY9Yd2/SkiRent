@@ -36,10 +36,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         public async Task WhenSuccessful_ReturnsCreatedStatus()
         {
             // Arrange
-            var request = _fixture.Build<CreateUserRequest>()
-                .With(request => request.Email, "teszt@example.com")
-                .With(request => request.Password, "Teszt1234")
-                .Create();
+            var request = TestDataCustomizationHelper.CreateUser(_fixture);
 
             // Act
             var response = await _client.Users.CreateAsync(request);
@@ -52,10 +49,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         public async Task WhenSuccessful_ReturnsUser()
         {
             // Arrange
-            var request = _fixture.Build<CreateUserRequest>()
-                .With(request => request.Email, "teszt@example.com")
-                .With(request => request.Password, "Teszt1234")
-                .Create();
+            var request = TestDataCustomizationHelper.CreateUser(_fixture);
             var expectedResponse = new CreateUserResponse
             {
                 Id = 1,
