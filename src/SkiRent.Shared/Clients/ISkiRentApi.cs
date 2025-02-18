@@ -34,5 +34,14 @@ namespace SkiRent.Shared.Clients
     {
         [Post("/api/users")]
         public Task<IApiResponse<CreateUserResponse>> CreateAsync(CreateUserRequest request);
+
+        [Get("/api/users/{userId}")]
+        public Task<IApiResponse<GetUserResponse>> GetAsync(int userId);
+
+        [Get("/api/users")]
+        public Task<IApiResponse<IEnumerable<GetAllUserResponse>>> GetAllAsync();
+
+        [Put("/api/users/{userId}")]
+        public Task<IApiResponse<GetUserResponse>> UpdateAsync(int userId, UpdateUserRequest request);
     }
 }

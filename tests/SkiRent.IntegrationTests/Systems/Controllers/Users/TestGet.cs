@@ -8,9 +8,9 @@ using SkiRent.IntegrationTests.Utils;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Users;
 
-namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
+namespace SkiRent.IntegrationTests.Systems.Controllers.Users
 {
-    public class TestMe
+    public class TestGet
     {
         private SkiRentWebApplicationFactory<Program> _factory;
         private ISkiRentApi _client;
@@ -40,7 +40,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
             await _client.Auth.SignInAsync(user.SignInRequest);
 
             // Act
-            var response = await _client.Auth.Me();
+            var response = await _client.Users.GetAsync(1);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -66,12 +66,10 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
             };
 
             // Act
-            var response = await _client.Auth.Me();
-            var content = response.Content;
+            var response = await _client.Users.GetAsync(1);
 
             // Assert
-            Assert.That(content, Is.Not.Null);
-            Assert.That(content, Is.EqualTo(expectedResponse));
+            Assert.That(response.Content, Is.EqualTo(expectedResponse));
         }
     }
 }

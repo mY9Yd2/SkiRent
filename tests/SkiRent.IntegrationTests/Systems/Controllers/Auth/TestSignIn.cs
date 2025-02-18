@@ -6,7 +6,6 @@ using Refit;
 
 using SkiRent.IntegrationTests.Utils;
 using SkiRent.Shared.Clients;
-using SkiRent.Shared.Contracts.Auth;
 
 namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
 {
@@ -35,13 +34,11 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
         public async Task WhenSuccessful_ReturnsOKStatus()
         {
             // Arrange
-            var createRequest = TestDataCustomizationHelper.CreateUser(_fixture);
-            await _client.Users.CreateAsync(createRequest);
-
-            var request = _fixture.Create<SignInRequest>();
+            var user = TestDataHelper.CreateUser(_fixture);
+            await _client.Users.CreateAsync(user.CreateUserRequest);
 
             // Act
-            var response = await _client.Auth.SignInAsync(request);
+            var response = await _client.Auth.SignInAsync(user.SignInRequest);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));

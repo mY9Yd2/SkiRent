@@ -36,10 +36,10 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         public async Task WhenSuccessful_ReturnsCreatedStatus()
         {
             // Arrange
-            var request = TestDataCustomizationHelper.CreateUser(_fixture);
+            var user = TestDataHelper.CreateUser(_fixture);
 
             // Act
-            var response = await _client.Users.CreateAsync(request);
+            var response = await _client.Users.CreateAsync(user.CreateUserRequest);
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
@@ -49,16 +49,16 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         public async Task WhenSuccessful_ReturnsUser()
         {
             // Arrange
-            var request = TestDataCustomizationHelper.CreateUser(_fixture);
+            var user = TestDataHelper.CreateUser(_fixture);
             var expectedResponse = new CreateUserResponse
             {
                 Id = 1,
-                Email = request.Email,
+                Email = user.CreateUserRequest.Email,
                 Role = Roles.Customer
             };
 
             // Act
-            var response = await _client.Users.CreateAsync(request);
+            var response = await _client.Users.CreateAsync(user.CreateUserRequest);
 
             // Assert
             Assert.That(response.Content, Is.EqualTo(expectedResponse));

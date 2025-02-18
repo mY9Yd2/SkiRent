@@ -9,7 +9,7 @@ using SkiRent.Api.Errors;
 using SkiRent.Api.Extensions;
 using SkiRent.Shared.Contracts.Users;
 
-using ResponseRoles = SkiRent.Shared.Contracts.Common.Roles;
+using RoleTypes = SkiRent.Shared.Contracts.Common.Roles;
 
 namespace SkiRent.Api.Services.Users;
 
@@ -25,18 +25,23 @@ public class UserService : IUserService
         _passwordHasher = new PasswordHasher<User>();
     }
 
-    public async Task<Result<CreateUserResponse>> CreateAsync(CreateUserRequest request)
+    public async Task<Result<CreateUserResponse>> CreateAsync(CreateUserRequest request, RoleTypes role = RoleTypes.Customer)
     {
         if (await _unitOfWork.Users.ExistsAsync(user => user.Email == request.Email))
         {
             return Result.Fail(new UserAlreadyExistsError(request.Email));
         }
 
+        if (role == RoleTypes.Invalid)
+        {
+            return Result.Fail(new InvalidUserRoleError(role.ToString()));
+        }
+
         var user = new User();
 
         user.Email = request.Email;
         user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
-        user.UserRole = Roles.Customer;
+        user.UserRole = role.ToRoleString();
 
         await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveChangesAsync();
@@ -45,7 +50,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = Enum.Parse<ResponseRoles>(user.UserRole)
+            Role = Enum.Parse<RoleTypes>(user.UserRole)
         };
 
         return Result.Ok(result);
@@ -64,7 +69,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = Enum.Parse<ResponseRoles>(user.UserRole)
+            Role = Enum.Parse<RoleTypes>(user.UserRole)
         };
 
         return Result.Ok(result);
@@ -79,7 +84,7 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email,
-                Role = Enum.Parse<ResponseRoles>(user.UserRole)
+                Role = Enum.Parse<RoleTypes>(user.UserRole)
             });
 
         return Result.Ok(result);
@@ -116,7 +121,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            Role = Enum.Parse<ResponseRoles>(user.UserRole)
+            Role = Enum.Parse<RoleTypes>(user.UserRole)
         };
 
         return Result.Ok(result);
