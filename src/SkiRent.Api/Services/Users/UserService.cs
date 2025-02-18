@@ -98,7 +98,15 @@ public class UserService : IUserService
             return Result.Fail(new UserNotFoundError(userId));
         }
 
-        user.Email = request.Email ?? user.Email;
+        if (request.Email is not null)
+        {
+            if (await _unitOfWork.Users.ExistsAsync(user => user.Email == request.Email))
+            {
+                return Result.Fail(new UserAlreadyExistsError(request.Email));
+            }
+            user.Email = request.Email;
+        }
+
 
         if (request.Password is not null)
         {
