@@ -85,5 +85,34 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             // Assert
             Assert.That(response.Content, Is.EqualTo(expectedResponse));
         }
+
+        [Test]
+        public async Task CanSignInWithUpdatedCredentials_ReturnsOKStatus()
+        {
+            // Arrange
+            var admin = TestDataHelper.CreateUser(_fixture);
+            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin)).Value;
+            await _client.Auth.SignInAsync(admin.SignInRequest);
+
+            var updateRequest = new UpdateUserRequest
+            {
+                Email = "new@example.com",
+                Password = "NewPassword123",
+                Role = Roles.Customer
+            };
+            await _client.Users.UpdateAsync(createdAdminUser.Id, updateRequest);
+
+            admin.SignInRequest = admin.SignInRequest with
+            {
+                Email = updateRequest.Email,
+                Password = updateRequest.Password
+            };
+
+            // Act
+            var response = await _client.Auth.SignInAsync(admin.SignInRequest);
+
+            // Assert
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        }
     }
 }
