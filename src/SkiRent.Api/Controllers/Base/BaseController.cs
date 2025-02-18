@@ -31,6 +31,7 @@ public abstract class BaseController : ControllerBase
                         title: "Not Found",
                         detail: error.Message,
                         statusCode: StatusCodes.Status404NotFound);
+            case EquipmentCategoryAlreadyExistsError:
             case UserAlreadyExistsError:
                 return Problem(
                         title: "Conflict",

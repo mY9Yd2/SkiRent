@@ -6,5 +6,6 @@ namespace SkiRent.Api.Services.EquipmentCategories;
 
 public interface IEquipmentCategoryService
 {
+    public Task<Result<CreatedEquipmentCategoryResponse>> CreateAsync(CreateEquipmentCategoryRequest request);
     public Task<Result<IEnumerable<GetAllEquipmentCategoryResponse>>> GetAllAsync();
 }
