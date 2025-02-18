@@ -23,7 +23,7 @@ public class EquipmentsController : BaseController
 
     [HttpPost]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ActionResult<CreateEquipmentResponse>> Create(
+    public async Task<ActionResult<CreatedEquipmentResponse>> Create(
         [FromServices] IValidator<CreateEquipmentRequest> validator, [FromBody] CreateEquipmentRequest request)
     {
         var validationResult = await ValidateRequestAsync(validator, request);

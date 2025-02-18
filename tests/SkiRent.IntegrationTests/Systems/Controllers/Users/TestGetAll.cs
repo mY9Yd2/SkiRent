@@ -40,7 +40,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
-            await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin);
+            await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
             // Act
@@ -55,7 +55,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
-            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin)).Value;
+            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin)).Value;
 
             var user = TestDataHelper.CreateUser(_fixture);
             var createdUser = (await _userService.CreateAsync(user.CreateUserRequest)).Value;

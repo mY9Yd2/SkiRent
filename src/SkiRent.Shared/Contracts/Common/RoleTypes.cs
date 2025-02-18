@@ -3,7 +3,7 @@
 namespace SkiRent.Shared.Contracts.Common
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum Roles
+    public enum RoleTypes
     {
         Invalid,
         Admin,

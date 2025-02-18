@@ -40,14 +40,14 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
-            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin)).Value;
+            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin)).Value;
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
             var request = new UpdateUserRequest
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = Roles.Customer
+                Role = RoleTypes.Customer
             };
 
             // Act
@@ -62,14 +62,14 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
-            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin)).Value;
+            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin)).Value;
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
             var request = new UpdateUserRequest
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = Roles.Customer
+                Role = RoleTypes.Customer
             };
 
             var expectedResponse = new GetUserResponse
@@ -91,14 +91,14 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
-            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, Roles.Admin)).Value;
+            var createdAdminUser = (await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin)).Value;
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
             var updateRequest = new UpdateUserRequest
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = Roles.Customer
+                Role = RoleTypes.Customer
             };
             await _client.Users.UpdateAsync(createdAdminUser.Id, updateRequest);
 

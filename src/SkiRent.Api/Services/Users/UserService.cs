@@ -7,9 +7,8 @@ using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
 using SkiRent.Api.Extensions;
+using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.Users;
-
-using RoleTypes = SkiRent.Shared.Contracts.Common.Roles;
 
 namespace SkiRent.Api.Services.Users;
 
@@ -25,7 +24,7 @@ public class UserService : IUserService
         _passwordHasher = new PasswordHasher<User>();
     }
 
-    public async Task<Result<CreateUserResponse>> CreateAsync(CreateUserRequest request, RoleTypes role = RoleTypes.Customer)
+    public async Task<Result<CreatedUserResponse>> CreateAsync(CreateUserRequest request, RoleTypes role = RoleTypes.Customer)
     {
         if (await _unitOfWork.Users.ExistsAsync(user => user.Email == request.Email))
         {
@@ -46,7 +45,7 @@ public class UserService : IUserService
         await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveChangesAsync();
 
-        var result = new CreateUserResponse
+        var result = new CreatedUserResponse
         {
             Id = user.Id,
             Email = user.Email,

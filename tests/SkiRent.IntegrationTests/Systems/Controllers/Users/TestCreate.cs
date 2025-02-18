@@ -50,11 +50,11 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
         {
             // Arrange
             var user = TestDataHelper.CreateUser(_fixture);
-            var expectedResponse = new CreateUserResponse
+            var expectedResponse = new CreatedUserResponse
             {
                 Id = 1,
                 Email = user.CreateUserRequest.Email,
-                Role = Roles.Customer
+                Role = RoleTypes.Customer
             };
 
             // Act

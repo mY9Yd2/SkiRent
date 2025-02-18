@@ -18,7 +18,7 @@ namespace SkiRent.Shared.Contracts.Equipments
         public string DescriptionAsNonNull => Description ?? string.Empty;
     }
 
-    public record CreateEquipmentResponse
+    public record CreatedEquipmentResponse
     {
         public required int Id { get; init; }
 

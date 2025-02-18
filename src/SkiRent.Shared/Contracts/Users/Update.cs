@@ -10,7 +10,7 @@ namespace SkiRent.Shared.Contracts.Users
 
         public string? Password { get; init; }
 
-        public Roles? Role { get; init; }
+        public RoleTypes? Role { get; init; }
 
         [JsonIgnore]
         public string EmailAsNonNull => Email ?? string.Empty;
@@ -19,6 +19,6 @@ namespace SkiRent.Shared.Contracts.Users
         public string PasswordAsNonNull => Password ?? string.Empty;
 
         [JsonIgnore]
-        public Roles RoleAsNonNull => Role.GetValueOrDefault(Roles.Invalid);
+        public RoleTypes RoleAsNonNull => Role.GetValueOrDefault(RoleTypes.Invalid);
     }
 }

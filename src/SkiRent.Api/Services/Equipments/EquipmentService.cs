@@ -16,7 +16,7 @@ public class EquipmentService : IEquipmentService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<CreateEquipmentResponse>> CreateAsync(CreateEquipmentRequest request)
+    public async Task<Result<CreatedEquipmentResponse>> CreateAsync(CreateEquipmentRequest request)
     {
         if (!await _unitOfWork.EquipmentCategories.ExistsAsync(category => category.Id == request.CategoryId))
         {
@@ -34,7 +34,7 @@ public class EquipmentService : IEquipmentService
         await _unitOfWork.Equipments.AddAsync(equipment);
         await _unitOfWork.SaveChangesAsync();
 
-        var result = new CreateEquipmentResponse
+        var result = new CreatedEquipmentResponse
         {
             Id = equipment.Id,
             Name = equipment.Name,

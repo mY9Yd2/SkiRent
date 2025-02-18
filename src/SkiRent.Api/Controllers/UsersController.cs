@@ -23,7 +23,7 @@ public class UsersController : BaseController
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<CreateUserResponse>> Create(
+    public async Task<ActionResult<CreatedUserResponse>> Create(
         [FromServices] IValidator<CreateUserRequest> validator, [FromBody] CreateUserRequest request)
     {
         var validationResult = await ValidateRequestAsync(validator, request);

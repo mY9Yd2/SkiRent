@@ -33,7 +33,7 @@ namespace SkiRent.Shared.Clients
     public interface IUsersApi
     {
         [Post("/api/users")]
-        public Task<IApiResponse<CreateUserResponse>> CreateAsync(CreateUserRequest request);
+        public Task<IApiResponse<CreatedUserResponse>> CreateAsync(CreateUserRequest request);
 
         [Get("/api/users/{userId}")]
         public Task<IApiResponse<GetUserResponse>> GetAsync(int userId);
