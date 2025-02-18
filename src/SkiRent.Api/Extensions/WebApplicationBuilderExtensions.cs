@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,7 +13,8 @@ public static class WebApplicationBuilderExtensions
     public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
     {
         string[] authenticationSchemes = [
-            CookieAuthenticationDefaults.AuthenticationScheme
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            BearerTokenDefaults.AuthenticationScheme
         ];
 
         var defaultPolicy = new AuthorizationPolicyBuilder(authenticationSchemes)
@@ -27,7 +29,10 @@ public static class WebApplicationBuilderExtensions
 
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
     {
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+
         services.ConfigureCookieAuthentication();
+        services.ConfigureBearerTokenAuthentication();
 
         return services;
     }
@@ -75,7 +80,7 @@ public static class WebApplicationBuilderExtensions
 
     private static IServiceCollection ConfigureCookieAuthentication(this IServiceCollection services)
     {
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        services.AddAuthentication()
             .AddCookie(options =>
             {
                 options.Cookie.Name = "SkiRentAuth";
@@ -98,6 +103,13 @@ public static class WebApplicationBuilderExtensions
                     }
                 };
             });
+        return services;
+    }
+
+    private static IServiceCollection ConfigureBearerTokenAuthentication(this IServiceCollection services)
+    {
+        services.AddAuthentication()
+            .AddBearerToken();
         return services;
     }
 }

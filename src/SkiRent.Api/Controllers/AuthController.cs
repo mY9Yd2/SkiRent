@@ -2,8 +2,12 @@
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using SkiRent.Api.Controllers.Base;
 using SkiRent.Api.Services.Auth;
@@ -27,7 +31,7 @@ public class AuthController : BaseController
     [HttpPost("sign-in")]
     [AllowAnonymous]
     public async Task<IActionResult> AuthSignIn(
-        [FromServices] IValidator<SignInRequest> validator, [FromBody] SignInRequest request)
+        [FromServices] IValidator<SignInRequest> validator, [FromBody] SignInRequest request, [FromQuery] bool? useTokens)
     {
         var validationResult = await ValidateRequestAsync(validator, request);
 
@@ -36,6 +40,10 @@ public class AuthController : BaseController
             return ValidationProblem(validationResult);
         }
 
+        _authService.AuthenticationScheme = useTokens is not null
+            ? BearerTokenDefaults.AuthenticationScheme
+            : CookieAuthenticationDefaults.AuthenticationScheme;
+
         var result = await _authService.SignInAsync(request);
 
         if (result.IsFailed)
@@ -43,7 +51,32 @@ public class AuthController : BaseController
             return Problem(result.Errors[0]);
         }
 
-        return SignIn(result.Value);
+        return SignIn(result.Value, _authService.AuthenticationScheme);
+    }
+
+    [HttpPost("refresh")]
+    [Authorize]
+    public IActionResult AuthRefresh(
+        [FromServices] IOptionsMonitor<BearerTokenOptions> bearerTokenOptions, [FromServices] TimeProvider timeProvider, [FromBody] RefreshRequest request)
+    {
+        var refreshTokenProtector = bearerTokenOptions.Get(BearerTokenDefaults.AuthenticationScheme).RefreshTokenProtector;
+        var refreshTicket = refreshTokenProtector.Unprotect(request.RefreshToken);
+
+        _authService.AuthenticationScheme = BearerTokenDefaults.AuthenticationScheme;
+
+        if (refreshTicket?.Properties?.ExpiresUtc is not { } expiresUtc || timeProvider.GetUtcNow() >= expiresUtc)
+        {
+            return Challenge(_authService.AuthenticationScheme);
+        }
+
+        var result = _authService.CreatePrincipal(refreshTicket.Principal);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return SignIn(result.Value, _authService.AuthenticationScheme);
     }
 
     [HttpPost("sign-out")]

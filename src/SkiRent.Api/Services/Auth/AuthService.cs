@@ -17,11 +17,15 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _unitOfWork;
     private readonly PasswordHasher<User> _passwordHasher;
 
+    public string AuthenticationScheme { get; set; }
+
     public AuthService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
 
         _passwordHasher = new PasswordHasher<User>();
+
+        AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     }
 
     public async Task<Result<ClaimsPrincipal>> SignInAsync(SignInRequest request)
@@ -45,16 +49,40 @@ public class AuthService : IAuthService
         return Result.Ok(result);
     }
 
-    private static ClaimsPrincipal CreatePrincipal(int userId, string email, string role)
+    public Result<ClaimsPrincipal> CreatePrincipal(ClaimsPrincipal principal)
+    {
+        var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+        var email = principal.FindFirstValue(ClaimTypes.Email);
+        var role = principal.FindFirstValue(ClaimTypes.Role);
+
+        if (userId is null || email is null || role is null)
+        {
+            return Result.Fail(new MissingUserClaimError());
+        }
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, userId),
+            new(ClaimTypes.Email, email),
+            new(ClaimTypes.Role, role),
+        };
+
+        var identity = new ClaimsIdentity(claims, AuthenticationScheme);
+        var newPrincipal = new ClaimsPrincipal(identity);
+
+        return Result.Ok(newPrincipal);
+    }
+
+    private ClaimsPrincipal CreatePrincipal(int userId, string email, string role)
     {
         var claims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, userId.ToString()),
-                new(ClaimTypes.Email, email),
-                new(ClaimTypes.Role, role),
-            };
+        {
+            new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new(ClaimTypes.Email, email),
+            new(ClaimTypes.Role, role),
+        };
 
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var identity = new ClaimsIdentity(claims, AuthenticationScheme);
 
         return new ClaimsPrincipal(identity);
     }
