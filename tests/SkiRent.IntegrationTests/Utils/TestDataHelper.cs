@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 
 using SkiRent.Shared.Contracts.Auth;
+using SkiRent.Shared.Contracts.EquipmentCategories;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.IntegrationTests.Utils
@@ -20,6 +21,15 @@ namespace SkiRent.IntegrationTests.Utils
                 .Create();
 
             return (createUserRequest, signInRequest);
+        }
+
+        public static CreateEquipmentCategoryRequest CreateEquipmentCategory(Fixture fixture)
+        {
+            var createCategoryRequest = fixture.Build<CreateEquipmentCategoryRequest>()
+                .With(request => request.Name, Guid.NewGuid().ToString())
+                .Create();
+
+            return createCategoryRequest;
         }
     }
 }

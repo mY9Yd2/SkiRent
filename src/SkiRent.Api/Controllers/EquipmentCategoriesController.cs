@@ -56,4 +56,26 @@ public class EquipmentCategoriesController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpPut("{categoryId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<GetEquipmentCategoryResponse>> Update(
+        [FromServices] IValidator<UpdateEquipmentCategoryRequest> validator, [FromRoute] int categoryId, [FromBody] UpdateEquipmentCategoryRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return ValidationProblem(validationResult);
+        }
+
+        var result = await _equipmentCategoryService.UpdateAsync(categoryId, request);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
 }

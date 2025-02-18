@@ -5,9 +5,9 @@ using SkiRent.Shared.Validators.Common.EquipmentCategories;
 
 namespace SkiRent.Shared.Validators.EquipmentCategories
 {
-    public class CreateEquipmentCategoryRequestValidator : AbstractValidator<CreateEquipmentCategoryRequest>
+    public class UpdateEquipmentCategoryRequestValidator : AbstractValidator<UpdateEquipmentCategoryRequest>
     {
-        public CreateEquipmentCategoryRequestValidator()
+        public UpdateEquipmentCategoryRequestValidator()
         {
             RuleFor(request => request.Name).SetValidator(new EquipmentCategoryNameValidator());
         }

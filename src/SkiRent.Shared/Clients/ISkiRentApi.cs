@@ -54,5 +54,8 @@ namespace SkiRent.Shared.Clients
 
         [Get("/api/equipment-categories")]
         public Task<IApiResponse<IEnumerable<GetAllEquipmentCategoryResponse>>> GetAllAsync();
+
+        [Put("/api/equipment-categories/{categoryId}")]
+        public Task<IApiResponse<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request);
     }
 }

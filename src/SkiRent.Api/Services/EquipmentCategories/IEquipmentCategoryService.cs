@@ -8,4 +8,5 @@ public interface IEquipmentCategoryService
 {
     public Task<Result<CreatedEquipmentCategoryResponse>> CreateAsync(CreateEquipmentCategoryRequest request);
     public Task<Result<IEnumerable<GetAllEquipmentCategoryResponse>>> GetAllAsync();
+    public Task<Result<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request);
 }

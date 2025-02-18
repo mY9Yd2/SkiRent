@@ -45,10 +45,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
             await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
-            var request = new CreateEquipmentCategoryRequest
-            {
-                Name = _fixture.Create<string>()
-            };
+            var request = TestDataHelper.CreateEquipmentCategory(_fixture);
             await _client.EquipmentCategories.CreateAsync(request);
 
             // Act

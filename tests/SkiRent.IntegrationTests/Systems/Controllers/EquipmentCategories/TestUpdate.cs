@@ -12,7 +12,7 @@ using SkiRent.Shared.Contracts.EquipmentCategories;
 
 namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
 {
-    public class TestCreate
+    public class TestUpdate
     {
         private SkiRentWebApplicationFactory<Program> _factory;
         private ISkiRentApi _client;
@@ -24,7 +24,6 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
         {
             _factory = new SkiRentWebApplicationFactory<Program>();
             _client = RestService.For<ISkiRentApi>(_factory.CreateClient());
-
             _userService = _factory.GetRequiredService<IUserService>();
 
             _fixture = new Fixture();
@@ -37,40 +36,54 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
         }
 
         [Test]
-        public async Task WhenSuccessful_ReturnsCreatedStatus()
+        public async Task WhenSuccessful_ReturnsOKStatus()
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
             await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
-            var request = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var createCategoryRequest = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var createdCategory = (await _client.EquipmentCategories.CreateAsync(createCategoryRequest)).Content;
+            Assert.That(createdCategory, Is.Not.Null);
+
+            var request = new UpdateEquipmentCategoryRequest
+            {
+                Name = _fixture.Create<string>()
+            };
 
             // Act
-            var response = await _client.EquipmentCategories.CreateAsync(request);
+            var response = await _client.EquipmentCategories.UpdateAsync(createdCategory.Id, request);
 
             // Assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
         [Test]
-        public async Task WhenSuccessful_ReturnsEquipmentCategory()
+        public async Task WhenSuccessful_ReturnsUpdatedEquipmentCategory()
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
             await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
-            var request = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var createCategoryRequest = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var createdCategory = (await _client.EquipmentCategories.CreateAsync(createCategoryRequest)).Content;
+            Assert.That(createdCategory, Is.Not.Null);
 
-            var expectedResponse = new CreatedEquipmentCategoryResponse
+            var request = new UpdateEquipmentCategoryRequest
             {
-                Id = 1,
+                Name = _fixture.Create<string>()
+            };
+
+            var expectedResponse = new GetEquipmentCategoryResponse
+            {
+                Id = createdCategory.Id,
                 Name = request.Name
             };
 
             // Act
-            var response = await _client.EquipmentCategories.CreateAsync(request);
+            var response = await _client.EquipmentCategories.UpdateAsync(createdCategory.Id, request);
             var content = response.Content;
 
             // Assert

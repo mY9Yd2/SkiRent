@@ -52,4 +52,33 @@ public class EquipmentCategoryService : IEquipmentCategoryService
 
         return Result.Ok(result);
     }
+
+    public async Task<Result<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request)
+    {
+        var category = await _unitOfWork.EquipmentCategories.FindAsync(category => category.Id == categoryId);
+
+        if (category is null)
+        {
+            return Result.Fail(new EquipmentCategoryNotFound(categoryId));
+        }
+
+        if (request.Name is not null)
+        {
+            if (await _unitOfWork.EquipmentCategories.ExistsAsync(category => category.Name == request.Name))
+            {
+                return Result.Fail(new EquipmentCategoryAlreadyExistsError(request.Name));
+            }
+            category.Name = request.Name;
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+
+        var result = new GetEquipmentCategoryResponse
+        {
+            Id = category.Id,
+            Name = category.Name
+        };
+
+        return Result.Ok(result);
+    }
 }
