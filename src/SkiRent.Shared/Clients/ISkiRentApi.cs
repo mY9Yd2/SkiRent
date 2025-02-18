@@ -51,5 +51,8 @@ namespace SkiRent.Shared.Clients
     {
         [Post("/api/equipment-categories")]
         public Task<IApiResponse<CreatedEquipmentCategoryResponse>> CreateAsync(CreateEquipmentCategoryRequest request);
+
+        [Get("/api/equipment-categories")]
+        public Task<IApiResponse<IEnumerable<GetAllEquipmentCategoryResponse>>> GetAllAsync();
     }
 }
