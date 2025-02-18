@@ -2,6 +2,7 @@
 
 using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.EquipmentCategories;
+using SkiRent.Shared.Contracts.Equipments;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Shared.Clients
@@ -18,6 +19,7 @@ namespace SkiRent.Shared.Clients
         public IAuthApi Auth => RestService.For<IAuthApi>(Client);
         public IUsersApi Users => RestService.For<IUsersApi>(Client);
         public IEquipmentCategoriesApi EquipmentCategories => RestService.For<IEquipmentCategoriesApi>(Client);
+        public IEquipmentsApi Equipments => RestService.For<IEquipmentsApi>(Client);
     }
 
     public interface IAuthApi
@@ -57,5 +59,20 @@ namespace SkiRent.Shared.Clients
 
         [Put("/api/equipment-categories/{categoryId}")]
         public Task<IApiResponse<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request);
+    }
+
+    public interface IEquipmentsApi
+    {
+        [Post("/api/equipments")]
+        public Task<IApiResponse<CreatedEquipmentResponse>> CreateAsync(CreateEquipmentRequest request);
+
+        [Get("/api/equipments/{equipmentId}")]
+        public Task<IApiResponse<GetEquipmentResponse>> GetAsync(int equipmentId);
+
+        [Get("/api/equipments")]
+        public Task<IApiResponse<IEnumerable<GetAllEquipmentResponse>>> GetAllAsync();
+
+        [Put("/api/equipments/{equipmentId}")]
+        public Task<IApiResponse<GetEquipmentResponse>> UpdateAsync(int equipmentId, UpdateEquipmentRequest request);
     }
 }

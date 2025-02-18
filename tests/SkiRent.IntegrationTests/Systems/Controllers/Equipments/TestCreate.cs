@@ -8,12 +8,11 @@ using SkiRent.Api.Services.Users;
 using SkiRent.IntegrationTests.Utils;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Common;
+using SkiRent.Shared.Contracts.Equipments;
 
-using SkiRent.Shared.Contracts.EquipmentCategories;
-
-namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
+namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
 {
-    public class TestGetAll
+    public class TestCreate
     {
         private SkiRentWebApplicationFactory<Program> _factory;
         private ISkiRentApi _client;
@@ -38,57 +37,52 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.EquipmentCategories
         }
 
         [Test]
-        public async Task WhenSuccessful_ReturnsOKStatus()
+        public async Task WhenSuccessful_ReturnsCreatedStatus()
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
             await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
-            var request = TestDataHelper.CreateEquipmentCategory(_fixture);
-            await _client.EquipmentCategories.CreateAsync(request);
+            var createCategoryRequest = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var category = (await _client.EquipmentCategories.CreateAsync(createCategoryRequest)).Content;
+            Assert.That(category, Is.Not.Null);
+
+            var request = TestDataHelper.CreateEquipment(_fixture);
 
             // Act
-            var response = await _client.EquipmentCategories.GetAllAsync();
+            var response = await _client.Equipments.CreateAsync(request);
 
             // Assert
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Created));
         }
 
         [Test]
-        public async Task WhenSuccessful_ReturnsListOfEquipmentCategories()
+        public async Task WhenSuccessful_ReturnsEquipment()
         {
             // Arrange
             var admin = TestDataHelper.CreateUser(_fixture);
             await _userService.CreateAsync(admin.CreateUserRequest, RoleTypes.Admin);
             await _client.Auth.SignInAsync(admin.SignInRequest);
 
-            var createRequests = TestDataHelper.CreateManyEquipmentCategory(_fixture);
+            var createCategoryRequest = TestDataHelper.CreateEquipmentCategory(_fixture);
+            var category = (await _client.EquipmentCategories.CreateAsync(createCategoryRequest)).Content;
+            Assert.That(category, Is.Not.Null);
 
-            var createdCategories = new List<CreatedEquipmentCategoryResponse>();
-            foreach (var createRequest in createRequests)
-            {
-                var createdCategory = (await _client.EquipmentCategories.CreateAsync(createRequest)).Content;
-                Assert.That(createdCategory, Is.Not.Null);
-                createdCategories.Add(createdCategory);
-            }
+            var request = TestDataHelper.CreateEquipment(_fixture);
 
-            var expectedResponse = new List<GetAllEquipmentCategoryResponse>
+            var expectedResponse = new CreatedEquipmentResponse
             {
-                new()
-                {
-                    Id = createdCategories[0].Id,
-                    Name = createdCategories[0].Name
-                },
-                new()
-                {
-                    Id = createdCategories[1].Id,
-                    Name = createdCategories[1].Name
-                }
+                Id = 1,
+                Name = request.Name,
+                Description = request.Description,
+                CategoryId = request.CategoryId,
+                PricePerDay = request.PricePerDay,
+                AvailableQuantity = request.AvailableQuantity
             };
 
             // Act
-            var response = await _client.EquipmentCategories.GetAllAsync();
+            var response = await _client.Equipments.CreateAsync(request);
             var content = response.Content;
 
             // Assert

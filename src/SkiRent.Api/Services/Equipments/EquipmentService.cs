@@ -100,7 +100,7 @@ public class EquipmentService : IEquipmentService
         if (request.Description is not null)
         {
             equipment.Description = string.IsNullOrWhiteSpace(request.Description)
-                ? null : equipment.Description;
+                ? null : request.Description;
         }
 
         if (request.CategoryId is not null)

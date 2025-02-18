@@ -2,6 +2,7 @@
 
 using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.EquipmentCategories;
+using SkiRent.Shared.Contracts.Equipments;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.IntegrationTests.Utils
@@ -25,11 +26,30 @@ namespace SkiRent.IntegrationTests.Utils
 
         public static CreateEquipmentCategoryRequest CreateEquipmentCategory(Fixture fixture)
         {
-            var createCategoryRequest = fixture.Build<CreateEquipmentCategoryRequest>()
-                .With(request => request.Name, Guid.NewGuid().ToString())
+            return fixture.Build<CreateEquipmentCategoryRequest>()
+                .With(category => category.Name, Guid.NewGuid().ToString())
                 .Create();
+        }
 
-            return createCategoryRequest;
+        public static IEnumerable<CreateEquipmentCategoryRequest> CreateManyEquipmentCategory(Fixture fixture, int count = 2)
+        {
+            return [.. Enumerable.Range(0, count).Select(_ => CreateEquipmentCategory(fixture))];
+        }
+
+        public static CreateEquipmentRequest CreateEquipment(Fixture fixture, int categoryId = 1)
+        {
+            return fixture.Build<CreateEquipmentRequest>()
+                .With(request => request.Name, Guid.NewGuid().ToString())
+                .With(request => request.Description, Guid.NewGuid().ToString())
+                .With(request => request.CategoryId, categoryId)
+                .With(request => request.PricePerDay, fixture.Create<decimal>())
+                .With(request => request.AvailableQuantity, fixture.Create<int>())
+                .Create();
+        }
+
+        public static IEnumerable<CreateEquipmentRequest> CreateManyEquipment(Fixture fixture, int count = 2, int categoryId = 1)
+        {
+            return [.. Enumerable.Range(0, count).Select(_ => CreateEquipment(fixture))];
         }
     }
 }
