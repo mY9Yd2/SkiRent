@@ -2,10 +2,24 @@ const API_BASE_URL = "http://localhost:5101/api";       // API alap URL
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
+    
+    const emailInput = document.getElementById("email");
+
+    // E-mail formátum ellenőrzés, piros szegély ha rossz
+    emailInput.addEventListener("input", function () {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;      // Email minta
+        if (emailPattern.test(emailInput.value)) {
+            emailInput.style.border = "1px solid #ced4da";      // Eredeti szegély visszaállítása
+        } else {
+            emailInput.style.border = "2px solid red";              // Piros szegély, ha nem megfelelő
+        }
+    });
+
+
 
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
-            event.preventDefault();                  // Megakadályozza az alapértelmezett form elküldést
+            event.preventDefault();                                 // Megakadályozza az alapértelmezett form elküldést
 
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -56,3 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+
+
+

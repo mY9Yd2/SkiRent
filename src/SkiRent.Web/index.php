@@ -18,9 +18,15 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="nav-links">
                     <li class="nav-item"><a class="nav-link" href="pages/login.php" id="login-link">Bejelentkezés</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/mainpage.php" id="equipment-link">Eszközök</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/profile.php" id="profile-link">Profilom</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pages/rentals.php" id="rentals-link">Foglalásaim</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/login.php?redirect=mainpage.php" id="equipment-link">Eszközök</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/login.php?redirect=profile.php" id="profile-link">Profilom</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/login.php?redirect=rentals.php" id="rentals-link">Foglalásaim</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -29,9 +35,15 @@
     <div class="container mt-5" id="main-content">
         <h1 id="welcome-message">Üdvözlünk a SkiRent weboldalon!</h1>
         <p id="description-text">Bérelj sífelszerelést gyorsan és egyszerűen.</p>
+
+        <!-- ÚJ REGISZTRÁCIÓS LINK -->
+        <div class="text-center mt-4">
+            <p id="register-text">Nincs még fiókod? <a href="pages/register.php" id="register-link">Regisztrálj!</a></p>
+        </div>
     </div>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth-handler.js"></script> <!-- Új fájl az autentikációhoz -->
+    
 </body>
-
 </html>
