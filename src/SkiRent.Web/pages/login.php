@@ -9,8 +9,11 @@
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card p-4 shadow-lg" style="width: 350px;">
+<div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <!-- SkiRent Márkanév -->
+        <h1 class="text-warning fw-bold mb-4" id="login-brand">SkiRent</h1>
+
+        <div class="card p-4 shadow-lg login-card">
             <h3 class="text-center mb-3">Bejelentkezés</h3>
             <form id="login-form">
                 <div class="mb-3">
@@ -21,17 +24,14 @@
                     <label for="password" class="form-label">Jelszó</label>
                     <input type="password" class="form-control" id="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Bejelentkezés</button>
+                <button type="submit" class="btn btn-warning w-100">Bejelentkezés</button>
             </form>
-            
             <div class="text-center mt-3">
-                <a href="../index.php" class="btn btn-secondary w-100">Vissza a főoldalra</a>
+                <small>Még nincs fiókod? <a href="register.php" class="text-warning fw-bold">Regisztrálj itt</a></small>
             </div>
-
-            <div class="text-center mt-3">
-                <small>Még nincs fiókod? <a href="register.php">Regisztrálj itt</a></small>
+            <div class="text-center mt-2">
+                <a href="../index.php"  class="btn btn-outline-light btn-sm">Vissza a főoldalra</a>
             </div>
-
         </div>
     </div>
 
