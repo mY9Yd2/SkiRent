@@ -56,11 +56,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
     app.UseCors(builder =>
     {
-        builder.AllowAnyHeader();
-        builder.AllowAnyMethod();
-        builder.AllowAnyOrigin();
+        builder.WithOrigins("http://localhost")     //  Csak a frontend localhost-ot engedélyezi
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();                 //  Sütik és hitelesítési adatok engedélyezése
     });
 }
 
