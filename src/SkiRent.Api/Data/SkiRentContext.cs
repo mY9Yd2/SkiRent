@@ -13,13 +13,13 @@ public partial class SkiRentContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
-    public virtual DbSet<Bookingitem> Bookingitems { get; set; }
+    public virtual DbSet<BookingItem> Bookingitems { get; set; }
 
     public virtual DbSet<Equipment> Equipments { get; set; }
 
-    public virtual DbSet<Equipmentcategory> Equipmentcategories { get; set; }
+    public virtual DbSet<EquipmentCategory> Equipmentcategories { get; set; }
 
-    public virtual DbSet<Equipmentimage> Equipmentimages { get; set; }
+    public virtual DbSet<EquipmentImage> Equipmentimages { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
@@ -42,7 +42,7 @@ public partial class SkiRentContext : DbContext
                 .HasConstraintName("bookings_ibfk_1");
         });
 
-        modelBuilder.Entity<Bookingitem>(entity =>
+        modelBuilder.Entity<BookingItem>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
@@ -66,12 +66,12 @@ public partial class SkiRentContext : DbContext
                 .HasConstraintName("equipments_ibfk_2");
         });
 
-        modelBuilder.Entity<Equipmentcategory>(entity =>
+        modelBuilder.Entity<EquipmentCategory>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
         });
 
-        modelBuilder.Entity<Equipmentimage>(entity =>
+        modelBuilder.Entity<EquipmentImage>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 

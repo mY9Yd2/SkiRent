@@ -27,7 +27,7 @@ public partial class Booking
     public string Status { get; set; } = null!;
 
     [InverseProperty("Booking")]
-    public virtual ICollection<Bookingitem> Bookingitems { get; set; } = new List<Bookingitem>();
+    public virtual ICollection<BookingItem> Bookingitems { get; set; } = new List<BookingItem>();
 
     [InverseProperty("Booking")]
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();

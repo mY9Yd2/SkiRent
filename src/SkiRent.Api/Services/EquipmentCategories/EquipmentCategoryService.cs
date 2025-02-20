@@ -23,7 +23,7 @@ public class EquipmentCategoryService : IEquipmentCategoryService
             return Result.Fail(new EquipmentCategoryAlreadyExistsError(request.Name));
         }
 
-        var category = new Equipmentcategory();
+        var category = new EquipmentCategory();
 
         category.Name = request.Name;
 

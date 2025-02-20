@@ -8,7 +8,7 @@ namespace SkiRent.Api.Data.Models;
 [Table("bookingitems")]
 [Index("BookingId", Name = "BookingId")]
 [Index("EquipmentId", Name = "EquipmentId")]
-public partial class Bookingitem
+public partial class BookingItem
 {
     [Key]
     [Column(TypeName = "int(11)")]

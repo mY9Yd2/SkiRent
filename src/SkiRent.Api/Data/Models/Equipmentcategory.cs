@@ -7,7 +7,7 @@ namespace SkiRent.Api.Data.Models;
 
 [Table("equipmentcategories")]
 [Index("Name", Name = "Name", IsUnique = true)]
-public partial class Equipmentcategory
+public partial class EquipmentCategory
 {
     [Key]
     [Column(TypeName = "int(11)")]

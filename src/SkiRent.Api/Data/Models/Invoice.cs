@@ -24,7 +24,7 @@ public partial class Invoice
     public string FileName { get; set; } = null!;
 
     [Column(TypeName = "timestamp")]
-    public DateTime CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 
     [ForeignKey("BookingId")]
     [InverseProperty("Invoices")]
