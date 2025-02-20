@@ -86,5 +86,4 @@ public class AuthService : IAuthService
 
         return new ClaimsPrincipal(identity);
     }
-
 }

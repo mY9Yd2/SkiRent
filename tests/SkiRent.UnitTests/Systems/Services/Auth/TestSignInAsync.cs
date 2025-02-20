@@ -14,7 +14,7 @@ using SkiRent.Shared.Contracts.Auth;
 
 namespace SkiRent.UnitTests.Systems.Services.Auth
 {
-    class TestSignInAsync
+    public class TestSignInAsync
     {
         private IUnitOfWork _unitOfWork;
         private PasswordHasher<User> _passwordHasher;
