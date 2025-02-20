@@ -1,115 +1,49 @@
-﻿using System.Security.Claims;
+﻿using System.Reflection;
 
-using Microsoft.AspNetCore.Authentication.BearerToken;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+using FluentValidation;
 
-using SkiRent.Api.Data.Auth;
+using SkiRent.Api.Configurations;
+using SkiRent.Api.Data;
+using SkiRent.Api.Data.UnitOfWork;
+using SkiRent.Api.ExceptionHandlers;
+using SkiRent.Api.Services.Auth;
+using SkiRent.Api.Services.EquipmentCategories;
+using SkiRent.Api.Services.Equipments;
+using SkiRent.Api.Services.Users;
 
 namespace SkiRent.Api.Extensions;
 
 public static class WebApplicationBuilderExtensions
 {
-    public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+    public static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        string[] authenticationSchemes = [
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            BearerTokenDefaults.AuthenticationScheme
-        ];
+        var services = builder.Services;
+        var environment = builder.Environment;
+        var configuration = builder.Configuration;
 
-        var defaultPolicy = new AuthorizationPolicyBuilder(authenticationSchemes)
-            .RequireAuthenticatedUser()
-            .Build();
+        services.Configure<SkiRentContextSettings>(options =>
+                SkiRentContextSettingsConfiguration.Configure(options, environment, configuration));
 
-        services.AddAuthorizationBuilder()
-            .SetDefaultPolicy(defaultPolicy);
+        services.ConfigureAuthentication();
+        services.ConfigureAuthorization();
 
-        return services;
-    }
+        services.AddControllers()
+            .AddJsonOptions(JsonOptionsConfiguration.Configure);
 
-    public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
-    {
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(SwaggerConfiguration.Configure);
+        services.AddProblemDetails();
 
-        services.ConfigureCookieAuthentication();
-        services.ConfigureBearerTokenAuthentication();
+        services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
 
-        return services;
-    }
+        services.AddExceptionHandler<GlobalExceptionHandler>();
 
-    public static IServiceCollection ConfigurePolicies(this IServiceCollection services)
-    {
-        services.AddAuthorizationBuilder()
-            .AddPolicy(Policies.SelfOrAdminAccess, policy => policy.RequireAssertion(context =>
-                {
-                    var userIdClaim = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var roleClaim = context.User.FindFirstValue(ClaimTypes.Role);
+        services.AddDbContext<SkiRentContext>();
 
-                    if (roleClaim == Roles.Admin)
-                    {
-                        // Admins can view any user
-                        return true;
-                    }
-
-                    if (roleClaim == Roles.Customer && userIdClaim is not null)
-                    {
-                        if (context.Resource is not HttpContext httpContext)
-                        {
-                            return false;
-                        }
-
-                        if (!httpContext.Request.RouteValues.TryGetValue("userId", out var routeUserIdObj) || routeUserIdObj is null)
-                        {
-                            // No userId in route
-                            return false;
-                        }
-
-                        if (!int.TryParse(routeUserIdObj.ToString(), out int requestedUserId))
-                        {
-                            // Invalid userId format
-                            return false;
-                        }
-
-                        return userIdClaim == requestedUserId.ToString();
-                    }
-
-                    return false;
-                }));
-        return services;
-    }
-
-    private static IServiceCollection ConfigureCookieAuthentication(this IServiceCollection services)
-    {
-        services.AddAuthentication()
-            .AddCookie(options =>
-            {
-                options.Cookie.Name = "SkiRentAuth";
-                options.Cookie.HttpOnly = true;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                options.Cookie.SameSite = SameSiteMode.Strict;
-                options.Cookie.MaxAge = TimeSpan.FromDays(7);
-
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    },
-                    OnRedirectToAccessDenied = context =>
-                    {
-                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-        return services;
-    }
-
-    private static IServiceCollection ConfigureBearerTokenAuthentication(this IServiceCollection services)
-    {
-        services.AddAuthentication()
-            .AddBearerToken();
-        return services;
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEquipmentService, EquipmentService>();
+        services.AddScoped<IEquipmentCategoryService, EquipmentCategoryService>();
     }
 }
