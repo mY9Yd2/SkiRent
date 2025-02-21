@@ -15,37 +15,76 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Árnyék a kiemeléshez */
     color: black;
 }
+/*
 
-
-/*---- login.php oldal stílus ---- */
-/* Login kártya háttér */
-.login-card {
-    background-color: #2c2f33;
+.login-body {
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     color: white;
-    width: 350px;
-    border-radius: 10px;
 }
 
-/* SkiRent Márkanév kiemelése */
-#login-brand {
+.login-container {
+    text-align: center;
+}
+
+.brand-logo {
     font-size: 2rem;
     font-weight: bold;
-    color: #ffc107; /* Sárga szín */
-    text-shadow: 4px 4px 8px rgba(255, 193, 7, 0.3); /* Fényhatás */
+    color: #ffc107;
+    margin-bottom: 20px;
+}
+
+.login-box {
+    background-color: #222;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+    width: 350px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    background-color: #333;
+    border: 1px solid #555;
+    color: white;
+}
+
+.form-control:focus {
+    background-color: #444;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.login-link {
+    margin-top: 10px;
+}
+
+.error-text {
+    color: red;
+    font-size: 0.9rem;
 }
 
 
-
-/* ----- index.php ---- */
-/* Márkanév nagyobb betűméret */
-#brand-logo {
-    font-size: 1.8rem; /* Alapértelmezett: 1rem, most nagyobb lett */
-}
-
-/* Menüpontok hover effekttel */
 .menu-item:hover {
-    background-color: #ffc107; /* Sárga háttér */
-    color: #212529 !important; /* Fekete szöveg */
-    border-radius: 5px; /* Kis lekerekítés */
+    background-color: #ffc107; /* Sárga háttér 
+    color: #212529 !important; /* Fekete szöveg 
+    border-radius: 5px; /* Kis lekerekítés 
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+
+*/

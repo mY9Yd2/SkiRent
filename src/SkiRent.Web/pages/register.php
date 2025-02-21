@@ -3,51 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regisztráció</title>
+    <title>Regisztráció - SkiRent</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card p-4 shadow-lg" style="width: 400px;">
-            <h3 class="text-center mb-3">Regisztráció</h3>
+
+<body>    
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <h1 class="text-warning fw-bold mb-4" id="brand-logo">SkiRent</h1>
+        <div class="login-box">
+            <h2>Regisztráció</h2>
             <form id="register-form">
-                <div class="mb-3">
-                    <label for="email" class="form-label">E-mail cím</label>
-                    <input type="email" class="form-control" id="email" required>
+                <div class="form-group">
+                    <label for="email">E-mail cím</label>
+                    <input type="email" id="email" class="form-control" required>
                 </div>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Felhasználónév</label>
-                    <input type="text" class="form-control" id="username" required>
+                <div class="form-group">
+                    <label for="password">Jelszó</label>
+                    <input type="password" id="password" class="form-control" required>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Jelszó</label>
-                    <input type="password" class="form-control" id="password" required>
+                <div class="form-group">
+                    <label for="confirm-password">Jelszó ismét</label>
+                    <input type="password" id="confirm-password" class="form-control" required>
+                    <small id="password-error" class="error-text"></small>
                 </div>
-                <div class="mb-3">
-                    <label for="confirm-password" class="form-label">Jelszó megerősítése</label>
-                    <input type="password" class="form-control" id="confirm-password" required>
-                </div>
-
-                <button type="submit" class="btn btn-success w-100">Regisztráció</button>
-
+                <button type="submit" class="btn btn-warning btn-block">Regisztráció</button>
             </form>
 
-            <div class="text-center mt-3">
-                <small>Van már fiókod? <a href="login.php">Jelentkezz be itt</a></small>
-            </div>
-
-            <div class="text-center mt-2">
-                <a href="../index.php" class="btn btn-secondary btn-sm">Vissza a főoldalra</a>
-            </div>
-
+            <p class="login-link">Már van fiókod? <a href="login.php">Jelentkezz be!</a></p>
+            <a href="../index.php" class="btn btn-secondary btn-block">Vissza a főoldalra</a>
         </div>
     </div>
 
-
     <script src="../js/bootstrap.bundle.min.js"></script>
-
-    <!-- script.js betöltése -->
     <script src="../js/script.js"></script>
 </body>
 </html>

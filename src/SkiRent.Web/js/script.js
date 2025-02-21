@@ -73,4 +73,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("register-form");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const passwordError = document.getElementById("password-error");
+
+            if (password !== confirmPassword) {
+                passwordError.textContent = "A két jelszó nem egyezik!";
+                passwordError.style.color = "red";
+                return;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Ha minden oké, akkor elküldhetjük az API-nak a kérést
+            registerUser();
+        });
+    }
+});
+
+function registerUser() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    fetch("http://localhost:5101/api/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Sikeres regisztráció:", data);
+        alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
+        window.location.href = "login.php";
+    })
+    .catch(error => {
+        console.error("Hiba történt:", error);
+        alert("Hiba történt a regisztráció során!");
+    });
+}
+
+
 

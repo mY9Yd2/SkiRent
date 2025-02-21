@@ -11,7 +11,7 @@
 <body>
 <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
         <!-- SkiRent Márkanév -->
-        <h1 class="text-warning fw-bold mb-4" id="login-brand">SkiRent</h1>
+        <h1 class="text-warning fw-bold mb-4" id="brand-logo">SkiRent</h1>
 
         <div class="card p-4 shadow-lg login-card">
             <h3 class="text-center mb-3">Bejelentkezés</h3>
