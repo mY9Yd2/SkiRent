@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body>
-<div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+<body class="login-body">
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
         <!-- SkiRent Márkanév -->
         <h1 class="text-warning fw-bold mb-4" id="brand-logo">SkiRent</h1>
 
@@ -18,19 +18,19 @@
             <form id="login-form">
                 <div class="mb-3">
                     <label for="email" class="form-label">E-mail cím</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" class="form-control" id="email">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Jelszó</label>
-                    <input type="password" class="form-control" id="password" required>
+                    <input type="password" class="form-control" id="password">
                 </div>
                 <button type="submit" class="btn btn-warning w-100">Bejelentkezés</button>
             </form>
             <div class="text-center mt-3">
-                <small>Még nincs fiókod? <a href="register.php" class="text-warning fw-bold">Regisztrálj itt</a></small>
+                <small>Még nincs fiókod? <a href="register.php" class="auth-link">Regisztrálj itt</a></small>
             </div>
             <div class="text-center mt-2">
-                <a href="../index.php"  class="btn btn-outline-light btn-sm">Vissza a főoldalra</a>
+                <a href="../index.php" class="btn btn-warning btn-sm">Vissza a főoldalra</a>
             </div>
         </div>
     </div>
@@ -40,6 +40,6 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <!-- script.js betöltése -->
     <script src="../js/script.js"></script>
-</body>
 
+</body>
 </html>
