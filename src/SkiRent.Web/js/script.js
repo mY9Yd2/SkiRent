@@ -5,72 +5,70 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
 
-    // E-mail formátum ellenőrzés, piros szegély ha rossz
-    emailInput.addEventListener("input", function () {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email minta
-        if (emailPattern.test(emailInput.value.trim())) {
-            emailInput.style.border = "1px solid #ced4da"; // Eredeti szegély visszaállítása
-        } else {
-            emailInput.style.border = "2px solid red"; // Piros szegély, ha nem megfelelő
-        }
-    });
+    if (emailInput) {  // Csak akkor dolgozzuk fel, ha létezik az oldalon
+        emailInput.addEventListener("input", function () {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailPattern.test(emailInput.value.trim())) {
+                emailInput.style.border = "1px solid #ced4da";
+            } else {
+                emailInput.style.border = "2px solid red";
+            }
+        });
+    }
 
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
-            event.preventDefault(); // Megakadályozza az alapértelmezett form elküldést
+            event.preventDefault();
 
-            // Ellenőrzi az input mezőket
             if (!validateLoginForm()) {
-                return; // Ha hibás, akkor itt megáll
+                return;
             }
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
+            if (emailInput && passwordInput) {
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
 
-            console.log("Bejelentkezési adatok: ", { email, password }); // Debug
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/sign-in?useTokens=true`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include", // A süti miatt kell
-                    body: JSON.stringify({ email, password })
-                });
-
-                console.log("API válasz státusz:", response.status); // Debug
-
-                if (!response.ok) {
-                    throw new Error("Hibás bejelentkezési adatok vagy hiba az API-val!");
-                }
-
-                let data;
                 try {
-                    data = await response.json();
+                    const response = await fetch(`${API_BASE_URL}/auth/sign-in?useTokens=true`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include",
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Hibás bejelentkezési adatok vagy hiba az API-val!");
+                    }
+
+                    let data;
+                    try {
+                        data = await response.json();
+                    } catch (error) {
+                        console.warn("Hibás JSON válasz:", error);
+                        data = null;
+                    }
+
+                    if (!data || !data.accessToken) {
+                        throw new Error("Bejelentkezés sikeres, de nincs visszakapott token!");
+                    }
+
+                    sessionStorage.setItem("accessToken", data.accessToken);
+                    sessionStorage.setItem("refreshToken", data.refreshToken);
+                    window.location.href = "mainpage.php";
+
                 } catch (error) {
-                    console.warn("Hibás JSON válasz:", error);
-                    data = null;
+                    console.error("Hiba történt:", error);
+                    alert(error.message);
                 }
-
-                console.log("API válasz:", data);
-
-                if (!data || !data.accessToken) {
-                    throw new Error("Bejelentkezés sikeres, de nincs visszakapott token!");
-                }
-
-                // Token mentése a sessionStorage-ba
-                sessionStorage.setItem("accessToken", data.accessToken);
-                sessionStorage.setItem("refreshToken", data.refreshToken);
-
-                // Átirányítás a főoldalra
-                window.location.href = "mainpage.php";
-
-            } catch (error) {
-                console.error("Hiba történt:", error); // Debug
-                alert(error.message);
             }
         });
+    }
+
+    // Csak a products.php oldalon hívjuk meg a termékek betöltését
+    if (document.getElementById("product-list")) {
+        fetchProducts();
     }
 });
 
@@ -81,110 +79,71 @@ function validateLoginForm() {
 
     let isValid = true;
 
-    // Ha az e-mail üres, akkor piros szegélyt kap
-    if (emailInput.value.trim() === "") {
+    if (emailInput && emailInput.value.trim() === "") {
         emailInput.style.border = "2px solid red";
         isValid = false;
-    } else {
-        emailInput.style.border = "1px solid #ced4da"; // Visszaállítja az eredetit, ha jó
+    } else if (emailInput) {
+        emailInput.style.border = "1px solid #ced4da";
     }
 
-    // Ha a jelszó üres, akkor piros szegélyt kap
-    if (passwordInput.value.trim() === "") {
+    if (passwordInput && passwordInput.value.trim() === "") {
         passwordInput.style.border = "2px solid red";
         isValid = false;
-    } else {
-        passwordInput.style.border = "1px solid #ced4da"; // Visszaállítja az eredetit, ha jó
+    } else if (passwordInput) {
+        passwordInput.style.border = "1px solid #ced4da";
     }
 
-    // Ha bármi hiba van, megjeleníti az üzenetet
     if (!isValid) {
         alert("Az email cím és jelszó megadása kötelező!");
     }
 
-    return isValid; // Ha true, akkor mehet tovább a bejelentkezés
+    return isValid;
 }
 
+// Termékek lekérdezése API-ról
+async function fetchProducts() {
+    console.log("API-lekérdezés indult...");
 
+    try {
+        const response = await fetch(`${API_BASE_URL}/equipments`);
+        
+        console.log("API válasz státusz:", response.status);
 
-document.addEventListener("DOMContentLoaded", function () {
-    const registerForm = document.getElementById("register-form");
+        if (!response.ok) {
+            throw new Error(`Hiba történt a termékek lekérése közben! Státusz: ${response.status}`);
+        }
 
-    if (registerForm) {
-        registerForm.addEventListener("submit", function (event) {
-            event.preventDefault();
+        const products = await response.json();
+        console.log("Termékek adatai:", products);
 
-            const emailInput = document.getElementById("email");
-            const passwordInput = document.getElementById("password");
-            const confirmPasswordInput = document.getElementById("confirm-password");
-            const passwordError = document.getElementById("password-error");
+        // TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN
+        displayProducts(products);
 
-            let hasError = false; // Hibát jelző változó
-
-            // Ellenőrzi az üres mezőket és piros szegélyt adunk
-            if (!emailInput.value.trim()) {
-                emailInput.style.border = "2px solid red";
-                hasError = true;
-            } else {
-                emailInput.style.border = "1px solid #ced4da"; // Visszaállítás
-            }
-
-            if (!passwordInput.value.trim()) {
-                passwordInput.style.border = "2px solid red";
-                hasError = true;
-            } else {
-                passwordInput.style.border = "1px solid #ced4da";
-            }
-
-            if (!confirmPasswordInput.value.trim()) {
-                confirmPasswordInput.style.border = "2px solid red";
-                hasError = true;
-            } else {
-                confirmPasswordInput.style.border = "1px solid #ced4da";
-            }
-
-            // Ha volt üres mező, akkor megállíta a küldést és figyelmezteti a felhasználót
-            if (hasError) {
-                alert("Az összes mező kitöltése kötelező!");
-                return;
-            }
-
-            // Ha a két jelszó nem egyezik
-            if (passwordInput.value !== confirmPasswordInput.value) {
-                passwordError.textContent = "A két jelszó nem egyezik!";
-                passwordError.style.color = "red";
-                return;
-            } else {
-                passwordError.textContent = "";
-            }
-
-            // Ha minden rendben, küldi az API-nak a regisztrációt
-            registerUser(emailInput.value, passwordInput.value);
-        });
-    }
-});
-
-// Regisztrációs API hívás
-function registerUser(email, password) {
-    fetch("http://localhost:5101/api/users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Sikeres regisztráció:", data);
-        alert("Sikeres regisztráció! Most már bejelentkezhetsz.");
-        window.location.href = "login.php";
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Hiba történt:", error);
-        alert("Hiba történt a regisztráció során!");
+    }
+}
+
+// ** TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN **
+function displayProducts(products) {
+    const productList = document.getElementById("product-list");
+
+    productList.innerHTML = ""; // Töröljük az előző tartalmat
+
+    products.forEach(product => {
+        const productCard = `
+            <div class="col-md-4">
+                <div class="card text-dark bg-light mb-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">${product.Name}</h5>
+                        <p class="card-text">${product.Description ? product.Description : "Nincs leírás"}</p>
+                        <p class="card-text"><strong>Ár: ${product.PricePerDay} Ft/nap</strong></p>
+                        <p class="card-text"><small>Elérhető: ${product.AvailableQuantity} db</small></p>
+                        <a href="#" class="btn btn-warning">Bérlés</a>
+                    </div>
+                </div>
+            </div>
+        `;
+        productList.innerHTML += productCard;
     });
 }
-

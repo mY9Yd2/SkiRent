@@ -18,6 +18,16 @@ body {
 }
 
 
+/* products.php konténerének formázása */
+#products-container {
+    background-color: white; /* Világos háttér a fő tartalomnak */
+    padding: 20px; /* Belső térköz a doboz szélétől */
+    border-radius: 10px; /* Lekerekített sarkok */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Finom árnyék */
+    color: black; /* Szöveg színe fekete */
+}
+
+
 /* =======================
    Login és Register oldal háttér stílusok
    ======================= */

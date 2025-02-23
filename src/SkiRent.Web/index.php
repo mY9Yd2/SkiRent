@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <!-- Felső menü -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
         <a class="navbar-brand text-warning fw-bold fs-3" href="index.php" id="brand-logo">SkiRent</a>
