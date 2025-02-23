@@ -1,28 +1,31 @@
-const API_BASE_URL = "http://localhost:5101/api";       // API alap URL
+const API_BASE_URL = "http://localhost:5101/api"; // API alap URL
 
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
-    
     const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
 
     // E-mail formátum ellenőrzés, piros szegély ha rossz
     emailInput.addEventListener("input", function () {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;      // Email minta
-        if (emailPattern.test(emailInput.value)) {
-            emailInput.style.border = "1px solid #ced4da";      // Eredeti szegély visszaállítása
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email minta
+        if (emailPattern.test(emailInput.value.trim())) {
+            emailInput.style.border = "1px solid #ced4da"; // Eredeti szegély visszaállítása
         } else {
-            emailInput.style.border = "2px solid red";              // Piros szegély, ha nem megfelelő
+            emailInput.style.border = "2px solid red"; // Piros szegély, ha nem megfelelő
         }
     });
 
-
-
     if (loginForm) {
         loginForm.addEventListener("submit", async function (event) {
-            event.preventDefault();                                 // Megakadályozza az alapértelmezett form elküldést
+            event.preventDefault(); // Megakadályozza az alapértelmezett form elküldést
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            // Ellenőrzi az input mezőket
+            if (!validateLoginForm()) {
+                return; // Ha hibás, akkor itt megáll
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
 
             console.log("Bejelentkezési adatok: ", { email, password }); // Debug
 
@@ -32,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    credentials: "include",                                  // A süti miatt kell
+                    credentials: "include", // A süti miatt kell
                     body: JSON.stringify({ email, password })
                 });
 
-                console.log("API válasz státusz:", response.status);        // Debug
+                console.log("API válasz státusz:", response.status); // Debug
 
                 if (!response.ok) {
                     throw new Error("Hibás bejelentkezési adatok vagy hiba az API-val!");
@@ -71,6 +74,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Függvény az üres mezők ellenőrzésére
+function validateLoginForm() {
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    let isValid = true;
+
+    // Ha az e-mail üres, akkor piros szegélyt kap
+    if (emailInput.value.trim() === "") {
+        emailInput.style.border = "2px solid red";
+        isValid = false;
+    } else {
+        emailInput.style.border = "1px solid #ced4da"; // Visszaállítja az eredetit, ha jó
+    }
+
+    // Ha a jelszó üres, akkor piros szegélyt kap
+    if (passwordInput.value.trim() === "") {
+        passwordInput.style.border = "2px solid red";
+        isValid = false;
+    } else {
+        passwordInput.style.border = "1px solid #ced4da"; // Visszaállítja az eredetit, ha jó
+    }
+
+    // Ha bármi hiba van, megjeleníti az üzenetet
+    if (!isValid) {
+        alert("Az email cím és jelszó megadása kötelező!");
+    }
+
+    return isValid; // Ha true, akkor mehet tovább a bejelentkezés
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -80,11 +114,43 @@ document.addEventListener("DOMContentLoaded", function () {
         registerForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirm-password").value;
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+            const confirmPasswordInput = document.getElementById("confirm-password");
             const passwordError = document.getElementById("password-error");
 
-            if (password !== confirmPassword) {
+            let hasError = false; // Hibát jelző változó
+
+            // Ellenőrzi az üres mezőket és piros szegélyt adunk
+            if (!emailInput.value.trim()) {
+                emailInput.style.border = "2px solid red";
+                hasError = true;
+            } else {
+                emailInput.style.border = "1px solid #ced4da"; // Visszaállítás
+            }
+
+            if (!passwordInput.value.trim()) {
+                passwordInput.style.border = "2px solid red";
+                hasError = true;
+            } else {
+                passwordInput.style.border = "1px solid #ced4da";
+            }
+
+            if (!confirmPasswordInput.value.trim()) {
+                confirmPasswordInput.style.border = "2px solid red";
+                hasError = true;
+            } else {
+                confirmPasswordInput.style.border = "1px solid #ced4da";
+            }
+
+            // Ha volt üres mező, akkor megállíta a küldést és figyelmezteti a felhasználót
+            if (hasError) {
+                alert("Az összes mező kitöltése kötelező!");
+                return;
+            }
+
+            // Ha a két jelszó nem egyezik
+            if (passwordInput.value !== confirmPasswordInput.value) {
                 passwordError.textContent = "A két jelszó nem egyezik!";
                 passwordError.style.color = "red";
                 return;
@@ -92,16 +158,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 passwordError.textContent = "";
             }
 
-            // Ha minden oké, akkor elküldhetjük az API-nak a kérést
-            registerUser();
+            // Ha minden rendben, küldi az API-nak a regisztrációt
+            registerUser(emailInput.value, passwordInput.value);
         });
     }
 });
 
-function registerUser() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
+// Regisztrációs API hívás
+function registerUser(email, password) {
     fetch("http://localhost:5101/api/users", {
         method: "POST",
         headers: {
@@ -123,6 +187,4 @@ function registerUser() {
         alert("Hiba történt a regisztráció során!");
     });
 }
-
-
 

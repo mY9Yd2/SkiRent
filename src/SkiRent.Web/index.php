@@ -17,7 +17,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link text-light menu-item" href="index.php" id="equipment-link">Eszközök</a></li>
+                <li class="nav-item"><a class="nav-link text-light menu-item" href="pages/products.php" id="equipment-link">Eszközök</a></li>
                 <li class="nav-item"><a class="nav-link text-light menu-item" href="pages/login.php" id="login-link">Bejelentkezés</a></li>
                 <li class="nav-item"><a class="nav-link text-light menu-item" href="pages/login.php?redirect=profile.php" id="profile-link">Profilom</a></li>
                 <li class="nav-item"><a class="nav-link text-light menu-item" href="pages/login.php?redirect=rentals.php" id="rentals-link">Foglalásaim</a></li>

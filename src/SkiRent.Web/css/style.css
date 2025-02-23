@@ -1,90 +1,168 @@
+/* =======================
+   Általános oldalstílusok
+   ======================= */
 
-/*---- Teljes oldalra vonatkozó stílus */
-
-/* Teljes háttér sötétebbé tétele */
+/* Teljes oldal háttér és alap szövegszín */
 body {
     background-color: #1a1a1a !important; /* Sötét háttér */
-    color: white;
+    color: white; /* Alap szövegszín fehér */
 }
 
-
+/* Tartalom konténer az index.php-n */
 #index-container {
-    background-color: white; /* Csak a tartalom legyen világos */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Árnyék a kiemeléshez */
-    color: black;
+    background-color: white; /* Világos háttér a fő tartalomnak */
+    padding: 20px; /* Belső térköz a doboz szélétől */
+    border-radius: 10px; /* Lekerekített sarkok */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Finom árnyék */
+    color: black; /* Szöveg színe fekete */
 }
-/*
 
+
+/* =======================
+   Login és Register oldal háttér stílusok
+   ======================= */
+
+/* Login oldal háttér formázása */
 .login-body {
-    background-color: #121212;
+    background-color: #121212; /* Még sötétebb háttér */
+    display: flex; /* Középre igazítás flexbox segítségével */
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Teljes képernyőmagasság */
+    /*color: white;*/
+}
+
+/* Register oldal háttér formázása */
+.register-body {
+    background-color: #121212; /* Ugyanaz a háttér, mint a login-nál */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: white;
+    /*color: white;*/
 }
 
-.login-container {
-    text-align: center;
-}
 
-.brand-logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #ffc107;
-    margin-bottom: 20px;
-}
+/* =======================
+   Bejelentkezési és Regisztrációs dobozok
+   ======================= */
 
+/* Login Box formázása */
 .login-box {
+    background-color: #222; /* Sötétszürke háttér */
+    padding: 30px; /* Belső térköz */
+    border-radius: 10px; /* Lekerekített sarkok */
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1); /* Finom fehér árnyék */
+    width: 350px; /* Fix szélesség */
+}
+
+/* Login Card (a login-boxhoz hasonló, de másik névvel) */
+.login-card {
+    background-color: #222; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
+    width: 350px;
+    color: #ffc107; /* Sárga szövegszín */
+    border: white 1px solid;
+}
+
+/* Register Card (ugyanaz, mint a login-card, csak a regisztrációs oldalhoz) */
+.register-card {
     background-color: #222;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.1);
     width: 350px;
+    color: #ffc107;
+    border: white 1px solid;
 }
 
+
+/* =======================
+   Szövegek és Címek
+   ======================= */
+
+/* SkiRent márkanév (login és regisztrációs oldal fejlécén) */
+.brand-logo {
+    font-size: 2rem; /* Nagyobb betűméret */
+    font-weight: bold; /* Félkövér betű */
+    color: #ffc107; /* Sárga szín */
+    margin-bottom: 20px; /* Alatta hely legyen */
+}
+
+
+/* =======================
+   Űrlap elemek
+   ======================= */
+
+/* Input mezők csoportja */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Kisebb térköz az input mezők között */
 }
 
+/* Alap input mezők stílusa */
 .form-control {
-    background-color: #333;
-    border: 1px solid #555;
-    color: white;
+    background-color: #ffc107; /* Sötétszürke háttér */
+    border: 2px solid white; /* Ferhé szürke keret */
 }
 
+/* Ha az input mező fókuszba kerül */
 .form-control:focus {
-    background-color: #444;
-    color: white;
+    background-color: white; /* Még világosabb szürke háttér */
+    color: black;  /* betűszín ahogy a fókuszt megkapja az input mező */
+    border: 2px solid #ffc107;; /* Ferhé szürke keret */
 }
 
-.btn-warning {
-    background-color: #ffc107;
-    border: none;
-}
-
-.btn-warning:hover {
-    background-color: #e0a800;
-}
-
-.login-link {
-    margin-top: 10px;
-}
-
+/* Hibás adatok figyelmeztetése */
 .error-text {
-    color: red;
-    font-size: 0.9rem;
+    color: red; /* Piros szín */
+    font-size: 0.9rem; /* Kisebb betűméret */
 }
 
 
+/* =======================
+   Gombok
+   ======================= */
+
+/* Alap sárga gomb */
+.btn-warning {
+    background-color: #ffc107; /* Alapértelmezett sárga háttér */
+    border: 2px solid white; /* Keret nélkül */
+}
+
+/* Gomb hover (ha az egér fölé megy) */
+.btn-warning:hover {
+    background-color: white; /* Fehér háttér */
+    color: black; /* Fekete szöveg */
+}
+
+
+/* =======================
+   Menü elemek (hover effekt)
+   ======================= */
+
+/* Menüelem hover állapot */
 .menu-item:hover {
-    background-color: #ffc107; /* Sárga háttér 
-    color: #212529 !important; /* Fekete szöveg 
-    border-radius: 5px; /* Kis lekerekítés 
-    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #ffc107; /* Sárga háttér */
+    color: #212529 !important; /* Fekete szöveg */
+    border-radius: 5px; /* Kis lekerekítés */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Animált színváltás */
 }
 
 
-*/
+
+/* =======================
+    Linkek stílusbeállításai
+=========================*/
+.auth-link {
+    color: white !important; /* Fehér szín */
+    font-weight: bold; /* Félkövér */
+    text-decoration: none; /* Aláhúzás eltüntetése */
+}
+
+.auth-link:hover {
+    color: #ffc107 !important; /* Hover esetén sárga */
+    text-decoration: underline; /* Aláhúzás hover esetén */
+}
+
