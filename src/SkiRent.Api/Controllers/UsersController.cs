@@ -74,7 +74,7 @@ public class UsersController : BaseController
     [HttpPut("{userId:int}")]
     [Authorize(Policy = Policies.SelfOrAdminAccess)]
     public async Task<ActionResult<GetUserResponse>> Update(
-        [FromServices] IValidator<UpdateUserRequest> validator, [FromRoute] int userId, UpdateUserRequest request)
+        [FromServices] IValidator<UpdateUserRequest> validator, [FromRoute] int userId, [FromBody] UpdateUserRequest request)
     {
         var validationResult = await ValidateRequestAsync(validator, request);
 

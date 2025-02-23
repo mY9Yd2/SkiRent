@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiRent.UnitTests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiRent.IntegrationTests", "tests\SkiRent.IntegrationTests\SkiRent.IntegrationTests.csproj", "{799F1315-B8E3-4D47-AED3-213B111687A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkiRent.FakePay", "src\SkiRent.FakePay\SkiRent.FakePay.csproj", "{27F134CC-49A3-4C9B-924E-D34043784BE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{799F1315-B8E3-4D47-AED3-213B111687A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{799F1315-B8E3-4D47-AED3-213B111687A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{799F1315-B8E3-4D47-AED3-213B111687A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F134CC-49A3-4C9B-924E-D34043784BE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F134CC-49A3-4C9B-924E-D34043784BE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F134CC-49A3-4C9B-924E-D34043784BE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F134CC-49A3-4C9B-924E-D34043784BE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

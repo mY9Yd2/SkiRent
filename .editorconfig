@@ -4,6 +4,11 @@ root = true
 [*]
 indent_style = space
 trim_trailing_whitespace = true
+insert_final_newline = true
+
+# PHP files
+[*.php]
+insert_final_newline = false
 
 # JSON files
 [*.json]
@@ -38,7 +43,6 @@ tab_width = 4
 
 # New line preferences
 end_of_line = crlf
-insert_final_newline = true
 
 #### .NET Coding Conventions ####
 [*.{cs,vb}]

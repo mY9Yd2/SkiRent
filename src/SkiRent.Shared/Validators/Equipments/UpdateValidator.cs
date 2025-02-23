@@ -15,7 +15,7 @@ namespace SkiRent.Shared.Validators.Equipments
             RuleFor(request => request.DescriptionAsNonNull).SetValidator(new DescriptionValidator())
                 .When(request => request.Description is not null);
 
-            RuleFor(request => request.CategoryIdAsNonNull).SetValidator(new CategoryIdValidator())
+            RuleFor(request => request.CategoryIdAsNonNull).GreaterThanOrEqualTo(1)
                 .When(request => request.CategoryId is not null);
 
             RuleFor(request => request.PricePerDayAsNonNull).SetValidator(new PricePerDayValidator())

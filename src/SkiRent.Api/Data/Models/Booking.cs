@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SkiRent.Api.Data.Models;
 
 [Table("bookings")]
+[Index("PaymentId", Name = "PaymentId", IsUnique = true)]
 [Index("UserId", Name = "UserId")]
 public partial class Booking
 {
@@ -23,11 +24,13 @@ public partial class Booking
     [Precision(10, 2)]
     public decimal TotalPrice { get; set; }
 
-    [Column(TypeName = "enum('Pending','Confirmed','Cancelled','Returned')")]
+    public Guid PaymentId { get; set; }
+
+    [Column(TypeName = "enum('Pending','Paid','Cancelled','Returned')")]
     public string Status { get; set; } = null!;
 
     [InverseProperty("Booking")]
-    public virtual ICollection<BookingItem> Bookingitems { get; set; } = new List<BookingItem>();
+    public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
 
     [InverseProperty("Booking")]
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();

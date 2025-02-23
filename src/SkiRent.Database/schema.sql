@@ -47,7 +47,8 @@ CREATE TABLE Bookings (
     StartDate DATE NOT NULL,
     EndDate DATE NOT NULL,
     TotalPrice DECIMAL(10,2) NOT NULL,
-    Status ENUM('Pending', 'Confirmed', 'Cancelled', 'Returned') NOT NULL DEFAULT 'Pending',
+    PaymentId CHAR(36) NOT NULL UNIQUE,
+    Status ENUM('Pending', 'Paid', 'Cancelled', 'Returned') NOT NULL DEFAULT 'Pending',
     FOREIGN KEY (UserId) REFERENCES Users(Id)
         ON DELETE RESTRICT
 );
@@ -56,10 +57,12 @@ CREATE TABLE BookingItems (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     BookingId INT NOT NULL,
     EquipmentId INT NOT NULL,
+    Quantity INT NOT NULL,
     FOREIGN KEY (BookingId) REFERENCES Bookings(Id)
         ON DELETE CASCADE,
     FOREIGN KEY (EquipmentId) REFERENCES Equipments(Id)
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+    UNIQUE(BookingId, EquipmentId)
 );
 
 CREATE TABLE Invoices (

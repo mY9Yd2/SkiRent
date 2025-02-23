@@ -26,6 +26,6 @@ public partial class EquipmentImage
     public virtual ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
 
     [ForeignKey("EquipmentId")]
-    [InverseProperty("Equipmentimages")]
+    [InverseProperty("EquipmentImages")]
     public virtual Equipment EquipmentNavigation { get; set; } = null!;
 }

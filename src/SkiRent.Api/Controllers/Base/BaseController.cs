@@ -24,6 +24,7 @@ public abstract class BaseController : ControllerBase
                         title: "Unauthorized",
                         detail: error.Message,
                         statusCode: StatusCodes.Status401Unauthorized);
+            case PaymentNotFoundError:
             case EquipmentCategoryNotFound:
             case EquipmentNotFoundError:
             case UserNotFoundError:
@@ -37,6 +38,11 @@ public abstract class BaseController : ControllerBase
                         title: "Conflict",
                         detail: error.Message,
                         statusCode: StatusCodes.Status409Conflict);
+            case InsufficientQuantityError:
+                return Problem(
+                        title: "Unprocessable Entity",
+                        detail: error.Message,
+                        statusCode: StatusCodes.Status422UnprocessableEntity);
             default:
                 throw new UnhandledErrorException($"Unhandled error type: {error.GetType().Name}.");
         }

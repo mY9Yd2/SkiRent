@@ -13,13 +13,13 @@ public partial class SkiRentContext : DbContext
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
-    public virtual DbSet<BookingItem> Bookingitems { get; set; }
+    public virtual DbSet<BookingItem> BookingItems { get; set; }
 
     public virtual DbSet<Equipment> Equipments { get; set; }
 
-    public virtual DbSet<EquipmentCategory> Equipmentcategories { get; set; }
+    public virtual DbSet<EquipmentCategory> EquipmentCategories { get; set; }
 
-    public virtual DbSet<EquipmentImage> Equipmentimages { get; set; }
+    public virtual DbSet<EquipmentImage> EquipmentImages { get; set; }
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
@@ -46,9 +46,9 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasOne(d => d.Booking).WithMany(p => p.Bookingitems).HasConstraintName("bookingitems_ibfk_1");
+            entity.HasOne(d => d.Booking).WithMany(p => p.BookingItems).HasConstraintName("bookingitems_ibfk_1");
 
-            entity.HasOne(d => d.Equipment).WithMany(p => p.Bookingitems)
+            entity.HasOne(d => d.Equipment).WithMany(p => p.BookingItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("bookingitems_ibfk_2");
         });
@@ -75,7 +75,7 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasOne(d => d.EquipmentNavigation).WithMany(p => p.Equipmentimages)
+            entity.HasOne(d => d.EquipmentNavigation).WithMany(p => p.EquipmentImages)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("equipmentimages_ibfk_1");
         });

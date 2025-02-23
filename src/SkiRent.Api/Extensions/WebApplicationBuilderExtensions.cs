@@ -7,8 +7,10 @@ using SkiRent.Api.Data;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.ExceptionHandlers;
 using SkiRent.Api.Services.Auth;
+using SkiRent.Api.Services.Bookings;
 using SkiRent.Api.Services.EquipmentCategories;
 using SkiRent.Api.Services.Equipments;
+using SkiRent.Api.Services.Payments;
 using SkiRent.Api.Services.Users;
 
 namespace SkiRent.Api.Extensions;
@@ -21,6 +23,8 @@ public static class WebApplicationBuilderExtensions
         var environment = builder.Environment;
         var configuration = builder.Configuration;
 
+        services.Configure<AppSettings>(configuration.GetRequiredSection("AppSettings"));
+        services.Configure<PaymentGatewayOptions>(configuration.GetRequiredSection("PaymentGateway"));
         services.Configure<SkiRentContextSettings>(options =>
                 SkiRentContextSettingsConfiguration.Configure(options, environment, configuration));
 
@@ -34,6 +38,8 @@ public static class WebApplicationBuilderExtensions
         services.AddSwaggerGen(SwaggerConfiguration.Configure);
         services.AddProblemDetails();
 
+        services.AddHttpClient();
+
         services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -45,5 +51,7 @@ public static class WebApplicationBuilderExtensions
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEquipmentService, EquipmentService>();
         services.AddScoped<IEquipmentCategoryService, EquipmentCategoryService>();
+        services.AddScoped<IBookingService, BookingService>();
+        services.AddScoped<IPaymentService, PaymentService>();
     }
 }
