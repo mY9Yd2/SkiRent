@@ -4,8 +4,8 @@
     {
         public required string Name { get; init; }
 
-        public required decimal Price { get; init; }
+        public required string SubText { get; init; }
 
-        public required int Quantity { get; init; }
+        public required decimal TotalPrice { get; init; }
     }
 }

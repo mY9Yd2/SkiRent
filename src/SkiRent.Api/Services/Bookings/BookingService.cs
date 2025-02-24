@@ -1,4 +1,6 @@
-﻿using FluentResults;
+﻿using System.Globalization;
+
+using FluentResults;
 
 using Microsoft.Extensions.Options;
 
@@ -57,11 +59,13 @@ public class BookingService : IBookingService
 
             equipment.AvailableQuantity -= equipmentBooking.Quantity;
 
+            var days = (request.EndDate.DayNumber - request.StartDate.DayNumber) + 1;
+
             paymentItems.Add(new PaymentItem
             {
                 Name = equipment.Name,
-                Price = equipment.PricePerDay,
-                Quantity = equipmentBooking.Quantity
+                SubText = $"{equipmentBooking.Quantity} db x {equipment.PricePerDay.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"))} x {days} napra",
+                TotalPrice = equipmentBooking.Quantity * equipment.PricePerDay * days,
             });
 
             bookingItems.Add(new BookingItem
@@ -71,9 +75,9 @@ public class BookingService : IBookingService
             });
         }
 
-        var paymentId = await CreatePaymentAsync(paymentItems, request.SuccessUrl, request.CancelUrl);
+        var totalPrice = paymentItems.Sum(item => item.TotalPrice);
 
-        var totalPrice = paymentItems.Sum(item => item.Price * item.Quantity);
+        var paymentId = await CreatePaymentAsync(paymentItems, totalPrice, request.SuccessUrl, request.CancelUrl);
 
         var booking = new Booking
         {
@@ -99,7 +103,7 @@ public class BookingService : IBookingService
         return Result.Ok(result);
     }
 
-    private async Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, Uri successUrl, Uri cancelUrl)
+    private async Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, decimal totalPrice, Uri successUrl, Uri cancelUrl)
     {
         var client = _clientFactory.CreateClient();
         client.BaseAddress = _paymentGatewayOptions.BaseUrl;
@@ -108,6 +112,7 @@ public class BookingService : IBookingService
         {
             MerchantName = _appSettings.MerchantName,
             Items = paymentItems,
+            TotalPrice = totalPrice,
             TwoLetterISORegionName = "HU",
             CallbackUrl = new Uri($"{_appSettings.BaseUrl}api/payments/callback"),
             SuccessUrl = successUrl,

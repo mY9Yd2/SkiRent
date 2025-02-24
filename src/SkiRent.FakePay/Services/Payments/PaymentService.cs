@@ -39,9 +39,10 @@ public class PaymentService
             Items = request.Items.Select(item => new Item
             {
                 Name = item.Name,
-                Price = item.Price,
-                Quantity = item.Quantity
+                SubText = item.SubText,
+                TotalPrice = item.TotalPrice,
             }),
+            TotalPrice = request.TotalPrice,
             Culture = culture,
             CurrencyCode = new RegionInfo(culture.Name).ISOCurrencySymbol,
             CallbackUrl = request.CallbackUrl,

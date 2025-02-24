@@ -19,12 +19,12 @@ namespace SkiRent.Shared.Validators.Bookings
                 .SetValidator(new EquipmentBookingValidator());
 
             RuleFor(request => request.StartDate)
-                .LessThan(request => request.EndDate)
+                .LessThanOrEqualTo(request => request.EndDate)
                 .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
 
             RuleFor(request => request.EndDate)
-                .GreaterThan(request => request.StartDate)
-                .GreaterThan(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
+                .GreaterThanOrEqualTo(request => request.StartDate)
+                .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
 
             RuleFor(request => request.SuccessUrl).SetValidator(new UrlValidator());
 

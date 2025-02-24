@@ -8,6 +8,8 @@ namespace SkiRent.Shared.Contracts.Payments
 
         public required IEnumerable<PaymentItem> Items { get; init; }
 
+        public required decimal TotalPrice { get; init; }
+
         public required string TwoLetterISORegionName { get; init; }
 
         public required Uri CallbackUrl { get; init; }

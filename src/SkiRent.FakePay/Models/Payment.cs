@@ -10,7 +10,7 @@ public record Payment
 
     public required IEnumerable<Item> Items { get; init; }
 
-    public decimal TotalPrice => Items.Sum(item => item.Price * item.Quantity);
+    public required decimal TotalPrice { get; init; }
 
     public required CultureInfo Culture { get; init; }
 
