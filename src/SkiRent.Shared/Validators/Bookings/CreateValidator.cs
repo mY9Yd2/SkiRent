@@ -23,6 +23,7 @@ namespace SkiRent.Shared.Validators.Bookings
                 .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
 
             RuleFor(request => request.EndDate)
+                .LessThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime.AddMonths(3)))
                 .GreaterThanOrEqualTo(request => request.StartDate)
                 .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
 
