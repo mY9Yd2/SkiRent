@@ -49,9 +49,8 @@ public static class WebApplicationBuilderExtensions
 
         services.AddDbContext<SkiRentContext>();
 
-        services.AddHttpContextAccessor();
-
         services.AddSingleton<IAuthorizationHandler, PaymentGatewayOnlyHandler>();
+        services.AddSingleton<IAuthorizationHandler, SelfOrAdminAccessHandler>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();

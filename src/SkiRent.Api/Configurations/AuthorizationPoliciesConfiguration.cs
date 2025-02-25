@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-using Microsoft.AspNetCore.Authentication.BearerToken;
+﻿using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
@@ -39,40 +37,6 @@ public static class AuthorizationPoliciesConfiguration
 
     private static void BuildSelfOrAdminAccessPolicy(AuthorizationPolicyBuilder policy)
     {
-        policy.RequireAssertion(context =>
-        {
-            var userIdClaim = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var roleClaim = context.User.FindFirstValue(ClaimTypes.Role);
-
-            if (roleClaim == Roles.Admin)
-            {
-                // Admins can view any user
-                return true;
-            }
-
-            if (roleClaim == Roles.Customer && userIdClaim is not null)
-            {
-                if (context.Resource is not HttpContext httpContext)
-                {
-                    return false;
-                }
-
-                if (!httpContext.Request.RouteValues.TryGetValue("userId", out var routeUserIdObj) || routeUserIdObj is null)
-                {
-                    // No userId in route
-                    return false;
-                }
-
-                if (!int.TryParse(routeUserIdObj.ToString(), out int requestedUserId))
-                {
-                    // Invalid userId format
-                    return false;
-                }
-
-                return userIdClaim == requestedUserId.ToString();
-            }
-
-            return false;
-        });
+        policy.AddRequirements(new SelfOrAdminAccessRequirement());
     }
 }

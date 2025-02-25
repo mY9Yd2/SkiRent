@@ -12,26 +12,24 @@ namespace SkiRent.Api.Authorization.Handlers;
 
 public class PaymentGatewayOnlyHandler : AuthorizationHandler<PaymentGatewayOnlyRequirement>
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly PaymentGatewayOptions _paymentGatewayOptions;
 
-    public PaymentGatewayOnlyHandler(IHttpContextAccessor httpContextAccessor, IOptions<PaymentGatewayOptions> paymentGatewayOptions)
+    public PaymentGatewayOnlyHandler(IOptions<PaymentGatewayOptions> paymentGatewayOptions)
     {
-        _httpContextAccessor = httpContextAccessor;
         _paymentGatewayOptions = paymentGatewayOptions.Value;
     }
 
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PaymentGatewayOnlyRequirement requirement)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-
-        if (httpContext is null)
+        if (context.Resource is not HttpContext httpContext)
         {
+            context.Fail();
             return;
         }
 
         if (!httpContext.Request.Headers.TryGetValue("X-Signature", out var signature) || StringValues.IsNullOrEmpty(signature))
         {
+            context.Fail();
             return;
         }
 
@@ -44,6 +42,7 @@ public class PaymentGatewayOnlyHandler : AuthorizationHandler<PaymentGatewayOnly
 
         if (string.IsNullOrEmpty(requestBody))
         {
+            context.Fail();
             return;
         }
 
