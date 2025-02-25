@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 
+using SkiRent.Api.Authorization.Requirements;
 using SkiRent.Api.Data.Auth;
 
 namespace SkiRent.Api.Configurations;
@@ -14,6 +15,7 @@ public static class AuthorizationPoliciesConfiguration
     {
         options.DefaultPolicy = BuildDefaultPolicy();
         options.AddPolicy(Policies.SelfOrAdminAccess, BuildSelfOrAdminAccessPolicy);
+        options.AddPolicy(Policies.PaymentGatewayOnly, BuildPaymentGatewayOnlyPolicy);
     }
 
     private static AuthorizationPolicy BuildDefaultPolicy()
@@ -28,6 +30,11 @@ public static class AuthorizationPoliciesConfiguration
             .Build();
 
         return defaultPolicy;
+    }
+
+    private static void BuildPaymentGatewayOnlyPolicy(AuthorizationPolicyBuilder policy)
+    {
+        policy.AddRequirements(new PaymentGatewayOnlyRequirement());
     }
 
     private static void BuildSelfOrAdminAccessPolicy(AuthorizationPolicyBuilder policy)

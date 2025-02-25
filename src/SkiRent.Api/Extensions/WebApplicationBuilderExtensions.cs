@@ -2,6 +2,9 @@
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Authorization;
+
+using SkiRent.Api.Authorization.Handlers;
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Data;
 using SkiRent.Api.Data.UnitOfWork;
@@ -45,6 +48,10 @@ public static class WebApplicationBuilderExtensions
         services.AddExceptionHandler<GlobalExceptionHandler>();
 
         services.AddDbContext<SkiRentContext>();
+
+        services.AddHttpContextAccessor();
+
+        services.AddSingleton<IAuthorizationHandler, PaymentGatewayOnlyHandler>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();

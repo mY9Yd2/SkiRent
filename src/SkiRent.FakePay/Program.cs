@@ -1,7 +1,11 @@
 using SkiRent.FakePay.Components;
+using SkiRent.FakePay.Configurations;
 using SkiRent.FakePay.Services.Payments;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.Services.Configure<ClientOptions>(configuration.GetRequiredSection("Clients"));
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

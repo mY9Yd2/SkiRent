@@ -1,5 +1,12 @@
 ﻿using System.Globalization;
+using System.Net.Mime;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
+using Microsoft.Extensions.Options;
+
+using SkiRent.FakePay.Configurations;
 using SkiRent.FakePay.Models;
 using SkiRent.Shared.Contracts.Payments;
 
@@ -10,12 +17,18 @@ namespace SkiRent.FakePay.Services.Payments;
 public class PaymentService
 {
     private readonly ILogger<PaymentService> _logger;
+    private readonly ClientOptions _clientOptions;
     private readonly IFusionCache _cache;
     private readonly IHttpClientFactory _clientFactory;
 
-    public PaymentService(ILogger<PaymentService> logger, IFusionCache cache, IHttpClientFactory clientFactory)
+    public PaymentService(
+        ILogger<PaymentService> logger,
+        IOptions<ClientOptions> clientOptions,
+        IFusionCache cache,
+        IHttpClientFactory clientFactory)
     {
         _logger = logger;
+        _clientOptions = clientOptions.Value;
         _cache = cache;
         _clientFactory = clientFactory;
     }
@@ -69,19 +82,48 @@ public class PaymentService
             return $"Payment with id '{paymentId}' not found.";
         }
 
-        var client = _clientFactory.CreateClient();
-
-        var result = await client.PostAsJsonAsync(payment.CallbackUrl, new PaymentResult
+        var paymentResult = new PaymentResult
         {
             PaymentId = paymentId,
             IsSuccessful = !isCancelled,
             Message = isCancelled ? "Cancelled" : "Success"
-        });
+        };
 
-        _logger.LogInformation("Callback result: {StatusCode}", result.StatusCode);
+        await SendPaymentCallbackAsync(payment.CallbackUrl, paymentResult);
 
         await _cache.RemoveAsync(paymentId.ToString());
 
         return null;
+    }
+
+    private async Task SendPaymentCallbackAsync(Uri callbackUrl, PaymentResult paymentResult)
+    {
+        var client = _clientFactory.CreateClient();
+
+        var message = CreateHttpRequestMessage(callbackUrl, paymentResult);
+        var result = await client.SendAsync(message);
+
+        _logger.LogInformation("Callback result: {StatusCode}", result.StatusCode);
+    }
+
+    private HttpRequestMessage CreateHttpRequestMessage(Uri callbackUrl, PaymentResult paymentResult)
+    {
+        var jsonBody = JsonSerializer.Serialize(paymentResult);
+        var content = new StringContent(jsonBody, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        using var hmac = new HMACSHA3_256(Encoding.UTF8.GetBytes(_clientOptions.SharedSecret));
+        var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(jsonBody));
+        var signature = Convert.ToBase64String(hashBytes);
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = callbackUrl,
+            Content = content
+        };
+
+        request.Headers.Add("X-Signature", signature);
+
+        return request;
     }
 }

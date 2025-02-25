@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using SkiRent.Api.Controllers.Base;
+using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Services.Payments;
 using SkiRent.Shared.Contracts.Payments;
 
@@ -19,7 +20,7 @@ public class PaymentsController : BaseController
     }
 
     [HttpPost("callback")]
-    [AllowAnonymous]
+    [Authorize(Policy = Policies.PaymentGatewayOnly)]
     public async Task<IActionResult> Callback([FromBody] PaymentResult paymentResult)
     {
         var result = await _paymentService.ProcessPaymentCallbackAsync(paymentResult);

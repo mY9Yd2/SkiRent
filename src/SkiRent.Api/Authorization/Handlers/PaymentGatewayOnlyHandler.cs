@@ -1,0 +1,61 @@
+﻿using System.Security.Cryptography;
+using System.Text;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
+
+using SkiRent.Api.Authorization.Requirements;
+using SkiRent.Api.Configurations;
+
+namespace SkiRent.Api.Authorization.Handlers;
+
+public class PaymentGatewayOnlyHandler : AuthorizationHandler<PaymentGatewayOnlyRequirement>
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly PaymentGatewayOptions _paymentGatewayOptions;
+
+    public PaymentGatewayOnlyHandler(IHttpContextAccessor httpContextAccessor, IOptions<PaymentGatewayOptions> paymentGatewayOptions)
+    {
+        _httpContextAccessor = httpContextAccessor;
+        _paymentGatewayOptions = paymentGatewayOptions.Value;
+    }
+
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PaymentGatewayOnlyRequirement requirement)
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+
+        if (httpContext is null)
+        {
+            return;
+        }
+
+        if (!httpContext.Request.Headers.TryGetValue("X-Signature", out var signature) || StringValues.IsNullOrEmpty(signature))
+        {
+            return;
+        }
+
+        httpContext.Request.EnableBuffering();
+
+        using var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, leaveOpen: true);
+        var requestBody = await reader.ReadToEndAsync();
+
+        httpContext.Request.Body.Position = 0;
+
+        if (string.IsNullOrEmpty(requestBody))
+        {
+            return;
+        }
+
+        using var hmac = new HMACSHA3_256(Encoding.UTF8.GetBytes(_paymentGatewayOptions.SharedSecret));
+        var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(requestBody));
+
+        if (CryptographicOperations.FixedTimeEquals(hashBytes, Convert.FromBase64String(signature.ToString())))
+        {
+            context.Succeed(requirement);
+            return;
+        }
+
+        context.Fail();
+    }
+}

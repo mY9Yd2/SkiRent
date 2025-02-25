@@ -3,4 +3,5 @@
 public static class Policies
 {
     public const string SelfOrAdminAccess = "SelfOrAdminAccess";
+    public const string PaymentGatewayOnly = "PaymentGatewayOnly";
 }
