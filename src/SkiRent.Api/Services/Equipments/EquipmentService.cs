@@ -80,7 +80,7 @@ public class EquipmentService : IEquipmentService
                 Name = equipment.Name,
                 CategoryId = equipment.CategoryId,
                 PricePerDay = equipment.PricePerDay,
-                IsAvaiable = equipment.AvailableQuantity > 0
+                IsAvailable = equipment.AvailableQuantity > 0
             });
 
         return Result.Ok(result);

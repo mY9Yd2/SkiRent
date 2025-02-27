@@ -10,6 +10,6 @@
 
         public required decimal PricePerDay { get; init; }
 
-        public required bool IsAvaiable { get; init; }
+        public required bool IsAvailable { get; init; }
     }
 }

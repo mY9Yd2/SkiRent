@@ -4,6 +4,8 @@ namespace SkiRent.Shared.Contracts.Bookings
 {
     public record CreateBookingRequest
     {
+        public required PersonalDetails PersonalDetails { get; init; }
+
         public required IEnumerable<EquipmentBooking> Equipments { get; init; }
 
         public required DateOnly StartDate { get; init; }

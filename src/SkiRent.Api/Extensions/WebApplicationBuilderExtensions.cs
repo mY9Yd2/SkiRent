@@ -4,6 +4,8 @@ using FluentValidation;
 
 using Microsoft.AspNetCore.Authorization;
 
+using QuestPDF.Infrastructure;
+
 using SkiRent.Api.Authorization.Handlers;
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Data;
@@ -15,6 +17,8 @@ using SkiRent.Api.Services.EquipmentCategories;
 using SkiRent.Api.Services.Equipments;
 using SkiRent.Api.Services.Payments;
 using SkiRent.Api.Services.Users;
+
+using ZiggyCreatures.Caching.Fusion;
 
 namespace SkiRent.Api.Extensions;
 
@@ -31,6 +35,8 @@ public static class WebApplicationBuilderExtensions
         services.Configure<SkiRentContextSettings>(options =>
                 SkiRentContextSettingsConfiguration.Configure(options, environment, configuration));
 
+        QuestPDF.Settings.License = LicenseType.Community;
+
         services.ConfigureAuthentication();
         services.ConfigureAuthorization();
 
@@ -42,6 +48,9 @@ public static class WebApplicationBuilderExtensions
         services.AddProblemDetails();
 
         services.AddHttpClient();
+
+        services.AddFusionCache("SkiRent.Api.Cache")
+            .AsKeyedServiceByCacheName();
 
         services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
 

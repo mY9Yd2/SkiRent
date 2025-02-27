@@ -24,7 +24,7 @@ public class PaymentService
     public PaymentService(
         ILogger<PaymentService> logger,
         IOptions<ClientOptions> clientOptions,
-        IFusionCache cache,
+        [FromKeyedServices("FakePay.Cache")] IFusionCache cache,
         IHttpClientFactory clientFactory)
     {
         _logger = logger;
@@ -86,7 +86,8 @@ public class PaymentService
         {
             PaymentId = paymentId,
             IsSuccessful = !isCancelled,
-            Message = isCancelled ? "Cancelled" : "Success"
+            Message = isCancelled ? "Cancelled" : "Success",
+            PaidAt = isCancelled ? null : TimeProvider.System.GetUtcNow()
         };
 
         await SendPaymentCallbackAsync(payment.CallbackUrl, paymentResult);

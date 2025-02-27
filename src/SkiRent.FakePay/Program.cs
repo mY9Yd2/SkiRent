@@ -2,6 +2,8 @@ using SkiRent.FakePay.Components;
 using SkiRent.FakePay.Configurations;
 using SkiRent.FakePay.Services.Payments;
 
+using ZiggyCreatures.Caching.Fusion;
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
@@ -15,7 +17,8 @@ builder.Logging.AddConsole();
 
 builder.Services.AddControllers();
 
-builder.Services.AddFusionCache();
+builder.Services.AddFusionCache("FakePay.Cache")
+    .AsKeyedServiceByCacheName();
 
 builder.Services.AddHttpClient();
 

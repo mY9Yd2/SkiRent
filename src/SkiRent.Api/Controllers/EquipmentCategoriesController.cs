@@ -10,8 +10,8 @@ using SkiRent.Shared.Contracts.EquipmentCategories;
 
 namespace SkiRent.Api.Controllers;
 
-[ApiController]
 [Route("api/equipment-categories")]
+[ApiController]
 public class EquipmentCategoriesController : BaseController
 {
     private readonly IEquipmentCategoryService _equipmentCategoryService;

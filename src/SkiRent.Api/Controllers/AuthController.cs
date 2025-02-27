@@ -17,8 +17,8 @@ using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Api.Controllers;
 
-[ApiController]
 [Route("api/auth")]
+[ApiController]
 public class AuthController : BaseController
 {
     private readonly IAuthService _authService;

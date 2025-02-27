@@ -7,5 +7,7 @@
         public required bool IsSuccessful { get; init; }
 
         public required string Message { get; init; }
+
+        public required DateTimeOffset? PaidAt { get; init; }
     }
 }

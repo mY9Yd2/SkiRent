@@ -10,8 +10,8 @@ using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Api.Controllers;
 
-[ApiController]
 [Route("api/users")]
+[ApiController]
 public class UsersController : BaseController
 {
     private readonly IUserService _userService;

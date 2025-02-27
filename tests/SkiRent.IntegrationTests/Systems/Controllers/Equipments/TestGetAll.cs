@@ -89,7 +89,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                     Name = createdEquipments[0].Name,
                     CategoryId = createdEquipments[0].CategoryId,
                     PricePerDay = createdEquipments[0].PricePerDay,
-                    IsAvaiable = createdEquipments[0].AvailableQuantity > 0
+                    IsAvailable = createdEquipments[0].AvailableQuantity > 0
                 },
                 new()
                 {
@@ -97,7 +97,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                     Name = createdEquipments[1].Name,
                     CategoryId = createdEquipments[1].CategoryId,
                     PricePerDay = createdEquipments[1].PricePerDay,
-                    IsAvaiable = createdEquipments[1].AvailableQuantity > 0
+                    IsAvailable = createdEquipments[1].AvailableQuantity > 0
                 }
             };
 

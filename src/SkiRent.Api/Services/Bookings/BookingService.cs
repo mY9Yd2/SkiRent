@@ -10,7 +10,10 @@ using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.Common;
+using SkiRent.Shared.Contracts.Invoices;
 using SkiRent.Shared.Contracts.Payments;
+
+using ZiggyCreatures.Caching.Fusion;
 
 namespace SkiRent.Api.Services.Bookings;
 
@@ -18,6 +21,7 @@ public class BookingService : IBookingService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IHttpClientFactory _clientFactory;
+    private readonly IFusionCache _cache;
     private readonly AppSettings _appSettings;
     private readonly PaymentGatewayOptions _paymentGatewayOptions;
 
@@ -25,10 +29,12 @@ public class BookingService : IBookingService
         IUnitOfWork unitOfWork,
         IOptions<AppSettings> appSettings,
         IOptions<PaymentGatewayOptions> paymentGatewayOptions,
-        IHttpClientFactory clientFactory)
+        IHttpClientFactory clientFactory,
+        [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache)
     {
         _unitOfWork = unitOfWork;
         _clientFactory = clientFactory;
+        _cache = cache;
         _appSettings = appSettings.Value;
         _paymentGatewayOptions = paymentGatewayOptions.Value;
     }
@@ -92,6 +98,19 @@ public class BookingService : IBookingService
 
         await _unitOfWork.Bookings.AddAsync(booking);
         await _unitOfWork.SaveChangesAsync();
+
+        var invoiceRequest = new CreateInvoiceRequest
+        {
+            PaymentId = paymentId,
+            PersonalDetails = request.PersonalDetails,
+            Items = paymentItems,
+            StartDate = booking.StartDate,
+            EndDate = booking.EndDate,
+            MerchantName = _appSettings.MerchantName,
+            Culture = CultureInfo.CreateSpecificCulture("hu-HU")
+        };
+
+        await _cache.SetAsync(paymentId.ToString(), invoiceRequest);
 
         var result = new CreatedBookingResponse
         {
