@@ -14,6 +14,6 @@
 
         public required int AvailableQuantity { get; init; }
 
-        public bool IsAvaiable => AvailableQuantity > 0;
+        public bool IsAvailable => AvailableQuantity > 0;
     }
 }
