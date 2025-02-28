@@ -122,7 +122,7 @@ public class BookingService : IBookingService
         return Result.Ok(result);
     }
 
-    private async Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, decimal totalPrice, Uri successUrl, Uri cancelUrl)
+    protected virtual async Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, decimal totalPrice, Uri successUrl, Uri cancelUrl)
     {
         var client = _clientFactory.CreateClient();
         client.BaseAddress = _paymentGatewayOptions.BaseUrl;

@@ -1,6 +1,7 @@
 ﻿using Refit;
 
 using SkiRent.Shared.Contracts.Auth;
+using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.EquipmentCategories;
 using SkiRent.Shared.Contracts.Equipments;
 using SkiRent.Shared.Contracts.Users;
@@ -20,6 +21,7 @@ namespace SkiRent.Shared.Clients
         public IUsersApi Users => RestService.For<IUsersApi>(Client);
         public IEquipmentCategoriesApi EquipmentCategories => RestService.For<IEquipmentCategoriesApi>(Client);
         public IEquipmentsApi Equipments => RestService.For<IEquipmentsApi>(Client);
+        public IBookingsApi Bookings => RestService.For<IBookingsApi>(Client);
     }
 
     public interface IAuthApi
@@ -74,5 +76,11 @@ namespace SkiRent.Shared.Clients
 
         [Put("/api/equipments/{equipmentId}")]
         public Task<IApiResponse<GetEquipmentResponse>> UpdateAsync(int equipmentId, UpdateEquipmentRequest request);
+    }
+
+    public interface IBookingsApi
+    {
+        [Post("/api/bookings")]
+        public Task<IApiResponse<CreatedBookingResponse>> CreateAsync(CreateBookingRequest request);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoFixture;
 
 using SkiRent.Shared.Contracts.Auth;
+using SkiRent.Shared.Contracts.Bookings;
+using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.EquipmentCategories;
 using SkiRent.Shared.Contracts.Equipments;
 using SkiRent.Shared.Contracts.Users;
@@ -50,6 +52,38 @@ namespace SkiRent.IntegrationTests.Utils
         public static IEnumerable<CreateEquipmentRequest> CreateManyEquipment(Fixture fixture, int count = 2, int categoryId = 1)
         {
             return [.. Enumerable.Range(0, count).Select(_ => CreateEquipment(fixture))];
+        }
+
+        public static CreateBookingRequest CreateBooking(Fixture fixture, IEnumerable<EquipmentBooking> equipmentBookings)
+        {
+            return fixture.Build<CreateBookingRequest>()
+                .With(request => request.PersonalDetails, CreatePersonalDetails(fixture))
+                .With(request => request.Equipments, equipmentBookings)
+                .With(request => request.StartDate, DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime))
+                .With(request => request.EndDate, DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().AddDays(7).UtcDateTime))
+                .With(request => request.SuccessUrl, new Uri("http://localhost/successful"))
+                .With(request => request.CancelUrl, new Uri("http://localhost/failed"))
+                .Create();
+        }
+
+        private static PersonalDetails CreatePersonalDetails(Fixture fixture)
+        {
+            return fixture.Build<PersonalDetails>()
+                .With(details => details.FullName, "John Doe")
+                .With(details => details.PhoneNumber, "06301234567")
+                .With(details => details.MobilePhoneNumber, "+36301234567")
+                .With(details => details.Address, CreateAddress(fixture))
+                .Create();
+        }
+
+        private static Address CreateAddress(Fixture fixture)
+        {
+            return fixture.Build<Address>()
+                .With(address => address.Country, "Magyarország")
+                .With(address => address.PostalCode, "6800")
+                .With(address => address.City, "Hódmezővásárhely")
+                .With(address => address.StreetAddress, "Kossuth tér 1")
+                .Create();
         }
     }
 }

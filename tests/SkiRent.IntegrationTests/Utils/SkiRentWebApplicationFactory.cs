@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using SkiRent.Api.Data;
+using SkiRent.Api.Services.Bookings;
+using SkiRent.IntegrationTests.Utils.Dummies;
 
 namespace SkiRent.IntegrationTests.Utils
 {
@@ -37,6 +40,8 @@ namespace SkiRent.IntegrationTests.Utils
                 {
                     options.UseInMemoryDatabase(databaseName);
                 });
+
+                services.Replace(ServiceDescriptor.Scoped<IBookingService, DummyBookingService>());
             });
         }
 
