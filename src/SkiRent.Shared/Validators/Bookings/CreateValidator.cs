@@ -9,6 +9,8 @@ namespace SkiRent.Shared.Validators.Bookings
     {
         public CreateValidator()
         {
+            RuleFor(request => request.PersonalDetails).SetValidator(new PersonalDetailsValidator());
+
             RuleFor(request => request.Equipments)
                 .NotEmpty()
                 .Must(equipments => equipments.Select(

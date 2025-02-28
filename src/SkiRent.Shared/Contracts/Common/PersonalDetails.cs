@@ -4,9 +4,9 @@
     {
         public required string FullName { get; init; }
 
-        public required string? PhoneNumber { get; init; }
+        public string? PhoneNumber { get; init; }
 
-        public required string? MobilePhoneNumber { get; init; }
+        public string? MobilePhoneNumber { get; init; }
 
         public required Address Address { get; init; }
     }
