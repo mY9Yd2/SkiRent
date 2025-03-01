@@ -13,6 +13,7 @@ public static class AuthorizationPoliciesConfiguration
     {
         options.DefaultPolicy = BuildDefaultPolicy();
         options.AddPolicy(Policies.SelfOrAdminAccess, BuildSelfOrAdminAccessPolicy);
+        options.AddPolicy(Policies.CustomerOrAdminAccess, BuildCustomerOrAdminAccessPolicy);
         options.AddPolicy(Policies.PaymentGatewayOnly, BuildPaymentGatewayOnlyPolicy);
     }
 
@@ -38,5 +39,10 @@ public static class AuthorizationPoliciesConfiguration
     private static void BuildSelfOrAdminAccessPolicy(AuthorizationPolicyBuilder policy)
     {
         policy.AddRequirements(new SelfOrAdminAccessRequirement());
+    }
+
+    private static void BuildCustomerOrAdminAccessPolicy(AuthorizationPolicyBuilder policy)
+    {
+        policy.AddRequirements(new CustomerOrAdminAccessRequirement());
     }
 }

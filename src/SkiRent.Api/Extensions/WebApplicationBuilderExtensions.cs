@@ -61,6 +61,7 @@ public static class WebApplicationBuilderExtensions
 
         services.AddSingleton<IAuthorizationHandler, PaymentGatewayOnlyHandler>();
         services.AddSingleton<IAuthorizationHandler, SelfOrAdminAccessHandler>();
+        services.AddSingleton<IAuthorizationHandler, CustomerOrAdminAccessHandler>();
 
         services.AddScoped<IFileSystem, FileSystem>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();

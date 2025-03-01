@@ -56,4 +56,24 @@ public class BookingsController : BaseController
     {
         throw new NotImplementedException();
     }
+
+    [HttpGet]
+    [Authorize(Policy = Policies.CustomerOrAdminAccess)]
+    public async Task<ActionResult<IEnumerable<GetAllBookingResponse>>> GetAll()
+    {
+        var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(nameIdentifier, out int userId))
+        {
+            return Unauthorized();
+        }
+
+        var result = await _bookingService.GetAllAsync(userId, User.IsInRole);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
 }

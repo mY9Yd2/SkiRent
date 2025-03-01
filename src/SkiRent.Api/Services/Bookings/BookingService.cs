@@ -5,6 +5,7 @@ using FluentResults;
 using Microsoft.Extensions.Options;
 
 using SkiRent.Api.Configurations;
+using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
@@ -118,6 +119,26 @@ public class BookingService : IBookingService
             PaymentId = booking.PaymentId,
             PaymentUrl = new Uri($"{_paymentGatewayOptions.BaseUrl}payments/{paymentId}")
         };
+
+        return Result.Ok(result);
+    }
+
+    public async Task<Result<IEnumerable<GetAllBookingResponse>>> GetAllAsync(int userId, Func<string, bool> isInRole)
+    {
+        var bookings = isInRole(Roles.Admin)
+            ? await _unitOfWork.Bookings.GetAllAsync()
+            : await _unitOfWork.Bookings.FindAllAsync(booking => booking.UserId == userId);
+
+        var result = bookings.Select(booking =>
+            new GetAllBookingResponse
+            {
+                Id = booking.Id,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
+                TotalPrice = booking.TotalPrice,
+                PaymentId = booking.PaymentId,
+                Status = Enum.Parse<BookingStatusTypes>(booking.Status)
+            });
 
         return Result.Ok(result);
     }
