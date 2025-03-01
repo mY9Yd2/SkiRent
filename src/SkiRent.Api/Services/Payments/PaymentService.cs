@@ -1,4 +1,6 @@
-﻿using FluentResults;
+﻿using System.IO.Abstractions;
+
+using FluentResults;
 
 using Microsoft.Extensions.Options;
 
@@ -8,7 +10,6 @@ using QuestPDF.Helpers;
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
-using SkiRent.Api.Errors;
 using SkiRent.Api.Exceptions;
 using SkiRent.Shared.Contracts.Invoices;
 using SkiRent.Shared.Contracts.Payments;
@@ -22,15 +23,18 @@ public class PaymentService : IPaymentService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IFusionCache _cache;
     private readonly AppSettings _appSettings;
+    private readonly IFileSystem _fileSystem;
 
     public PaymentService(
         IUnitOfWork unitOfWork,
         [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache,
-        IOptions<AppSettings> appSettings)
+        IOptions<AppSettings> appSettings,
+        IFileSystem fileSystem)
     {
         _unitOfWork = unitOfWork;
         _cache = cache;
         _appSettings = appSettings.Value;
+        _fileSystem = fileSystem;
     }
 
     public async Task<Result> ProcessPaymentCallbackAsync(PaymentResult paymentResult)
@@ -39,7 +43,7 @@ public class PaymentService : IPaymentService
 
         if (booking is null)
         {
-            return Result.Fail(new PaymentNotFoundError(paymentResult.PaymentId));
+            throw new PaymentNotFoundException($"No booking found for Payment ID: {paymentResult.PaymentId}");
         }
 
         booking.Status = paymentResult.IsSuccessful
@@ -58,8 +62,7 @@ public class PaymentService : IPaymentService
 
         if (paymentResult.IsSuccessful)
         {
-            var paidAt = paymentResult.PaidAt ?? TimeProvider.System.GetUtcNow();
-            var fileName = await CreateInvoiceAsync(paymentResult.PaymentId, paidAt);
+            var fileName = await CreateInvoiceAsync(paymentResult.PaymentId, paymentResult.PaidAt);
 
             var invoice = new Invoice
             {
@@ -75,7 +78,7 @@ public class PaymentService : IPaymentService
         return Result.Ok();
     }
 
-    private async Task<string> CreateInvoiceAsync(Guid paymentId, DateTimeOffset paidAt)
+    private async Task<string> CreateInvoiceAsync(Guid paymentId, DateTimeOffset? paidAt)
     {
         var invoiceRequest = await _cache.GetOrDefaultAsync<CreateInvoiceRequest>(paymentId.ToString());
 
@@ -84,16 +87,22 @@ public class PaymentService : IPaymentService
             throw new CreateInvoiceRequestNotFoundException($"Invoice with payment id '{paymentId}' not found.");
         }
 
-        byte[] pdfFile = GenerateInvoicePdf(invoiceRequest, paidAt);
-
-        var path = Path.Combine(_appSettings.DataDirectoryPath, "Invoices");
-        var directory = Directory.CreateDirectory(path);
-        var fileName = $"{invoiceRequest.PaymentId}.pdf";
-        var filePath = Path.Combine(directory.FullName, fileName);
-
-        await File.WriteAllBytesAsync(filePath, pdfFile);
+        byte[] pdfFile = GenerateInvoicePdf(invoiceRequest, paidAt ?? TimeProvider.System.GetUtcNow());
+        string fileName = await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, pdfFile);
 
         await _cache.RemoveAsync(paymentId.ToString());
+
+        return fileName;
+    }
+
+    private async Task<string> SaveInvoiceToFileAsync(Guid paymentId, byte[] pdfFile)
+    {
+        var path = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Invoices");
+        var directory = _fileSystem.Directory.CreateDirectory(path);
+        var fileName = $"{paymentId}.pdf";
+        var filePath = _fileSystem.Path.Combine(directory.FullName, fileName);
+
+        await _fileSystem.File.WriteAllBytesAsync(filePath, pdfFile);
 
         return fileName;
     }

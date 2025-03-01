@@ -4,6 +4,7 @@ using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.EquipmentCategories;
 using SkiRent.Shared.Contracts.Equipments;
+using SkiRent.Shared.Contracts.Payments;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Shared.Clients
@@ -22,6 +23,7 @@ namespace SkiRent.Shared.Clients
         public IEquipmentCategoriesApi EquipmentCategories => RestService.For<IEquipmentCategoriesApi>(Client);
         public IEquipmentsApi Equipments => RestService.For<IEquipmentsApi>(Client);
         public IBookingsApi Bookings => RestService.For<IBookingsApi>(Client);
+        public IPaymentsApi Payments => RestService.For<IPaymentsApi>(Client);
     }
 
     public interface IAuthApi
@@ -82,5 +84,11 @@ namespace SkiRent.Shared.Clients
     {
         [Post("/api/bookings")]
         public Task<IApiResponse<CreatedBookingResponse>> CreateAsync(CreateBookingRequest request);
+    }
+
+    public interface IPaymentsApi
+    {
+        [Post("/api/payments/callback")]
+        public Task<IApiResponse> CallbackAsync([Header("X-Signature")] string signature, PaymentResult paymentResult);
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +45,7 @@ namespace SkiRent.IntegrationTests.Utils
                 });
 
                 services.Replace(ServiceDescriptor.Scoped<IBookingService, DummyBookingService>());
+                services.Replace(ServiceDescriptor.Scoped<IFileSystem, MockFileSystem>());
             });
         }
 

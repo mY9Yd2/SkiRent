@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO.Abstractions;
+using System.Reflection;
 
 using FluentValidation;
 
@@ -61,6 +62,7 @@ public static class WebApplicationBuilderExtensions
         services.AddSingleton<IAuthorizationHandler, PaymentGatewayOnlyHandler>();
         services.AddSingleton<IAuthorizationHandler, SelfOrAdminAccessHandler>();
 
+        services.AddScoped<IFileSystem, FileSystem>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();

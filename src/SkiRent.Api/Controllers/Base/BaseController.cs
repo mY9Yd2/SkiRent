@@ -24,7 +24,6 @@ public abstract class BaseController : ControllerBase
                         title: "Unauthorized",
                         detail: error.Message,
                         statusCode: StatusCodes.Status401Unauthorized);
-            case PaymentNotFoundError:
             case EquipmentCategoryNotFound:
             case EquipmentNotFoundError:
             case UserNotFoundError:
