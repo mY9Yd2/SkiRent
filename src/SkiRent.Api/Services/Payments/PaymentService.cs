@@ -62,13 +62,13 @@ public class PaymentService : IPaymentService
 
         if (paymentResult.IsSuccessful)
         {
-            var fileName = await CreateInvoiceAsync(paymentResult.PaymentId, paymentResult.PaidAt);
+            await CreateInvoiceAsync(paymentResult.PaymentId, paymentResult.PaidAt);
 
             var invoice = new Invoice
             {
+                Id = paymentResult.PaymentId,
                 UserId = booking.UserId,
                 BookingId = booking.Id,
-                FileName = fileName
             };
 
             await _unitOfWork.Invoices.AddAsync(invoice);
@@ -78,7 +78,7 @@ public class PaymentService : IPaymentService
         return Result.Ok();
     }
 
-    private async Task<string> CreateInvoiceAsync(Guid paymentId, DateTimeOffset? paidAt)
+    private async Task CreateInvoiceAsync(Guid paymentId, DateTimeOffset? paidAt)
     {
         var invoiceRequest = await _cache.GetOrDefaultAsync<CreateInvoiceRequest>(paymentId.ToString());
 
@@ -88,14 +88,12 @@ public class PaymentService : IPaymentService
         }
 
         byte[] pdfFile = GenerateInvoicePdf(invoiceRequest, paidAt ?? TimeProvider.System.GetUtcNow());
-        string fileName = await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, pdfFile);
+        await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, pdfFile);
 
         await _cache.RemoveAsync(paymentId.ToString());
-
-        return fileName;
     }
 
-    private async Task<string> SaveInvoiceToFileAsync(Guid paymentId, byte[] pdfFile)
+    private async Task SaveInvoiceToFileAsync(Guid paymentId, byte[] pdfFile)
     {
         var path = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Invoices");
         var directory = _fileSystem.Directory.CreateDirectory(path);
@@ -103,8 +101,6 @@ public class PaymentService : IPaymentService
         var filePath = _fileSystem.Path.Combine(directory.FullName, fileName);
 
         await _fileSystem.File.WriteAllBytesAsync(filePath, pdfFile);
-
-        return fileName;
     }
 
     private static byte[] GenerateInvoicePdf(CreateInvoiceRequest request, DateTimeOffset paidAt)
@@ -127,13 +123,12 @@ public class PaymentService : IPaymentService
                         col.Item()
                             .Column(innerCol =>
                             {
-                                innerCol.Item().Text("Számlaazonosító:").Bold();
+                                innerCol.Item().Text("Számla, fizetési azonosító:").Bold();
                                 innerCol.Item().Text(request.PaymentId.ToString());
                             });
 
                         col.Item().Height(10);
                         col.Item().Text($"Dátum: {paidAt.ToString("g", request.Culture)}");
-
 
                         col.Item().Height(10);
                         col.Item().Text("Kereskedő adatai:").Bold();

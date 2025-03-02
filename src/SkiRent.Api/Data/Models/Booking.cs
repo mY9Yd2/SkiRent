@@ -33,7 +33,7 @@ public partial class Booking
     public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
 
     [InverseProperty("Booking")]
-    public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    public virtual Invoice? Invoice { get; set; }
 
     [ForeignKey("UserId")]
     [InverseProperty("Bookings")]

@@ -84,9 +84,9 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("current_timestamp()");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("utc_timestamp()");
 
-            entity.HasOne(d => d.Booking).WithMany(p => p.Invoices)
+            entity.HasOne(d => d.Booking).WithOne(p => p.Invoice)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("invoices_ibfk_2");
 

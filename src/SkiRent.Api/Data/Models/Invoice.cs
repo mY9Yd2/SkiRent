@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore;
 namespace SkiRent.Api.Data.Models;
 
 [Table("invoices")]
-[Index("BookingId", Name = "BookingId")]
+[Index("BookingId", Name = "BookingId", IsUnique = true)]
 [Index("UserId", Name = "UserId")]
 public partial class Invoice
 {
     [Key]
-    [Column(TypeName = "int(11)")]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [Column(TypeName = "int(11)")]
     public int? UserId { get; set; }
@@ -20,14 +19,11 @@ public partial class Invoice
     [Column(TypeName = "int(11)")]
     public int? BookingId { get; set; }
 
-    [StringLength(255)]
-    public string FileName { get; set; } = null!;
-
     [Column(TypeName = "timestamp")]
     public DateTimeOffset CreatedAt { get; set; }
 
     [ForeignKey("BookingId")]
-    [InverseProperty("Invoices")]
+    [InverseProperty("Invoice")]
     public virtual Booking? Booking { get; set; }
 
     [ForeignKey("UserId")]

@@ -29,8 +29,7 @@ public partial class Equipment
     [Column(TypeName = "int(11)")]
     public int AvailableQuantity { get; set; }
 
-    [Column(TypeName = "int(11)")]
-    public int? MainImageId { get; set; }
+    public Guid? MainImageId { get; set; }
 
     [InverseProperty("Equipment")]
     public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
