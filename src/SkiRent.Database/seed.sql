@@ -1,17 +1,17 @@
-USE SkiRent;
+USE `SkiRent`;
 
-INSERT INTO Users (Email, PasswordHash, UserRole) VALUES
+INSERT INTO `Users` (`Email`, `PasswordHash`, `UserRole`) VALUES
 -- https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core/src/PasswordHasher.cs
 ('admin@example.com', 'AQAAAAIAAYagAAAAENew/SuQlJ+phKSg6bhiGnQiJe3TBYDfUvY7KSaaN4T8wDKvETd7mGv+ZSO11lB0oQ==', 'Admin'), -- Password: Admin1234
 ('teszt@example.com', 'AQAAAAIAAYagAAAAENGMc5UQKipvQgKP1Cbfz8c3d9AZkeh8PcLji9xrprohYkRb+7ysAsFspsN2LhegRA==', 'Customer'); -- Password: Teszt1234
 
-INSERT INTO EquipmentCategories (Id, Name) VALUES
+INSERT INTO `EquipmentCategories` (`Id`, `Name`) VALUES
 (1, 'Síléc'),
 (2, 'Snowboard'),
 (3, 'Bakancs'),
 (4, 'Síbot');
 
-INSERT INTO Equipments (Name, Description, CategoryId, PricePerDay, AvailableQuantity) VALUES
+INSERT INTO `Equipments` (`Name`, `Description`, `CategoryId`, `PricePerDay`, `AvailableQuantity`) VALUES
 -- Sílécek
 ('Salomon X Drive Focus Rocker 130cm carving síléc', NULL, 1, 1499, 5),
 ('Atomic Race 8 140cm carving síléc', 'Francia gyártású versenysíléc, profi síelők számára.', 1, 2499, 8),
