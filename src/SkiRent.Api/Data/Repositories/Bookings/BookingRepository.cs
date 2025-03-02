@@ -4,7 +4,7 @@ using SkiRent.Api.Data.Models;
 
 namespace SkiRent.Api.Data.Repositories.Bookings;
 
-public class BookingRepository : BaseRepository<Booking>, IBookingRepository
+public class BookingRepository : BaseRepository<Booking, int>, IBookingRepository
 {
     public BookingRepository(DbContext context) : base(context)
     { }

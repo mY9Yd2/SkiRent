@@ -2,5 +2,5 @@
 
 namespace SkiRent.Api.Data.Repositories.EquipmentCategories;
 
-public interface IEquipmentCategoryRepository : IRepository<EquipmentCategory>
+public interface IEquipmentCategoryRepository : IRepository<EquipmentCategory, int>
 { }

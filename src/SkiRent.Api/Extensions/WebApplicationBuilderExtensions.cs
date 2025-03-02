@@ -16,6 +16,7 @@ using SkiRent.Api.Services.Auth;
 using SkiRent.Api.Services.Bookings;
 using SkiRent.Api.Services.EquipmentCategories;
 using SkiRent.Api.Services.Equipments;
+using SkiRent.Api.Services.Invoices;
 using SkiRent.Api.Services.Payments;
 using SkiRent.Api.Services.Users;
 
@@ -71,5 +72,6 @@ public static class WebApplicationBuilderExtensions
         services.AddScoped<IEquipmentCategoryService, EquipmentCategoryService>();
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
     }
 }

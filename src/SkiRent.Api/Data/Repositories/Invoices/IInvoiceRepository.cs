@@ -2,5 +2,5 @@
 
 namespace SkiRent.Api.Data.Repositories.Invoices;
 
-public interface IInvoiceRepository : IRepository<Invoice>
+public interface IInvoiceRepository : IRepository<Invoice, Guid>
 { }

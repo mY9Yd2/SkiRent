@@ -2,7 +2,7 @@
 
 namespace SkiRent.Api.Data.Repositories.Users;
 
-public class UserRepository : BaseRepository<User>, IUserRepository
+public class UserRepository : BaseRepository<User, int>, IUserRepository
 {
     public UserRepository(SkiRentContext context) : base(context)
     { }

@@ -2,5 +2,5 @@
 
 namespace SkiRent.Api.Data.Repositories.Equipments;
 
-public interface IEquipmentRepository : IRepository<Equipment>
+public interface IEquipmentRepository : IRepository<Equipment, int>
 { }

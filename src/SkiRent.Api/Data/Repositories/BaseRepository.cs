@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SkiRent.Api.Data.Repositories;
 
-public abstract class BaseRepository<T> : IRepository<T> where T : class
+public abstract class BaseRepository<T, TKey> : IRepository<T, TKey>
+    where T : class
+    where TKey : IEquatable<TKey>
 {
     protected readonly DbContext _context;
     protected readonly DbSet<T> _dbSet;
@@ -15,7 +17,7 @@ public abstract class BaseRepository<T> : IRepository<T> where T : class
         _dbSet = _context.Set<T>();
     }
 
-    public virtual async Task<T?> GetByIdAsync(int id)
+    public virtual async Task<T?> GetByIdAsync(TKey id)
     {
         return await _dbSet.FindAsync(id);
     }
