@@ -45,7 +45,7 @@ namespace SkiRent.IntegrationTests.Utils
                 });
 
                 services.Replace(ServiceDescriptor.Scoped<IBookingService, DummyBookingService>());
-                services.Replace(ServiceDescriptor.Scoped<IFileSystem, MockFileSystem>());
+                services.Replace(ServiceDescriptor.Singleton<IFileSystem, MockFileSystem>());
             });
         }
 

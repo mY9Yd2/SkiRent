@@ -17,10 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="5.0.0-preview0012" />
-    <PackageReference Include="AutoFixture.AutoNSubstitute" Version="5.0.0-preview0012" />
-    <PackageReference Include="AutoFixture.Idioms" Version="5.0.0-preview0012" />
-    <PackageReference Include="AutoFixture.NUnit4" Version="5.0.0-preview0012" />
-    <PackageReference Include="AutoFixture.SeedExtensions" Version="5.0.0-preview0012" />
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -38,6 +34,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="Verify.ImageSharp.Compare" Version="3.0.1" />
+    <PackageReference Include="Verify.NUnit" Version="28.13.0" />
+    <PackageReference Include="Verify.QuestPDF" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

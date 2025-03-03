@@ -53,6 +53,8 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
                 .With(user => user.Id)
                 .With(user => user.Email, email)
                 .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
+                .Without(user => user.Bookings)
+                .Without(user => user.Invoices)
                 .Create();
             var request = new SignInRequest { Email = email, Password = password };
 
@@ -110,6 +112,8 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             var user = _fixture.Build<User>()
                 .With(user => user.Email, email)
                 .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
+                .Without(user => user.Bookings)
+                .Without(user => user.Invoices)
                 .Create();
             var request = new SignInRequest { Email = email, Password = incorrectPassword };
 

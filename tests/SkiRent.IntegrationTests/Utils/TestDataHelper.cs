@@ -66,7 +66,7 @@ namespace SkiRent.IntegrationTests.Utils
                 .Create();
         }
 
-        private static PersonalDetails CreatePersonalDetails(Fixture fixture)
+        public static PersonalDetails CreatePersonalDetails(Fixture fixture)
         {
             return fixture.Build<PersonalDetails>()
                 .With(details => details.FullName, "John Doe")
@@ -76,7 +76,7 @@ namespace SkiRent.IntegrationTests.Utils
                 .Create();
         }
 
-        private static Address CreateAddress(Fixture fixture)
+        public static Address CreateAddress(Fixture fixture)
         {
             return fixture.Build<Address>()
                 .With(address => address.Country, "Magyarország")

@@ -23,7 +23,7 @@ public class InvoicesController : BaseController
 
     [HttpGet("{invoiceId:guid}")]
     [Authorize(Policy = Policies.CustomerOrAdminAccess)]
-    public async Task<IActionResult> GetAsync([FromRoute] Guid invoiceId)
+    public async Task<IActionResult> Get([FromRoute] Guid invoiceId)
     {
         var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!int.TryParse(nameIdentifier, out int userId))

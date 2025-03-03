@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Data.Models;
@@ -87,23 +88,24 @@ public class PaymentService : IPaymentService
             throw new CreateInvoiceRequestNotFoundException($"Invoice with payment id '{paymentId}' not found.");
         }
 
-        byte[] pdfFile = GenerateInvoicePdf(invoiceRequest, paidAt ?? TimeProvider.System.GetUtcNow());
-        await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, pdfFile);
+        var document = GenerateInvoiceDocument(invoiceRequest, paidAt ?? TimeProvider.System.GetUtcNow());
+        await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, document);
 
         await _cache.RemoveAsync(paymentId.ToString());
     }
 
-    private async Task SaveInvoiceToFileAsync(Guid paymentId, byte[] pdfFile)
+    private async Task SaveInvoiceToFileAsync(Guid paymentId, IDocument document)
     {
         var path = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Invoices");
         var directory = _fileSystem.Directory.CreateDirectory(path);
         var fileName = $"{paymentId}.pdf";
         var filePath = _fileSystem.Path.Combine(directory.FullName, fileName);
 
-        await _fileSystem.File.WriteAllBytesAsync(filePath, pdfFile);
+        byte[] pdf = document.GeneratePdf();
+        await _fileSystem.File.WriteAllBytesAsync(filePath, pdf);
     }
 
-    private static byte[] GenerateInvoicePdf(CreateInvoiceRequest request, DateTimeOffset paidAt)
+    private static Document GenerateInvoiceDocument(CreateInvoiceRequest request, DateTimeOffset paidAt)
     {
         return Document.Create(container =>
         {
@@ -180,6 +182,6 @@ public class PaymentService : IPaymentService
                         col.Item().AlignRight().Text($"Teljes ár: {request.TotalPrice.ToString("C0", request.Culture)}").Bold().FontSize(14);
                     });
             });
-        }).GeneratePdf();
+        });
     }
 }
