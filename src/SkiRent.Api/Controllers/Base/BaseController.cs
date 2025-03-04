@@ -18,6 +18,11 @@ public abstract class BaseController : ControllerBase
     {
         switch (error)
         {
+            case InvalidBookingStatusTransitionError:
+                return Problem(
+                        title: "Bad Request",
+                        detail: error.Message,
+                        statusCode: StatusCodes.Status400BadRequest);
             case UnauthorizedModificationError:
             case PasswordVerificationFailedError:
                 return Problem(
