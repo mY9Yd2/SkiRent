@@ -16,4 +16,12 @@ public class BookingRepository : BaseRepository<Booking, int>, IBookingRepositor
             .ThenInclude(item => item.Equipment)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<Booking?> GetBookingWithItemsAsync(int bookingId)
+    {
+        return await _dbSet.Where(booking => booking.Id == bookingId)
+            .Include(booking => booking.BookingItems)
+            .ThenInclude(item => item.Equipment)
+            .FirstOrDefaultAsync();
+    }
 }

@@ -123,6 +123,44 @@ public class BookingService : IBookingService
         return Result.Ok(result);
     }
 
+    public async Task<Result<GetBookingResponse>> GetAsync(int bookingId, int userId, Func<string, bool> isInRole)
+    {
+        var booking = await _unitOfWork.Bookings.GetBookingWithItemsAsync(bookingId);
+
+        if (booking is null)
+        {
+            return Result.Fail(new BookingNotFoundError(bookingId));
+        }
+
+        if (!isInRole(Roles.Admin) && booking.UserId != userId)
+        {
+            return Result.Fail(new BookingAccessDeniedError(bookingId));
+        }
+
+        var days = (booking.EndDate.DayNumber - booking.StartDate.DayNumber) + 1;
+
+        var result = new GetBookingResponse
+        {
+            Id = booking.Id,
+            UserId = booking.UserId,
+            StartDate = booking.StartDate,
+            EndDate = booking.EndDate,
+            TotalPrice = booking.TotalPrice,
+            PaymentId = booking.PaymentId,
+            Status = Enum.Parse<BookingStatusTypes>(booking.Status),
+            Items = booking.BookingItems.Select(item => new BookingItemSummary
+            {
+                Name = item.Equipment.Name,
+                Quantity = item.Quantity,
+                PricePerDay = item.Equipment.PricePerDay,
+                TotalPrice = item.Quantity * item.Equipment.PricePerDay * days
+            }),
+            RentalDays = days
+        };
+
+        return Result.Ok(result);
+    }
+
     public async Task<Result<IEnumerable<GetAllBookingResponse>>> GetAllAsync(int userId, Func<string, bool> isInRole)
     {
         var bookings = isInRole(Roles.Admin)

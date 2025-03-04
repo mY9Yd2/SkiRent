@@ -52,9 +52,23 @@ public class BookingsController : BaseController
     }
 
     [HttpGet("{bookingId:int}")]
-    public void Get([FromRoute] int bookingId)
+    [Authorize(Policy = Policies.CustomerOrAdminAccess)]
+    public async Task<ActionResult<GetBookingResponse>> Get([FromRoute] int bookingId)
     {
-        throw new NotImplementedException();
+        var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(nameIdentifier, out int userId))
+        {
+            return Unauthorized();
+        }
+
+        var result = await _bookingService.GetAsync(bookingId, userId, User.IsInRole);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
     }
 
     [HttpGet]

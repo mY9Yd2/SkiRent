@@ -24,11 +24,13 @@ public abstract class BaseController : ControllerBase
                         title: "Unauthorized",
                         detail: error.Message,
                         statusCode: StatusCodes.Status401Unauthorized);
+            case BookingAccessDeniedError:
             case InvoiceAccessDeniedError:
                 return Problem(
                         title: "Forbidden",
                         detail: error.Message,
                         statusCode: StatusCodes.Status403Forbidden);
+            case BookingNotFoundError:
             case InvoiceNotFoundError:
             case EquipmentCategoryNotFound:
             case EquipmentNotFoundError:
