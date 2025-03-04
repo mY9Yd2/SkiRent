@@ -9,6 +9,8 @@ using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
+using SkiRent.Api.Exceptions;
+using SkiRent.Api.Extensions;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.Invoices;
@@ -181,6 +183,61 @@ public class BookingService : IBookingService
                 Status = Enum.Parse<BookingStatusTypes>(booking.Status),
                 CreatedAt = booking.CreatedAt
             });
+
+        return Result.Ok(result);
+    }
+
+    public async Task<Result<GetBookingResponse>> UpdateAsync(int bookingId, UpdateBookingRequest request)
+    {
+        var booking = await _unitOfWork.Bookings.GetBookingWithItemsAsync(bookingId);
+
+        if (booking is null)
+        {
+            return Result.Fail(new BookingNotFoundError(bookingId));
+        }
+
+        if (booking.Status != BookingStatus.Paid || request.Status != BookingStatusTypes.Returned)
+        {
+            return Result.Fail(new InvalidBookingStatusTransitionError(booking.Status, request.Status.ToBookingStatusString()));
+        }
+
+        booking.Status = request.Status.ToBookingStatusString();
+
+        foreach (var item in booking.BookingItems)
+        {
+            var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
+
+            if (equipment is null)
+            {
+                throw new EquipmentNotFoundException($"Equipment with id '{item.EquipmentId}' not found.");
+            }
+
+            equipment.AvailableQuantity += item.Quantity;
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+
+        var days = (booking.EndDate.DayNumber - booking.StartDate.DayNumber) + 1;
+
+        var result = new GetBookingResponse
+        {
+            Id = booking.Id,
+            UserId = booking.UserId,
+            StartDate = booking.StartDate,
+            EndDate = booking.EndDate,
+            TotalPrice = booking.TotalPrice,
+            PaymentId = booking.PaymentId,
+            Status = Enum.Parse<BookingStatusTypes>(booking.Status),
+            CreatedAt = booking.CreatedAt,
+            Items = booking.BookingItems.Select(item => new BookingItemSummary
+            {
+                Name = item.NameAtBooking,
+                Quantity = item.Quantity,
+                PricePerDay = item.PriceAtBooking,
+                TotalPrice = item.Quantity * item.PriceAtBooking * days
+            }),
+            RentalDays = days
+        };
 
         return Result.Ok(result);
     }

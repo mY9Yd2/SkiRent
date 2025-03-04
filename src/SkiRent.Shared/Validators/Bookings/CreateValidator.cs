@@ -5,9 +5,9 @@ using SkiRent.Shared.Validators.Common.Bookings;
 
 namespace SkiRent.Shared.Validators.Bookings
 {
-    public class CreateValidator : AbstractValidator<CreateBookingRequest>
+    public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequest>
     {
-        public CreateValidator()
+        public CreateBookingRequestValidator()
         {
             RuleFor(request => request.PersonalDetails).SetValidator(new PersonalDetailsValidator());
 

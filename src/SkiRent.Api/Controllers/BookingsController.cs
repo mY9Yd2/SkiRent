@@ -90,4 +90,26 @@ public class BookingsController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpPut("{bookingId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<GetBookingResponse>> Update(
+        [FromServices] IValidator<UpdateBookingRequest> validator, [FromRoute] int bookingId, [FromBody] UpdateBookingRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return ValidationProblem(validationResult);
+        }
+
+        var result = await _bookingService.UpdateAsync(bookingId, request);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
 }
