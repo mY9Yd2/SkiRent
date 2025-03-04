@@ -4,16 +4,18 @@ namespace SkiRent.Shared.Contracts.Bookings
 {
     public record GetAllBookingResponse
     {
-        public int Id { get; init; }
+        public required int Id { get; init; }
 
-        public DateOnly StartDate { get; init; }
+        public required DateOnly StartDate { get; init; }
 
-        public DateOnly EndDate { get; init; }
+        public required DateOnly EndDate { get; init; }
 
-        public decimal TotalPrice { get; init; }
+        public required decimal TotalPrice { get; init; }
 
-        public Guid PaymentId { get; init; }
+        public required Guid PaymentId { get; init; }
 
-        public BookingStatusTypes Status { get; init; }
+        public required BookingStatusTypes Status { get; init; }
+
+        public required DateTimeOffset CreatedAt { get; init; }
     }
 }

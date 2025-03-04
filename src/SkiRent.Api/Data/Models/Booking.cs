@@ -29,6 +29,9 @@ public partial class Booking
     [Column(TypeName = "enum('Pending','Paid','Cancelled','Returned')")]
     public string Status { get; set; } = null!;
 
+    [Column(TypeName = "timestamp")]
+    public DateTimeOffset CreatedAt { get; set; }
+
     [InverseProperty("Booking")]
     public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
 

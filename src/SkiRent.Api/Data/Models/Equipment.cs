@@ -31,9 +31,6 @@ public partial class Equipment
 
     public Guid? MainImageId { get; set; }
 
-    [InverseProperty("Equipment")]
-    public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
-
     [ForeignKey("CategoryId")]
     [InverseProperty("Equipment")]
     public virtual EquipmentCategory Category { get; set; } = null!;

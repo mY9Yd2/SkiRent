@@ -158,6 +158,8 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
             var expectedBookingItem = new BookingItem
             {
                 EquipmentId = equipment.Id,
+                NameAtBooking = equipment.Name,
+                PriceAtBooking = equipment.PricePerDay,
                 Quantity = 1
             };
 

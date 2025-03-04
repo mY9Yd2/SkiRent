@@ -13,7 +13,6 @@ public class BookingRepository : BaseRepository<Booking, int>, IBookingRepositor
     {
         return await _dbSet.Where(booking => booking.PaymentId == paymentId)
             .Include(booking => booking.BookingItems)
-            .ThenInclude(item => item.Equipment)
             .FirstOrDefaultAsync();
     }
 
@@ -21,7 +20,6 @@ public class BookingRepository : BaseRepository<Booking, int>, IBookingRepositor
     {
         return await _dbSet.Where(booking => booking.Id == bookingId)
             .Include(booking => booking.BookingItems)
-            .ThenInclude(item => item.Equipment)
             .FirstOrDefaultAsync();
     }
 }

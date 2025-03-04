@@ -78,6 +78,8 @@ public class BookingService : IBookingService
             bookingItems.Add(new BookingItem
             {
                 EquipmentId = equipmentBooking.EquipmentId,
+                NameAtBooking = equipment.Name,
+                PriceAtBooking = equipment.PricePerDay,
                 Quantity = equipmentBooking.Quantity
             });
         }
@@ -148,12 +150,13 @@ public class BookingService : IBookingService
             TotalPrice = booking.TotalPrice,
             PaymentId = booking.PaymentId,
             Status = Enum.Parse<BookingStatusTypes>(booking.Status),
+            CreatedAt = booking.CreatedAt,
             Items = booking.BookingItems.Select(item => new BookingItemSummary
             {
-                Name = item.Equipment.Name,
+                Name = item.NameAtBooking,
                 Quantity = item.Quantity,
-                PricePerDay = item.Equipment.PricePerDay,
-                TotalPrice = item.Quantity * item.Equipment.PricePerDay * days
+                PricePerDay = item.PriceAtBooking,
+                TotalPrice = item.Quantity * item.PriceAtBooking * days
             }),
             RentalDays = days
         };
@@ -175,7 +178,8 @@ public class BookingService : IBookingService
                 EndDate = booking.EndDate,
                 TotalPrice = booking.TotalPrice,
                 PaymentId = booking.PaymentId,
-                Status = Enum.Parse<BookingStatusTypes>(booking.Status)
+                Status = Enum.Parse<BookingStatusTypes>(booking.Status),
+                CreatedAt = booking.CreatedAt
             });
 
         return Result.Ok(result);

@@ -55,7 +55,14 @@ public class PaymentService : IPaymentService
         {
             foreach (var item in booking.BookingItems)
             {
-                item.Equipment.AvailableQuantity += item.Quantity;
+                var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
+
+                if (equipment is null)
+                {
+                    throw new BookingRollbackException($"Equipment with id '{item.EquipmentId}' not found.");
+                }
+
+                equipment.AvailableQuantity += item.Quantity;
             }
         }
 

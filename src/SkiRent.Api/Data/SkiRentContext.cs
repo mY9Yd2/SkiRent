@@ -35,6 +35,7 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("utc_timestamp()");
             entity.Property(e => e.Status).HasDefaultValueSql("'Pending'");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
@@ -47,10 +48,6 @@ public partial class SkiRentContext : DbContext
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.HasOne(d => d.Booking).WithMany(p => p.BookingItems).HasConstraintName("bookingitems_ibfk_1");
-
-            entity.HasOne(d => d.Equipment).WithMany(p => p.BookingItems)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("bookingitems_ibfk_2");
         });
 
         modelBuilder.Entity<Equipment>(entity =>

@@ -7,7 +7,6 @@ namespace SkiRent.Api.Data.Models;
 
 [Table("bookingitems")]
 [Index("BookingId", "EquipmentId", Name = "BookingId", IsUnique = true)]
-[Index("EquipmentId", Name = "EquipmentId")]
 public partial class BookingItem
 {
     [Key]
@@ -20,14 +19,16 @@ public partial class BookingItem
     [Column(TypeName = "int(11)")]
     public int EquipmentId { get; set; }
 
+    [StringLength(100)]
+    public string NameAtBooking { get; set; } = null!;
+
+    [Precision(10, 2)]
+    public decimal PriceAtBooking { get; set; }
+
     [Column(TypeName = "int(11)")]
     public int Quantity { get; set; }
 
     [ForeignKey("BookingId")]
     [InverseProperty("BookingItems")]
     public virtual Booking Booking { get; set; } = null!;
-
-    [ForeignKey("EquipmentId")]
-    [InverseProperty("BookingItems")]
-    public virtual Equipment Equipment { get; set; } = null!;
 }

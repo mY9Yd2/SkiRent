@@ -51,6 +51,7 @@ CREATE TABLE `Bookings` (
     `Status` ENUM(
         'Pending', 'Paid', 'Cancelled', 'Returned'
     ) NOT NULL DEFAULT 'Pending',
+    `CreatedAt` TIMESTAMP DEFAULT UTC_TIMESTAMP(),
     FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
     ON DELETE RESTRICT
 );
@@ -59,11 +60,11 @@ CREATE TABLE `BookingItems` (
     `Id` INT AUTO_INCREMENT PRIMARY KEY,
     `BookingId` INT NOT NULL,
     `EquipmentId` INT NOT NULL,
+    `NameAtBooking` VARCHAR(100) NOT NULL,
+    `PriceAtBooking` DECIMAL(10, 2) NOT NULL,
     `Quantity` INT NOT NULL,
     FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`)
     ON DELETE CASCADE,
-    FOREIGN KEY (`EquipmentId`) REFERENCES `Equipments` (`Id`)
-    ON DELETE RESTRICT,
     UNIQUE (`BookingId`, `EquipmentId`)
 );
 
