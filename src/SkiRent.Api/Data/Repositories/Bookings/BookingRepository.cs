@@ -11,15 +11,15 @@ public class BookingRepository : BaseRepository<Booking, int>, IBookingRepositor
 
     public async Task<Booking?> GetBookingWithItemsAsync(Guid paymentId)
     {
-        return await _dbSet.Where(booking => booking.PaymentId == paymentId)
+        return await _dbSet
             .Include(booking => booking.BookingItems)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(booking => booking.PaymentId == paymentId);
     }
 
     public async Task<Booking?> GetBookingWithItemsAsync(int bookingId)
     {
-        return await _dbSet.Where(booking => booking.Id == bookingId)
+        return await _dbSet
             .Include(booking => booking.BookingItems)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(booking => booking.Id == bookingId);
     }
 }

@@ -84,6 +84,9 @@ namespace SkiRent.Shared.Clients
     {
         [Post("/api/bookings")]
         public Task<IApiResponse<CreatedBookingResponse>> CreateAsync(CreateBookingRequest request);
+
+        [Get("/api/bookings/{bookingId}")]
+        public Task<IApiResponse<GetBookingResponse>> GetAsync(int bookingId);
     }
 
     public interface IPaymentsApi
