@@ -24,6 +24,7 @@ namespace SkiRent.Shared.Clients
         public IEquipmentsApi Equipments => RestService.For<IEquipmentsApi>(Client);
         public IBookingsApi Bookings => RestService.For<IBookingsApi>(Client);
         public IPaymentsApi Payments => RestService.For<IPaymentsApi>(Client);
+        public IInvoicesApi Invoices => RestService.For<IInvoicesApi>(Client);
     }
 
     public interface IAuthApi
@@ -99,5 +100,11 @@ namespace SkiRent.Shared.Clients
     {
         [Post("/api/payments/callback")]
         public Task<IApiResponse> CallbackAsync([Header("X-Signature")] string signature, PaymentResult paymentResult);
+    }
+
+    public interface IInvoicesApi
+    {
+        [Get("/api/invoices/{invoiceId}")]
+        public Task<IApiResponse<Stream>> GetAsync(Guid invoiceId);
     }
 }
