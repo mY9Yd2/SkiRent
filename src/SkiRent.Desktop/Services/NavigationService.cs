@@ -1,0 +1,70 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using SkiRent.Desktop.Contracts;
+using SkiRent.Desktop.Exceptions;
+using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Desktop.ViewModels.Main;
+
+namespace SkiRent.Desktop.Services
+{
+    public class NavigationService : INavigationService
+    {
+        private readonly IServiceProvider _serviceProvider;
+        private Action<BaseViewModel> _updateCurrentView = null!;
+
+        public NavigationService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            UpdateAction<MainWindowViewModel>();
+        }
+
+        public void NavigateTo<TBaseViewModel>(Action<TBaseViewModel> initialize) where TBaseViewModel : BaseViewModel
+        {
+            var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
+            _updateCurrentView(viewModel);
+            initialize(viewModel);
+            UpdateTitle(viewModel);
+        }
+
+        public void NavigateTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel
+        {
+            var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
+            _updateCurrentView(viewModel);
+            if (viewModel is IInitializeAsync initialize)
+            {
+                initialize.InitializeAsync();
+            }
+            UpdateTitle(viewModel);
+        }
+
+        public void SwitchTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel, IViewUpdater
+        {
+            var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
+
+            if (viewModel is MainWindowViewModel)
+            {
+                UpdateAction<MainWindowViewModel>();
+            }
+            else
+            {
+                throw new UnhandledViewUpdaterException($"Unhandled view updater type: {typeof(TBaseViewModel).Name}.");
+            }
+        }
+
+        private void UpdateAction<TBaseViewModel>() where TBaseViewModel : BaseViewModel, IViewUpdater
+        {
+            var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
+            _updateCurrentView = viewModel.UpdateCurrentView;
+        }
+
+        private void UpdateTitle<TBaseViewModel>(TBaseViewModel viewModel) where TBaseViewModel : BaseViewModel
+        {
+            var window = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+            string baseTitle = "SkiRent";
+            window.Title = viewModel switch
+            {
+                _ => baseTitle
+            };
+        }
+    }
+}
