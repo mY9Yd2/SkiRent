@@ -57,6 +57,12 @@ public partial class App : Application
         builder.Services.AddTransient<MainView>();
 
         _app = builder.Build();
+
+        Current.DispatcherUnhandledException += (sender, args) =>
+        {
+            MessageBox.Show($"Unhandled exception:\n{args.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            args.Handled = true;
+        };
     }
 
     protected override async void OnStartup(StartupEventArgs e)
