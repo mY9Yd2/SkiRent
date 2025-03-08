@@ -11,7 +11,9 @@ using Refit;
 
 using SkiRent.Desktop.Configurations;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Main;
+using SkiRent.Desktop.Views.Admin;
 using SkiRent.Desktop.Views.Main;
 using SkiRent.Shared.Clients;
 
@@ -55,6 +57,12 @@ public partial class App : Application
 
         builder.Services.AddTransient<MainViewModel>();
         builder.Services.AddTransient<MainView>();
+
+        builder.Services.AddSingleton<AdminMainViewModel>();
+        builder.Services.AddSingleton<AdminMainView>();
+
+        builder.Services.AddSingleton<AdminMenuViewModel>();
+        builder.Services.AddSingleton<AdminMenu>();
 
         _app = builder.Build();
 

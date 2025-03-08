@@ -2,6 +2,7 @@
 
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Exceptions;
+using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Main;
 
@@ -44,6 +45,11 @@ namespace SkiRent.Desktop.Services
             if (viewModel is MainWindowViewModel)
             {
                 UpdateAction<MainWindowViewModel>();
+            }
+            else if (viewModel is AdminMainViewModel)
+            {
+                _updateCurrentView(viewModel);
+                UpdateAction<AdminMainViewModel>();
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 using SkiRent.Desktop.ViewModels.Main;
 
@@ -18,6 +19,15 @@ namespace SkiRent.Desktop.Views.Main
         {
             InitializeComponent();
             DataContext = viewModel;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox
+                && DataContext is MainViewModel viewModel)
+            {
+                viewModel.Password = passwordBox.Password;
+            }
         }
     }
 }

@@ -40,7 +40,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
             await _client.Auth.SignInAsync(user.SignInRequest);
 
             // Act
-            var response = await _client.Auth.Me();
+            var response = await _client.Auth.MeAsync();
 
             // Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -66,7 +66,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Auth
             };
 
             // Act
-            var response = await _client.Auth.Me();
+            var response = await _client.Auth.MeAsync();
             var content = response.Content;
 
             // Assert

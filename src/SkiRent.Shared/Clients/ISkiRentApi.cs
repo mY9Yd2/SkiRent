@@ -36,7 +36,7 @@ namespace SkiRent.Shared.Clients
         public Task<IApiResponse> SignOutAsync(object empty);
 
         [Get("/api/auth/me")]
-        public Task<IApiResponse<GetUserResponse>> Me();
+        public Task<IApiResponse<GetUserResponse>> MeAsync();
     }
 
     public interface IUsersApi
