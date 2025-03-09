@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
 
-    if (emailInput) {  // Csak akkor dolgozzuk fel, ha létezik az oldalon
+    if (emailInput) {  // Csak akkor dolgozza fel, ha létezik az oldalon
         emailInput.addEventListener("input", function () {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (emailPattern.test(emailInput.value.trim())) {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Csak a products.php oldalon hívjuk meg a termékek betöltését
+    // Csak a products.php oldalon hívom meg a termékek betöltését
     if (document.getElementById("product-list")) {
         fetchProducts();
     }
@@ -129,9 +129,9 @@ function displayProducts(products) {
     console.log("displayProducts() meghívódott!");
 
     const productList = document.getElementById("product-list");
-    productList.innerHTML = ""; // Töröljük az előző tartalmat
+    productList.innerHTML = ""; // Törli az előző tartalmat
 
-    // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+    // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
     const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";    console.log("Be van jelentkezve? ", isLoggedIn);
 
     products.forEach(product => {

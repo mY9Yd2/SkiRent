@@ -43,7 +43,7 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
     <script>
-        // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+        // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
         document.addEventListener("DOMContentLoaded", function () {
             if (!sessionStorage.getItem("accessToken")) {
                 window.location.href = "login.php"; // Ha nincs token, visszairányítás
