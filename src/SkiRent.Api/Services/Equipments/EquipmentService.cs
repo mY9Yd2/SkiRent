@@ -78,8 +78,10 @@ public class EquipmentService : IEquipmentService
             {
                 Id = equipment.Id,
                 Name = equipment.Name,
+                Description = equipment.Description,
                 CategoryId = equipment.CategoryId,
                 PricePerDay = equipment.PricePerDay,
+                AvailableQuantity = equipment.AvailableQuantity,
                 IsAvailable = equipment.AvailableQuantity > 0
             });
 
