@@ -30,7 +30,7 @@
                 <small>Még nincs fiókod? <a href="register.php" class="auth-link">Regisztrálj itt</a></small>
             </div>
             <div class="text-center mt-2">
-                <a href="../index.php" class="btn btn-warning btn-sm">Vissza a főoldalra</a>
+                <a href="../index.php" class="btn btn-warning btn-sm">Vissza a kezdőoldalra</a>
             </div>
         </div>
     </div>

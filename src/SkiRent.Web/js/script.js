@@ -126,24 +126,83 @@ async function fetchProducts() {
 
 // ** TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN **
 function displayProducts(products) {
-    const productList = document.getElementById("product-list");
+    console.log("displayProducts() meghívódott!");
 
+    const productList = document.getElementById("product-list");
     productList.innerHTML = ""; // Töröljük az előző tartalmat
+
+    // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";    console.log("Be van jelentkezve? ", isLoggedIn);
 
     products.forEach(product => {
         const productCard = `
             <div class="col-md-4">
                 <div class="card text-dark bg-light mb-3 shadow">
                     <div class="card-body">
-                        <h5 class="card-title text-warning">${product.Name}</h5>
-                        <p class="card-text">${product.Description ? product.Description : "Nincs leírás"}</p>
-                        <p class="card-text"><strong>Ár: ${product.PricePerDay} Ft/nap</strong></p>
-                        <p class="card-text"><small>Elérhető: ${product.AvailableQuantity} db</small></p>
-                        <a href="#" class="btn btn-warning">Bérlés</a>
+                        <h5 class="card-title text-warning">${product.name}</h5>
+                        <p class="card-text">${product.description ? product.description : "Nincs leírás"}</p>
+                        <p class="card-text"><strong>Ár: ${product.pricePerDay} Ft/nap</strong></p>
+                        ${isLoggedIn ? `<p class="card-text"><small>Elérhető: ${product.availableQuantity} db</small></p>` : ""}
+                        <a href="#" class="btn btn-warning rent-button" 
+                           style="display: ${isLoggedIn ? 'inline-block' : 'none'};">Bérlés</a>
                     </div>
                 </div>
             </div>
         `;
-        productList.innerHTML += productCard;
+        productList.insertAdjacentHTML("beforeend", productCard);
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";
+
+    console.log("Be van jelentkezve? ", isLoggedIn);
+
+    // Az aktuális oldal neve
+    const currentPage = window.location.pathname.split("/").pop().split("?")[0];
+
+    // Navigációs menü dinamikus frissítése
+    const navbar = document.querySelector("#navbarNav .navbar-nav");
+    if (navbar) {
+        navbar.innerHTML = `
+            <li class="nav-item"><a class="nav-link menu-item ${currentPage === "products.php" ? "text-warning active" : "text-light"}" href="products.php">Eszközök</a></li>
+            ${isLoggedIn ? `
+                <li class="nav-item"><a class="nav-link menu-item ${currentPage === "profile.php" ? "text-warning active" : "text-light"}" href="profile.php">Profilom</a></li>
+                <li class="nav-item"><a class="nav-link menu-item ${currentPage === "rentals.php" ? "text-warning active" : "text-light"}" href="rentals.php">Foglalásaim</a></li>
+                <li class="nav-item"><a class="nav-link text-danger menu-item" href="logout.php">Kijelentkezés</a></li>
+            ` : `
+                <li class="nav-item"><a class="nav-link text-light menu-item" href="../index.php">Vissza a kezdőoldalra</a></li>
+                <li class="nav-item"><a class="nav-link text-light menu-item" href="login.php">Bejelentkezés</a></li>
+            `}
+        `;
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.querySelector(".nav-link.text-danger"); // Kijelentkezés gomb kiválasztása
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            sessionStorage.clear(); // SessionStorage ürítése
+        });
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPage = window.location.pathname.split("/").pop().split("?")[0];
+    const menuItems = document.querySelectorAll(".nav-link.menu-item");
+
+    menuItems.forEach(item => {
+        const itemHref = item.getAttribute("href").split("?")[0];
+        if (itemHref === currentPage) {
+            item.classList.add("active-page"); // Új osztály hozzáadása
+        } else {
+            item.classList.remove("active-page");
+        }
+    });
+});
+
+
+
