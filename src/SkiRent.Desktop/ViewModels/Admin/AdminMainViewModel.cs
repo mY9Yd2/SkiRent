@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using SkiRent.Desktop.Contracts;
+using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
@@ -23,7 +24,14 @@ namespace SkiRent.Desktop.ViewModels.Admin
         {
             _skiRentApi = skiRentApi;
             _adminMenuViewModel = adminMenuViewModel;
+
+            var user = Application.Current.Properties[nameof(CurrentUser)]
+                ?? throw new CurrentUserNotFoundException("Current user not found in application properties.");
+            CurrentUser = (CurrentUser)user;
         }
+
+        [ObservableProperty]
+        private CurrentUser _currentUser = null!;
 
         [ObservableProperty]
         private AdminMenuViewModel _adminMenuViewModel = null!;
