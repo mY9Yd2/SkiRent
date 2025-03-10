@@ -81,6 +81,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                 Name = createdEquipment.Name,
                 Description = createdEquipment.Description,
                 CategoryId = createdEquipment.CategoryId,
+                CategoryName = category.Name,
                 PricePerDay = createdEquipment.PricePerDay,
                 AvailableQuantity = createdEquipment.AvailableQuantity
             };

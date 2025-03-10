@@ -7,6 +7,7 @@ using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Common;
 
@@ -65,6 +66,7 @@ namespace SkiRent.Desktop.ViewModels.Main
                 };
 
                 Navigator.Instance.SwitchTo<AdminMainViewModel>();
+                Navigator.Instance.NavigateTo<EquipmentViewModel>();
             }
         }
     }

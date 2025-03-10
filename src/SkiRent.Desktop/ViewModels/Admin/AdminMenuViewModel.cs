@@ -1,4 +1,8 @@
-﻿using SkiRent.Desktop.ViewModels.Base;
+﻿using CommunityToolkit.Mvvm.Input;
+
+using SkiRent.Desktop.Services;
+using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Desktop.ViewModels.Equipments;
 
 namespace SkiRent.Desktop.ViewModels.Admin
 {
@@ -6,5 +10,11 @@ namespace SkiRent.Desktop.ViewModels.Admin
     {
         public AdminMenuViewModel()
         { }
+
+        [RelayCommand]
+        private void ShowEquipments()
+        {
+            Navigator.Instance.NavigateTo<EquipmentViewModel>();
+        }
     }
 }

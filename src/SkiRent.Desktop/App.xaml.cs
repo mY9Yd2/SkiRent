@@ -1,6 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Windows;
+
+using FluentValidation;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +15,10 @@ using Refit;
 using SkiRent.Desktop.Configurations;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Admin;
+using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Main;
 using SkiRent.Desktop.Views.Admin;
+using SkiRent.Desktop.Views.Equipments;
 using SkiRent.Desktop.Views.Main;
 using SkiRent.Shared.Clients;
 
@@ -50,6 +55,8 @@ public partial class App : Application
                 };
             });
 
+        builder.Services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
+
         builder.Services.AddSingleton<MainWindowViewModel>();
         builder.Services.AddSingleton<MainWindow>();
 
@@ -64,11 +71,24 @@ public partial class App : Application
         builder.Services.AddSingleton<AdminMenuViewModel>();
         builder.Services.AddSingleton<AdminMenu>();
 
+        builder.Services.AddTransient<EquipmentViewModel>();
+        builder.Services.AddTransient<EquipmentListView>();
+
+        builder.Services.AddTransient<EquipmentEditViewModel>();
+        builder.Services.AddTransient<EquipmentEditView>();
+
         _app = builder.Build();
 
         Current.DispatcherUnhandledException += (sender, args) =>
         {
-            MessageBox.Show($"Unhandled exception:\n{args.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (args.Exception is ValidationException)
+            {
+                MessageBox.Show($"Érvénytelen adatok!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show($"Unhandled exception:\n{args.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             args.Handled = true;
         };
     }

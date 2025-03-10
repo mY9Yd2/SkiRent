@@ -112,6 +112,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                 Name = request.Name,
                 Description = request.Description,
                 CategoryId = request.CategoryIdAsNonNull,
+                CategoryName = createdCategories[1].Name,
                 PricePerDay = request.PricePerDayAsNonNull,
                 AvailableQuantity = request.AvailableQuantityAsNonNull
             };

@@ -88,16 +88,18 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                     Id = createdEquipments[0].Id,
                     Name = createdEquipments[0].Name,
                     CategoryId = createdEquipments[0].CategoryId,
+                    CategoryName = category.Name,
                     PricePerDay = createdEquipments[0].PricePerDay,
-                    IsAvailable = createdEquipments[0].AvailableQuantity > 0
+                    AvailableQuantity = createdEquipments[0].AvailableQuantity
                 },
                 new()
                 {
                     Id = createdEquipments[1].Id,
                     Name = createdEquipments[1].Name,
                     CategoryId = createdEquipments[1].CategoryId,
+                    CategoryName = category.Name,
                     PricePerDay = createdEquipments[1].PricePerDay,
-                    IsAvailable = createdEquipments[1].AvailableQuantity > 0
+                    AvailableQuantity = createdEquipments[1].AvailableQuantity
                 }
             };
 

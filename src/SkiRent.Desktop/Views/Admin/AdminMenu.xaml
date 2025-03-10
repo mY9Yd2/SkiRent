@@ -13,6 +13,12 @@
 
         <Label Content="SkiRent" FontSize="28" HorizontalAlignment="Center" Margin="0,10,0,30" />
 
+        <StackPanel Margin="10,0">
+
+            <Button Content="Felszerelések" Command="{Binding ShowEquipmentsCommand}" />
+
+        </StackPanel>
+
     </StackPanel>
 
 </UserControl>

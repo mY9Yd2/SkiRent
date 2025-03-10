@@ -49,7 +49,7 @@ public class EquipmentService : IEquipmentService
 
     public async Task<Result<GetEquipmentResponse>> GetAsync(int equipmentId)
     {
-        var equipment = await _unitOfWork.Equipments.GetByIdAsync(equipmentId);
+        var equipment = await _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId);
 
         if (equipment is null)
         {
@@ -62,6 +62,7 @@ public class EquipmentService : IEquipmentService
             Name = equipment.Name,
             Description = equipment.Description,
             CategoryId = equipment.CategoryId,
+            CategoryName = equipment.Category.Name,
             AvailableQuantity = equipment.AvailableQuantity,
             PricePerDay = equipment.PricePerDay
         };
@@ -71,7 +72,7 @@ public class EquipmentService : IEquipmentService
 
     public async Task<Result<IEnumerable<GetAllEquipmentResponse>>> GetAllAsync()
     {
-        var equipments = await _unitOfWork.Equipments.GetAllAsync();
+        var equipments = await _unitOfWork.Equipments.GetAllEquipmentWithCategoryAsync();
 
         var result = equipments.Select(equipment =>
             new GetAllEquipmentResponse
@@ -80,9 +81,9 @@ public class EquipmentService : IEquipmentService
                 Name = equipment.Name,
                 Description = equipment.Description,
                 CategoryId = equipment.CategoryId,
+                CategoryName = equipment.Category.Name,
                 PricePerDay = equipment.PricePerDay,
-                AvailableQuantity = equipment.AvailableQuantity,
-                IsAvailable = equipment.AvailableQuantity > 0
+                AvailableQuantity = equipment.AvailableQuantity
             });
 
         return Result.Ok(result);
@@ -90,7 +91,7 @@ public class EquipmentService : IEquipmentService
 
     public async Task<Result<GetEquipmentResponse>> UpdateAsync(int equipmentId, UpdateEquipmentRequest request)
     {
-        var equipment = await _unitOfWork.Equipments.GetByIdAsync(equipmentId);
+        var equipment = await _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId);
 
         if (equipment is null)
         {
@@ -107,11 +108,12 @@ public class EquipmentService : IEquipmentService
 
         if (request.CategoryId is not null)
         {
-            if (!await _unitOfWork.EquipmentCategories.ExistsAsync(category => category.Id == request.CategoryId))
+            var category = await _unitOfWork.EquipmentCategories.GetByIdAsync(request.CategoryIdAsNonNull);
+            if (category is null)
             {
                 return Result.Fail(new EquipmentCategoryNotFound((int)request.CategoryId));
             }
-            equipment.CategoryId = (int)request.CategoryId;
+            equipment.Category = category;
         }
 
         equipment.PricePerDay = request.PricePerDay ?? equipment.PricePerDay;
@@ -125,6 +127,7 @@ public class EquipmentService : IEquipmentService
             Name = equipment.Name,
             Description = equipment.Description,
             CategoryId = equipment.CategoryId,
+            CategoryName = equipment.Category.Name,
             PricePerDay = equipment.PricePerDay,
             AvailableQuantity = equipment.AvailableQuantity
         };

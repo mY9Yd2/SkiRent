@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:equipmentsVM="clr-namespace:SkiRent.Desktop.ViewModels.Equipments"
+                    xmlns:equipments="clr-namespace:SkiRent.Desktop.Views.Equipments"
                     xmlns:adminVM="clr-namespace:SkiRent.Desktop.ViewModels.Admin"
                     xmlns:admin="clr-namespace:SkiRent.Desktop.Views.Admin"
                     xmlns:mainVM="clr-namespace:SkiRent.Desktop.ViewModels.Main"
@@ -15,6 +17,14 @@
 
     <DataTemplate DataType="{x:Type adminVM:AdminMenuViewModel}">
         <admin:AdminMenu />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type equipmentsVM:EquipmentViewModel}">
+        <equipments:EquipmentListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type equipmentsVM:EquipmentEditViewModel}">
+        <equipments:EquipmentEditView />
     </DataTemplate>
 
 </ResourceDictionary>

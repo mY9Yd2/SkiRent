@@ -4,6 +4,7 @@ using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Main;
 
 namespace SkiRent.Desktop.Services
@@ -69,6 +70,7 @@ namespace SkiRent.Desktop.Services
             string baseTitle = "SkiRent";
             window.Title = viewModel switch
             {
+                EquipmentViewModel => $"{baseTitle} - Felszerelések",
                 _ => baseTitle
             };
         }

@@ -1,12 +1,10 @@
-﻿namespace SkiRent.Shared.Contracts.Equipments
+﻿namespace SkiRent.Desktop.Models
 {
-    public record GetAllEquipmentResponse
+    public record EquipmentList
     {
         public required int Id { get; init; }
 
         public required string Name { get; init; }
-
-        public string? Description { get; init; } // Hozzáadva (azért kérdőjel, mert lehet, hogy null az értéke)
 
         public required int CategoryId { get; init; }
 
