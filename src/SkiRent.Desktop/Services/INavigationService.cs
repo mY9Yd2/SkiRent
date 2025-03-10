@@ -5,8 +5,8 @@ namespace SkiRent.Desktop.Services
 {
     public interface INavigationService
     {
-        public void NavigateTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel;
-        public void NavigateTo<TBaseViewModel>(Action<TBaseViewModel> initialize) where TBaseViewModel : BaseViewModel;
+        public Task NavigateToAsync<TBaseViewModel>() where TBaseViewModel : BaseViewModel;
+        public Task NavigateToAsync<TBaseViewModel>(Func<TBaseViewModel, Task> initialize) where TBaseViewModel : BaseViewModel;
         public void SwitchTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel, IViewUpdater;
     }
 }

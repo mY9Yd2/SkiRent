@@ -58,11 +58,11 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         }
 
         [RelayCommand]
-        private void ShowEquipmentEdit()
+        private async Task ShowEquipmentEditAsync()
         {
             if (SelectedEquipment is not null)
             {
-                Navigator.Instance.NavigateTo<EquipmentEditViewModel>(async vm =>
+                await Navigator.Instance.NavigateToAsync<EquipmentEditViewModel>(async vm =>
                     await vm.InitializeAsync(SelectedEquipment.Id));
             }
         }

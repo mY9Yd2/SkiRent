@@ -20,21 +20,21 @@ namespace SkiRent.Desktop.Services
             UpdateAction<MainWindowViewModel>();
         }
 
-        public void NavigateTo<TBaseViewModel>(Action<TBaseViewModel> initialize) where TBaseViewModel : BaseViewModel
+        public async Task NavigateToAsync<TBaseViewModel>(Func<TBaseViewModel, Task> initialize) where TBaseViewModel : BaseViewModel
         {
             var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
             _updateCurrentView(viewModel);
-            initialize(viewModel);
+            await initialize(viewModel);
             UpdateTitle(viewModel);
         }
 
-        public void NavigateTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel
+        public async Task NavigateToAsync<TBaseViewModel>() where TBaseViewModel : BaseViewModel
         {
             var viewModel = _serviceProvider.GetRequiredService<TBaseViewModel>();
             _updateCurrentView(viewModel);
             if (viewModel is IInitializeAsync initialize)
             {
-                initialize.InitializeAsync();
+                await initialize.InitializeAsync();
             }
             UpdateTitle(viewModel);
         }

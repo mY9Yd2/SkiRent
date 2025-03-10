@@ -117,7 +117,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
             if (!isModified)
             {
-                Back();
+                await BackAsync();
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             if (result.IsSuccessful)
             {
                 MessageBox.Show($"A változtatások sikeresen elmentésre kerültek.", "Sikeres mentés", MessageBoxButton.OK, MessageBoxImage.Information);
-                Back();
+                await BackAsync();
                 return;
             }
 
@@ -137,9 +137,9 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         }
 
         [RelayCommand]
-        private void Back()
+        private async Task BackAsync()
         {
-            Navigator.Instance.NavigateTo<EquipmentViewModel>();
+            await Navigator.Instance.NavigateToAsync<EquipmentViewModel>();
         }
     }
 }

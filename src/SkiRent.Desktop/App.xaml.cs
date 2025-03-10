@@ -103,7 +103,7 @@ public partial class App : Application
         var navigationService = _app.Services.GetRequiredService<INavigationService>();
 
         mainWindow.Show();
-        navigationService.NavigateTo<MainViewModel>();
+        await navigationService.NavigateToAsync<MainViewModel>();
 
         base.OnStartup(e);
     }

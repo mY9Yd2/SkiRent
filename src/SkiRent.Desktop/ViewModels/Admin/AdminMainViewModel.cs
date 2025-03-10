@@ -48,7 +48,7 @@ namespace SkiRent.Desktop.ViewModels.Admin
             {
                 Application.Current.Properties[nameof(CurrentUser)] = null;
                 Navigator.Instance.SwitchTo<MainWindowViewModel>();
-                Navigator.Instance.NavigateTo<MainViewModel>();
+                await Navigator.Instance.NavigateToAsync<MainViewModel>();
             }
         }
     }
