@@ -12,14 +12,14 @@ using SkiRent.Shared.Clients;
 
 namespace SkiRent.Desktop.ViewModels.Equipments
 {
-    public partial class EquipmentViewModel : BaseViewModel, IInitializeAsync
+    public partial class EquipmentListViewModel : BaseViewModel, IInitializeAsync
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
-        public EquipmentViewModel()
+        public EquipmentListViewModel()
         { }
 
-        public EquipmentViewModel(ISkiRentApi skiRentApi)
+        public EquipmentListViewModel(ISkiRentApi skiRentApi)
         {
             _skiRentApi = skiRentApi;
         }

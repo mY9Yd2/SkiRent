@@ -19,7 +19,7 @@
         <admin:AdminMenu />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type equipmentsVM:EquipmentViewModel}">
+    <DataTemplate DataType="{x:Type equipmentsVM:EquipmentListViewModel}">
         <equipments:EquipmentListView />
     </DataTemplate>
 

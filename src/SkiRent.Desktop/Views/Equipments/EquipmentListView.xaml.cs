@@ -14,7 +14,7 @@ namespace SkiRent.Desktop.Views.Equipments
             InitializeComponent();
         }
 
-        public EquipmentListView(EquipmentViewModel viewModel)
+        public EquipmentListView(EquipmentListViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

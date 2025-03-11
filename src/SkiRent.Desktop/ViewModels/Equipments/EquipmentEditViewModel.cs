@@ -119,7 +119,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
         private static async Task NavigateBackAsync()
         {
-            await Navigator.Instance.NavigateToAsync<EquipmentViewModel>();
+            await Navigator.Instance.NavigateToAsync<EquipmentListViewModel>();
         }
 
         private static bool ShowConfirmationDialog()

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SkiRent.Desktop.Views.Equipments"
              xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.Equipments"
-             d:DataContext="{d:DesignInstance vm:EquipmentViewModel}"
+             d:DataContext="{d:DesignInstance vm:EquipmentListViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -33,14 +33,15 @@
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
-                  CanUserReorderColumns="False">
+                  CanUserReorderColumns="False"
+                  HeadersVisibility="Column">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Név" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Kategória" Binding="{Binding CategoryName}" />
-                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay}" />
-                <DataGridTextColumn Header="Elérhető mennyiség" Binding="{Binding AvailableQuantity}" />
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
+                <DataGridTextColumn Header="Név" Binding="{Binding Name}" Width="Auto" />
+                <DataGridTextColumn Header="Kategória" Binding="{Binding CategoryName}" Width="Auto" />
+                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay}" Width="Auto" />
+                <DataGridTextColumn Header="Elérhető mennyiség" Binding="{Binding AvailableQuantity}" Width="*" />
             </DataGrid.Columns>
 
             <DataGrid.RowStyle>

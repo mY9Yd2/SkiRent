@@ -71,7 +71,7 @@ public partial class App : Application
         builder.Services.AddSingleton<AdminMenuViewModel>();
         builder.Services.AddSingleton<AdminMenu>();
 
-        builder.Services.AddTransient<EquipmentViewModel>();
+        builder.Services.AddTransient<EquipmentListViewModel>();
         builder.Services.AddTransient<EquipmentListView>();
 
         builder.Services.AddTransient<EquipmentEditViewModel>();

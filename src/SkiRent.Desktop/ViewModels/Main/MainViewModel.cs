@@ -66,7 +66,7 @@ namespace SkiRent.Desktop.ViewModels.Main
                 };
 
                 Navigator.Instance.SwitchTo<AdminMainViewModel>();
-                await Navigator.Instance.NavigateToAsync<EquipmentViewModel>();
+                await Navigator.Instance.NavigateToAsync<EquipmentListViewModel>();
             }
         }
     }

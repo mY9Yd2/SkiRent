@@ -14,7 +14,7 @@ namespace SkiRent.Desktop.ViewModels.Admin
         [RelayCommand]
         private async Task ShowEquipmentsAsync()
         {
-            await Navigator.Instance.NavigateToAsync<EquipmentViewModel>();
+            await Navigator.Instance.NavigateToAsync<EquipmentListViewModel>();
         }
     }
 }

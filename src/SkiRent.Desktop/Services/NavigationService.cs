@@ -70,7 +70,7 @@ namespace SkiRent.Desktop.Services
             string baseTitle = "SkiRent";
             window.Title = viewModel switch
             {
-                EquipmentViewModel => $"{baseTitle} - Felszerelések",
+                EquipmentListViewModel => $"{baseTitle} - Felszerelések",
                 _ => baseTitle
             };
         }
