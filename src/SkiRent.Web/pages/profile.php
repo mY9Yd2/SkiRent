@@ -6,6 +6,7 @@
     <title>Profilom - SkiRent</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="bg-dark text-light">
@@ -21,6 +22,15 @@
                     <li class="nav-item"><a class="nav-link menu-item" href="products.php">Eszközök</a></li>
                     <li class="nav-item"><a class="nav-link menu-item text-warning active" href="profile.php">Profilom</a></li>
                     <li class="nav-item"><a class="nav-link menu-item" href="rentals.php">Foglalásaim</a></li>
+
+                    <!-- Kosár ikon beillesztése -->
+                    <li class="nav-item">
+                        <a class="nav-link text-light menu-item position-relative" href="cart.php">
+                            <i class="fas fa-shopping-cart"></i> <!-- Kosár ikon -->
+                            <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill d-none">0</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item"><a class="nav-link text-danger menu-item" href="logout.php" id="logout-link">Kijelentkezés</a></li>
                 </ul>
             </div>
@@ -47,8 +57,8 @@
     <!-- Bootstrap JS és egyéni script -->
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
+    
     <script>
-        // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
         document.addEventListener("DOMContentLoaded", function () {
             if (!sessionStorage.getItem("accessToken")) {
                 window.location.href = "login.php"; // Ha nincs token, visszairányítás
@@ -57,6 +67,9 @@
             // Dinamikus adatbetöltés (később API-ból)
             document.getElementById("user-name").textContent = "Teszt Felhasználó";
             document.getElementById("user-email").textContent = "teszt@example.com";
+
+            // Frissíti a kosár számlálóját betöltéskor
+            updateCartCount();
         });
     </script>
 </body>

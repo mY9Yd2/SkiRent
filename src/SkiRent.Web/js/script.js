@@ -100,13 +100,13 @@ function validateLoginForm() {
     return isValid;
 }
 
+
 // Termékek lekérdezése API-ról
 async function fetchProducts() {
     console.log("API-lekérdezés indult...");
 
     try {
         const response = await fetch(`${API_BASE_URL}/equipments`);
-        
         console.log("API válasz státusz:", response.status);
 
         if (!response.ok) {
@@ -116,13 +116,14 @@ async function fetchProducts() {
         const products = await response.json();
         console.log("Termékek adatai:", products);
 
-        // TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN
+        // Termékek megjelenítése
         displayProducts(products);
 
     } catch (error) {
         console.error("Hiba történt:", error);
     }
 }
+
 
 // ** TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN **
 function displayProducts(products) {
@@ -132,7 +133,8 @@ function displayProducts(products) {
     productList.innerHTML = ""; // Törli az előző tartalmat
 
     // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
-    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";    console.log("Be van jelentkezve? ", isLoggedIn);
+    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";
+    console.log("Be van jelentkezve? ", isLoggedIn);
 
     products.forEach(product => {
         const productCard = `
@@ -143,8 +145,8 @@ function displayProducts(products) {
                         <p class="card-text">${product.description ? product.description : "Nincs leírás"}</p>
                         <p class="card-text"><strong>Ár: ${product.pricePerDay} Ft/nap</strong></p>
                         ${isLoggedIn ? `<p class="card-text"><small>Elérhető: ${product.availableQuantity} db</small></p>` : ""}
-                        <a href="#" class="btn btn-warning rent-button" 
-                           style="display: ${isLoggedIn ? 'inline-block' : 'none'};">Bérlés</a>
+                        <a href="#" class="btn btn-warning add-to-cart-button" 
+                           style="display: ${isLoggedIn ? 'inline-block' : 'none'};">Kosárba</a>
                     </div>
                 </div>
             </div>
@@ -152,6 +154,7 @@ function displayProducts(products) {
         productList.insertAdjacentHTML("beforeend", productCard);
     });
 }
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -170,6 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ${isLoggedIn ? `
                 <li class="nav-item"><a class="nav-link menu-item ${currentPage === "profile.php" ? "text-warning active" : "text-light"}" href="profile.php">Profilom</a></li>
                 <li class="nav-item"><a class="nav-link menu-item ${currentPage === "rentals.php" ? "text-warning active" : "text-light"}" href="rentals.php">Foglalásaim</a></li>
+                <!-- KOSÁR ICON -->
+                <li class="nav-item">
+                    <a class="nav-link text-light menu-item position-relative" href="cart.php">
+                        <i class="fas fa-shopping-cart"></i> <!-- Kosár ikon -->
+                        <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill d-none">0</span>
+                    </a>
+                </li>
+
                 <li class="nav-item"><a class="nav-link text-danger menu-item" href="logout.php">Kijelentkezés</a></li>
             ` : `
                 <li class="nav-item"><a class="nav-link text-light menu-item" href="../index.php">Vissza a kezdőoldalra</a></li>
@@ -206,3 +217,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+// Kosár tartalmának frissítése sessionStorage-ben
+function updateCartCount() {
+    let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]"); // Ha nincs, akkor üres tömböt ad vissza
+    let cartCount = cartItems.length;
+
+    console.log("Frissített kosár tartalom:", cartItems); // Debug log
+
+    const cartCountBadge = document.getElementById("cart-count");
+    if (!cartCountBadge) {
+        console.warn("Kosár ikon nem található az oldalon.");
+        return;     // Ha nincs, ne fusson tovább
+    }
+
+    if (cartCount > 0) {
+        cartCountBadge.textContent = cartCount;
+        cartCountBadge.classList.remove("d-none");
+    } else {
+        cartCountBadge.classList.add("d-none");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    updateCartCount();  // Kosár számláló frissítése betöltéskor
+
+    const productList = document.getElementById("product-list");
+    if (!productList) {
+        console.warn("Nincs terméklista az oldalon, kihagyom a kosárkezelést.");
+        return;
+    }
+
+    productList.addEventListener("click", function (event) {
+        if (event.target.classList.contains("add-to-cart-button")) {
+            event.preventDefault();
+
+            console.log("Kosárba gombra kattintottak!");
+
+            const productCard = event.target.closest(".card");
+            if (!productCard) {
+                console.error("Nem található a termék kártyája!");
+                return;
+            }
+
+            const productName = productCard.querySelector(".card-title")?.textContent.trim();
+            const productPrice = productCard.querySelector(".card-text strong")?.textContent.trim();
+            if (!productName || !productPrice) {
+                console.error("Hibás termékadatok!");
+                return;
+            }
+
+            let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]"); // Ha nincs, akkor üres tömb
+            cartItems.push({ name: productName, price: productPrice });     // Objektumként tárolás
+
+            sessionStorage.setItem("cart", JSON.stringify(cartItems)); // Mentés sessionStorage-be
+            updateCartCount(); // Számláló frissítés
+
+            console.log("Sikeresen hozzáadva a kosárhoz:", productName);
+        }
+    });
+});
