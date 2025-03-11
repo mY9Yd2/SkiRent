@@ -60,6 +60,8 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
         private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
 
+        private bool _isModified = false;
+
         [ObservableProperty]
         private string _name = string.Empty;
 
@@ -80,46 +82,14 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [RelayCommand]
         private async Task SaveAsync()
         {
-            bool isModified = false;
-            var request = new UpdateEquipmentRequest();
+            var request = PrepareEquipmentUpdateRequest();
 
-            if (Name != _originalEquipment.Name
-                && !string.IsNullOrWhiteSpace(Name.Trim()))
+            if (!_isModified)
             {
-                request = request with { Name = Name.Trim() };
-                isModified = true;
-            }
-
-            if (Description != _originalEquipment.Description
-                && !string.IsNullOrWhiteSpace(Description.Trim()))
-            {
-                request = request with { Description = Description.Trim() };
-                isModified = true;
-            }
-
-            if (PricePerDay != _originalEquipment.PricePerDay)
-            {
-                request = request with { PricePerDay = PricePerDay };
-                isModified = true;
-            }
-
-            if (AvailableQuantity != _originalEquipment.AvailableQuantity)
-            {
-                request = request with { AvailableQuantity = AvailableQuantity };
-                isModified = true;
-            }
-
-            if (SelectedEquipmentCategory.Id != _originalEquipment.CategoryId)
-            {
-                request = request with { CategoryId = SelectedEquipmentCategory.Id };
-                isModified = true;
-            }
-
-            if (!isModified)
-            {
-                await BackAsync();
+                await NavigateBackAsync();
                 return;
             }
+            _isModified = false;
 
             await _validator.ValidateAndThrowAsync(request);
 
@@ -127,19 +97,74 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
             if (result.IsSuccessful)
             {
-                MessageBox.Show($"A változtatások sikeresen elmentésre kerültek.", "Sikeres mentés", MessageBoxButton.OK, MessageBoxImage.Information);
-                await BackAsync();
+                MessageBox.Show("A változtatások sikeresen elmentésre kerültek.", "Sikeres mentés", MessageBoxButton.OK, MessageBoxImage.Information);
+                await NavigateBackAsync();
                 return;
             }
 
-            MessageBox.Show($"Hiba történt a mentés során.", "Sikertelen mentés", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Hiba történt a mentés során.", "Sikertelen mentés", MessageBoxButton.OK, MessageBoxImage.Error);
             await InitializeAsync(_originalEquipment.Id);
         }
 
         [RelayCommand]
         private async Task BackAsync()
         {
+            PrepareEquipmentUpdateRequest();
+            if (_isModified && !ShowConfirmationDialog())
+            {
+                return;
+            }
+            await NavigateBackAsync();
+        }
+
+        private static async Task NavigateBackAsync()
+        {
             await Navigator.Instance.NavigateToAsync<EquipmentViewModel>();
+        }
+
+        private static bool ShowConfirmationDialog()
+        {
+            var result = MessageBox.Show("Biztosan kilép mentés nélkül?", "Nem mentett módosítások!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            return result == MessageBoxResult.Yes;
+        }
+
+        private UpdateEquipmentRequest PrepareEquipmentUpdateRequest()
+        {
+            var request = new UpdateEquipmentRequest();
+
+            if (Name != _originalEquipment.Name
+                && !string.IsNullOrWhiteSpace(Name.Trim()))
+            {
+                request = request with { Name = Name.Trim() };
+                _isModified = true;
+            }
+
+            if (Description != _originalEquipment.Description
+                && !string.IsNullOrWhiteSpace(Description.Trim()))
+            {
+                request = request with { Description = Description.Trim() };
+                _isModified = true;
+            }
+
+            if (PricePerDay != _originalEquipment.PricePerDay)
+            {
+                request = request with { PricePerDay = PricePerDay };
+                _isModified = true;
+            }
+
+            if (AvailableQuantity != _originalEquipment.AvailableQuantity)
+            {
+                request = request with { AvailableQuantity = AvailableQuantity };
+                _isModified = true;
+            }
+
+            if (SelectedEquipmentCategory.Id != _originalEquipment.CategoryId)
+            {
+                request = request with { CategoryId = SelectedEquipmentCategory.Id };
+                _isModified = true;
+            }
+
+            return request;
         }
     }
 }

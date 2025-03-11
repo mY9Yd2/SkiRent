@@ -83,7 +83,7 @@ public partial class App : Application
         {
             if (args.Exception is ValidationException)
             {
-                MessageBox.Show($"Érvénytelen adatok!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Érvénytelen adatok!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
