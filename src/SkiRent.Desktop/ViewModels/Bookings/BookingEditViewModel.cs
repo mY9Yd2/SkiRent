@@ -1,0 +1,124 @@
+﻿using System.Windows;
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+using FluentValidation;
+
+using SkiRent.Desktop.Contracts;
+using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
+using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Shared.Clients;
+using SkiRent.Shared.Contracts.Bookings;
+
+namespace SkiRent.Desktop.ViewModels.Bookings
+{
+    public partial class BookingEditViewModel : BaseViewModel, IInitializeAsync<int>
+    {
+        private readonly ISkiRentApi _skiRentApi = null!;
+
+        public BookingEditViewModel()
+        { }
+
+        public BookingEditViewModel(ISkiRentApi skiRentApi, IValidator<UpdateBookingRequest> validator)
+        {
+            _skiRentApi = skiRentApi;
+            _validator = validator;
+        }
+
+        public async Task InitializeAsync(int bookingId)
+        {
+            var result = await _skiRentApi.Bookings.GetAsync(bookingId);
+
+            if (result.IsSuccessful)
+            {
+                SelectedBookingStatus = BookingStatusHelper.GetLocalizedString(result.Content.Status);
+                OriginalBooking = result.Content;
+            }
+        }
+
+        [ObservableProperty]
+        private GetBookingResponse _originalBooking = null!;
+
+        private readonly IValidator<UpdateBookingRequest> _validator = null!;
+
+        private bool _isModified = false;
+
+        [ObservableProperty]
+        private string _selectedBookingStatus = string.Empty;
+
+        public IEnumerable<string> BookingStatuses { get; } = BookingStatusHelper.GetAllLocalizedStatuses();
+
+        [RelayCommand]
+        private async Task SaveAsync()
+        {
+            var request = PrepareBookingUpdateRequest();
+
+            if (!_isModified)
+            {
+                await NavigateBackAsync();
+                return;
+            }
+            _isModified = false;
+
+            await _validator.ValidateAndThrowAsync(request);
+
+            var result = await _skiRentApi.Bookings.UpdateAsync(OriginalBooking.Id, request);
+
+            if (result.IsSuccessful)
+            {
+                MessageBox.Show("A változtatások sikeresen elmentésre kerültek.", "Sikeres mentés", MessageBoxButton.OK, MessageBoxImage.Information);
+                await NavigateBackAsync();
+                return;
+            }
+
+            MessageBox.Show("Hiba történt a mentés során.", "Sikertelen mentés", MessageBoxButton.OK, MessageBoxImage.Error);
+            await InitializeAsync(OriginalBooking.Id);
+        }
+
+        [RelayCommand]
+        private Task ShowItemsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        [RelayCommand]
+        private async Task BackAsync()
+        {
+            PrepareBookingUpdateRequest();
+            if (_isModified && !ShowConfirmationDialog())
+            {
+                _isModified = false;
+                return;
+            }
+            await NavigateBackAsync();
+        }
+
+        private static async Task NavigateBackAsync()
+        {
+            await Navigator.Instance.NavigateToAsync<BookingListViewModel>();
+        }
+
+        private static bool ShowConfirmationDialog()
+        {
+            var result = MessageBox.Show("Biztosan kilép mentés nélkül?", "Nem mentett módosítások!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            return result == MessageBoxResult.Yes;
+        }
+
+        private UpdateBookingRequest PrepareBookingUpdateRequest()
+        {
+            var request = new UpdateBookingRequest();
+
+            var status = BookingStatusHelper.GetStatusFromLocalizedString(SelectedBookingStatus);
+
+            if (status != OriginalBooking.Status)
+            {
+                request = request with { Status = status };
+                _isModified = true;
+            }
+
+            return request;
+        }
+    }
+}

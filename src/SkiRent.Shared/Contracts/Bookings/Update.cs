@@ -4,6 +4,6 @@ namespace SkiRent.Shared.Contracts.Bookings
 {
     public record UpdateBookingRequest
     {
-        public required BookingStatusTypes Status { get; init; }
+        public BookingStatusTypes? Status { get; init; }
     }
 }

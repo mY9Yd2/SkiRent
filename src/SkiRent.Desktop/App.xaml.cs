@@ -82,6 +82,9 @@ public partial class App : Application
         builder.Services.AddTransient<BookingListViewModel>();
         builder.Services.AddTransient<BookingListView>();
 
+        builder.Services.AddTransient<BookingEditViewModel>();
+        builder.Services.AddTransient<BookingEditView>();
+
         _app = builder.Build();
 
         Current.DispatcherUnhandledException += (sender, args) =>

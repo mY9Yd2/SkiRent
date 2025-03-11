@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -112,6 +111,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             PrepareEquipmentUpdateRequest();
             if (_isModified && !ShowConfirmationDialog())
             {
+                _isModified = false;
                 return;
             }
             await NavigateBackAsync();

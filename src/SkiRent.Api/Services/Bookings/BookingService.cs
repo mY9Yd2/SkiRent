@@ -198,12 +198,13 @@ public class BookingService : IBookingService
             return Result.Fail(new BookingNotFoundError(bookingId));
         }
 
-        if (booking.Status != BookingStatus.Paid || request.Status != BookingStatusTypes.Returned)
+        if (request.Status is not null
+            && (booking.Status != BookingStatus.Paid || request.Status != BookingStatusTypes.Returned))
         {
-            return Result.Fail(new InvalidBookingStatusTransitionError(booking.Status, request.Status.ToBookingStatusString()));
+            return Result.Fail(new InvalidBookingStatusTransitionError(booking.Status, ((BookingStatusTypes)request.Status).ToBookingStatusString()));
         }
 
-        booking.Status = request.Status.ToBookingStatusString();
+        booking.Status = request.Status?.ToBookingStatusString() ?? booking.Status;
 
         foreach (var item in booking.BookingItems)
         {

@@ -72,8 +72,9 @@ namespace SkiRent.Desktop.Services
             window.Title = viewModel switch
             {
                 EquipmentListViewModel => $"{baseTitle} - Felszerelések",
-                EquipmentEditViewModel => $"{baseTitle} - Felszerelés módosítása",
+                EquipmentEditViewModel => $"{baseTitle} - Felszerelés szerkesztése",
                 BookingListViewModel => $"{baseTitle} - Foglalások",
+                BookingEditViewModel => $"{baseTitle} - Foglalás szerkesztése",
                 _ => baseTitle
             };
         }
