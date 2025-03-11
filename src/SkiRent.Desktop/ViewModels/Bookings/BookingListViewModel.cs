@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -6,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -42,9 +44,9 @@ namespace SkiRent.Desktop.ViewModels.Bookings
                         Id = booking.Id,
                         StartDate = booking.StartDate,
                         EndDate = booking.EndDate,
-                        TotalPrice = booking.TotalPrice,
+                        TotalPrice = booking.TotalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU")),
                         PaymentId = booking.PaymentId,
-                        Status = booking.Status,
+                        Status = BookingStatusHelper.GetLocalizedString(booking.Status),
                         CreatedAt = booking.CreatedAt,
                         IsOverdue = booking.IsOverdue
                     });

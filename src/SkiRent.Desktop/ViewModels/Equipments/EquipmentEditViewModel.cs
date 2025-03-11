@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -67,8 +68,20 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [ObservableProperty]
         private string _description = string.Empty;
 
-        [ObservableProperty]
         private decimal _pricePerDay;
+
+        public decimal PricePerDay
+        {
+            get => _pricePerDay;
+            set
+            {
+                SetProperty(ref _pricePerDay, value);
+                PricePerDayFormatted = value.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
+            }
+        }
+
+        [ObservableProperty]
+        private string _pricePerDayFormatted = string.Empty;
 
         [ObservableProperty]
         private int _availableQuantity;

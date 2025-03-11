@@ -10,7 +10,7 @@
 
         public required string CategoryName { get; init; }
 
-        public required decimal PricePerDay { get; init; }
+        public required string PricePerDay { get; init; }
 
         public required int AvailableQuantity { get; init; }
 

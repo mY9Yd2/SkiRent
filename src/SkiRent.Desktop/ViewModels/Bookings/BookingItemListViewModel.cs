@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 
 using CommunityToolkit.Mvvm.Input;
 
 using SkiRent.Desktop.Contracts;
+using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Contracts.Common;
@@ -19,14 +21,20 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             _bookingId = bookingId;
             foreach (var item in items)
             {
-                Items.Add(item);
+                Items.Add(new()
+                {
+                    Name = item.Name,
+                    Quantity = item.Quantity,
+                    PricePerDay = item.PricePerDay.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU")),
+                    TotalPrice = item.TotalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"))
+                });
             }
             return Task.CompletedTask;
         }
 
         private int _bookingId;
 
-        public ObservableCollection<BookingItemSummary> Items { get; } = [];
+        public ObservableCollection<BookingItemList> Items { get; } = [];
 
         [RelayCommand]
         private async Task BackAsync()

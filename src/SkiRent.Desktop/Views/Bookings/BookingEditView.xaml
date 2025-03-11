@@ -18,7 +18,7 @@
         <TextBox Text="{Binding OriginalBooking.EndDate, Mode=OneWay}" IsReadOnly="True" />
 
         <Label Content="Összeg" />
-        <TextBox Text="{Binding OriginalBooking.TotalPrice, Mode=OneWay}" IsReadOnly="True" />
+        <TextBox Text="{Binding OriginalTotalPriceFormatted, Mode=OneWay}" IsReadOnly="True" />
 
         <Label Content="Fizetési azonosító" />
         <TextBox Text="{Binding OriginalBooking.PaymentId, Mode=OneWay}" IsReadOnly="True" />

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -35,11 +36,15 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             {
                 SelectedBookingStatus = BookingStatusHelper.GetLocalizedString(result.Content.Status);
                 OriginalBooking = result.Content;
+                OriginalTotalPriceFormatted = OriginalBooking.TotalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
             }
         }
 
         [ObservableProperty]
         private GetBookingResponse _originalBooking = null!;
+
+        [ObservableProperty]
+        private string _originalTotalPriceFormatted = null!;
 
         private readonly IValidator<UpdateBookingRequest> _validator = null!;
 
