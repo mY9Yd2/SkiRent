@@ -4,6 +4,7 @@ using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
+using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Main;
 
@@ -71,6 +72,8 @@ namespace SkiRent.Desktop.Services
             window.Title = viewModel switch
             {
                 EquipmentListViewModel => $"{baseTitle} - Felszerelések",
+                EquipmentEditViewModel => $"{baseTitle} - Felszerelés módosítása",
+                BookingListViewModel => $"{baseTitle} - Foglalások",
                 _ => baseTitle
             };
         }

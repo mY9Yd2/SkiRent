@@ -1,8 +1,8 @@
 ﻿using SkiRent.Shared.Contracts.Common;
 
-namespace SkiRent.Shared.Contracts.Bookings
+namespace SkiRent.Desktop.Models
 {
-    public record GetAllBookingResponse
+    public record BookingList
     {
         public required int Id { get; init; }
 

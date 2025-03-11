@@ -23,5 +23,7 @@ namespace SkiRent.Shared.Contracts.Bookings
         public required IEnumerable<BookingItemSummary> Items { get; init; }
 
         public required int RentalDays { get; init; }
+
+        public required bool IsOverdue { get; init; }
     }
 }

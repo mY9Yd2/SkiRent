@@ -15,9 +15,11 @@ using Refit;
 using SkiRent.Desktop.Configurations;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Admin;
+using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Main;
 using SkiRent.Desktop.Views.Admin;
+using SkiRent.Desktop.Views.Bookings;
 using SkiRent.Desktop.Views.Equipments;
 using SkiRent.Desktop.Views.Main;
 using SkiRent.Shared.Clients;
@@ -76,6 +78,9 @@ public partial class App : Application
 
         builder.Services.AddTransient<EquipmentEditViewModel>();
         builder.Services.AddTransient<EquipmentEditView>();
+
+        builder.Services.AddTransient<BookingListViewModel>();
+        builder.Services.AddTransient<BookingListView>();
 
         _app = builder.Build();
 

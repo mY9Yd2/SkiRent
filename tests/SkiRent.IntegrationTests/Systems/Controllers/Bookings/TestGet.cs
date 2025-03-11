@@ -127,7 +127,8 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
                     PricePerDay = item.PriceAtBooking,
                     TotalPrice = item.Quantity * item.PriceAtBooking * days
                 }),
-                RentalDays = days
+                RentalDays = days,
+                IsOverdue = false
             };
 
             // Act

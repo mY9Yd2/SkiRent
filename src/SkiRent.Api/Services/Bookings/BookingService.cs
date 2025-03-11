@@ -160,7 +160,8 @@ public class BookingService : IBookingService
                 PricePerDay = item.PriceAtBooking,
                 TotalPrice = item.Quantity * item.PriceAtBooking * days
             }),
-            RentalDays = days
+            RentalDays = days,
+            IsOverdue = IsOverdue(booking.EndDate, booking.Status)
         };
 
         return Result.Ok(result);
@@ -181,7 +182,8 @@ public class BookingService : IBookingService
                 TotalPrice = booking.TotalPrice,
                 PaymentId = booking.PaymentId,
                 Status = Enum.Parse<BookingStatusTypes>(booking.Status),
-                CreatedAt = booking.CreatedAt
+                CreatedAt = booking.CreatedAt,
+                IsOverdue = IsOverdue(booking.EndDate, booking.Status)
             });
 
         return Result.Ok(result);
@@ -236,7 +238,8 @@ public class BookingService : IBookingService
                 PricePerDay = item.PriceAtBooking,
                 TotalPrice = item.Quantity * item.PriceAtBooking * days
             }),
-            RentalDays = days
+            RentalDays = days,
+            IsOverdue = IsOverdue(booking.EndDate, booking.Status)
         };
 
         return Result.Ok(result);
@@ -261,5 +264,13 @@ public class BookingService : IBookingService
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<Guid>();
+    }
+
+    private static bool IsOverdue(DateOnly endDate, string status)
+    {
+        var bookingStatus = Enum.Parse<BookingStatusTypes>(status);
+
+        return endDate < DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime)
+            && bookingStatus == BookingStatusTypes.Paid;
     }
 }
