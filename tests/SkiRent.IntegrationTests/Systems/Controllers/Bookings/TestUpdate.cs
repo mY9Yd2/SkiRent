@@ -73,7 +73,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
             var booking = await _unitOfWork.Bookings.GetByIdAsync(createdBookingResponse.Id);
             Assert.That(booking, Is.Not.Null);
 
-            booking.Status = BookingStatus.Paid;
+            booking.Status = BookingStatus.Received;
             await _unitOfWork.SaveChangesAsync();
 
             var request = new UpdateBookingRequest
@@ -124,7 +124,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
 
             var days = (createBookingRequest.EndDate.DayNumber - createBookingRequest.StartDate.DayNumber) + 1;
 
-            booking.Status = BookingStatus.Paid;
+            booking.Status = BookingStatus.Received;
             await _unitOfWork.SaveChangesAsync();
 
             var expectedResponse = new GetBookingResponse

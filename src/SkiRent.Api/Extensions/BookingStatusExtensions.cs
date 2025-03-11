@@ -12,6 +12,8 @@ public static class BookingStatusExtensions
         {
             BookingStatusTypes.Pending => BookingStatus.Pending,
             BookingStatusTypes.Paid => BookingStatus.Paid,
+            BookingStatusTypes.InDelivery => BookingStatus.InDelivery,
+            BookingStatusTypes.Received => BookingStatus.Received,
             BookingStatusTypes.Cancelled => BookingStatus.Cancelled,
             BookingStatusTypes.Returned => BookingStatus.Returned,
             _ => throw new UnhandledBookingStatusException($"Unhandled booking status type: {bookingStatus}.")

@@ -198,24 +198,28 @@ public class BookingService : IBookingService
             return Result.Fail(new BookingNotFoundError(bookingId));
         }
 
-        if (request.Status is not null
-            && (booking.Status != BookingStatus.Paid || request.Status != BookingStatusTypes.Returned))
+        if (request.Status is not null)
         {
-            return Result.Fail(new InvalidBookingStatusTransitionError(booking.Status, ((BookingStatusTypes)request.Status).ToBookingStatusString()));
+            if (!IsValidStatusTransition(booking.Status, request.Status))
+            {
+                return Result.Fail(new InvalidBookingStatusTransitionError(booking.Status, ((BookingStatusTypes)request.Status).ToBookingStatusString()));
+            }
+            booking.Status = request.Status?.ToBookingStatusString() ?? booking.Status;
         }
 
-        booking.Status = request.Status?.ToBookingStatusString() ?? booking.Status;
-
-        foreach (var item in booking.BookingItems)
+        if (request.Status == BookingStatusTypes.Returned)
         {
-            var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
-
-            if (equipment is null)
+            foreach (var item in booking.BookingItems)
             {
-                throw new EquipmentNotFoundException($"Equipment with id '{item.EquipmentId}' not found.");
-            }
+                var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
 
-            equipment.AvailableQuantity += item.Quantity;
+                if (equipment is null)
+                {
+                    throw new EquipmentNotFoundException($"Equipment with id '{item.EquipmentId}' not found.");
+                }
+
+                equipment.AvailableQuantity += item.Quantity;
+            }
         }
 
         await _unitOfWork.SaveChangesAsync();
@@ -273,5 +277,22 @@ public class BookingService : IBookingService
 
         return endDate < DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime)
             && bookingStatus == BookingStatusTypes.Paid;
+    }
+
+    private static bool IsValidStatusTransition(string currentStatus, BookingStatusTypes? newStatus)
+    {
+        return newStatus switch
+        {
+            BookingStatusTypes.InDelivery or BookingStatusTypes.Received
+                when currentStatus == BookingStatus.Paid => true,
+
+            BookingStatusTypes.Received
+                when currentStatus == BookingStatus.InDelivery => true,
+
+            BookingStatusTypes.Returned
+                when currentStatus == BookingStatus.Received => true,
+
+            _ => false
+        };
     }
 }

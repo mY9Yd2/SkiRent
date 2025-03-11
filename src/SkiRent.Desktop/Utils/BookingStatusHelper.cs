@@ -8,6 +8,8 @@ namespace SkiRent.Desktop.Utils
         {
             { BookingStatusTypes.Pending, "Függőben" },
             { BookingStatusTypes.Paid, "Kifizetve" },
+            { BookingStatusTypes.InDelivery, "Kézbesítés alatt" },
+            { BookingStatusTypes.Received, "Átvette" },
             { BookingStatusTypes.Cancelled, "Törölve" },
             { BookingStatusTypes.Returned, "Visszahozva" }
         };
@@ -16,6 +18,8 @@ namespace SkiRent.Desktop.Utils
         {
             { "Függőben", BookingStatusTypes.Pending },
             { "Kifizetve", BookingStatusTypes.Paid },
+            { "Kézbesítés alatt", BookingStatusTypes.InDelivery },
+            { "Átvette", BookingStatusTypes.Received },
             { "Törölve", BookingStatusTypes.Cancelled },
             { "Visszahozva", BookingStatusTypes.Returned }
         };

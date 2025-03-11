@@ -8,6 +8,8 @@ namespace SkiRent.Shared.Contracts.Common
         Invalid,
         Pending,
         Paid,
+        InDelivery,
+        Received,
         Cancelled,
         Returned
     }

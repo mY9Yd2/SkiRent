@@ -11,7 +11,10 @@ namespace SkiRent.Shared.Validators.Bookings
         {
             RuleFor(request => request.Status)
                 .IsInEnum()
-                .Equal(BookingStatusTypes.Returned);
+                .Must(status => status == BookingStatusTypes.InDelivery
+                    || status == BookingStatusTypes.Received
+                    || status == BookingStatusTypes.Returned)
+                .WithMessage("Invalid status. Only 'InDelivery', 'Received', or 'Returned' are allowed.");
         }
     }
 }

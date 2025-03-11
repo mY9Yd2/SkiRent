@@ -26,7 +26,7 @@ public partial class Booking
 
     public Guid PaymentId { get; set; }
 
-    [Column(TypeName = "enum('Pending','Paid','Cancelled','Returned')")]
+    [Column(TypeName = "enum('Pending','Paid','InDelivery','Received','Cancelled','Returned')")]
     public string Status { get; set; } = null!;
 
     [Column(TypeName = "timestamp")]

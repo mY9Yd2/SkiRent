@@ -49,7 +49,7 @@ CREATE TABLE `Bookings` (
     `TotalPrice` DECIMAL(10, 2) NOT NULL,
     `PaymentId` CHAR(36) NOT NULL UNIQUE,
     `Status` ENUM(
-        'Pending', 'Paid', 'Cancelled', 'Returned'
+        'Pending', 'Paid', 'InDelivery', 'Received', 'Cancelled', 'Returned'
     ) NOT NULL DEFAULT 'Pending',
     `CreatedAt` TIMESTAMP DEFAULT UTC_TIMESTAMP(),
     FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
