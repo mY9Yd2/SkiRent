@@ -78,9 +78,10 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         }
 
         [RelayCommand]
-        private Task ShowItemsAsync()
+        private async Task ShowItemsAsync()
         {
-            throw new NotImplementedException();
+            await Navigator.Instance.NavigateToAsync<BookingItemListViewModel>(async vm =>
+                await vm.InitializeAsync(OriginalBooking.Id, OriginalBooking.Items));
         }
 
         [RelayCommand]

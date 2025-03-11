@@ -26,7 +26,7 @@
 
         </StackPanel>
 
-        <DataGrid Grid.Row="2"
+        <DataGrid Grid.Row="1"
               IsReadOnly="True"
               ItemsSource="{Binding Bookings}"
               SelectedItem="{Binding SelectedBooking, Mode=TwoWay}"

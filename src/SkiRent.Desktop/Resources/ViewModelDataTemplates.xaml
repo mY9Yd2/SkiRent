@@ -37,4 +37,8 @@
         <bookings:BookingEditView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type bookingsVM:BookingItemListViewModel}">
+        <bookings:BookingItemListView />
+    </DataTemplate>
+
 </ResourceDictionary>
