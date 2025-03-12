@@ -48,8 +48,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
 
         private readonly IValidator<UpdateBookingRequest> _validator = null!;
 
-        private bool _isModified = false;
-
         [ObservableProperty]
         private string _selectedBookingStatus = string.Empty;
 
@@ -58,14 +56,13 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         [RelayCommand]
         private async Task SaveAsync()
         {
-            var request = PrepareBookingUpdateRequest();
+            var (isModified, request) = PrepareBookingUpdateRequest();
 
-            if (!_isModified)
+            if (!isModified)
             {
                 await NavigateBackAsync();
                 return;
             }
-            _isModified = false;
 
             await _validator.ValidateAndThrowAsync(request);
 
@@ -92,12 +89,13 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         [RelayCommand]
         private async Task BackAsync()
         {
-            PrepareBookingUpdateRequest();
-            if (_isModified && !ShowConfirmationDialog())
+            var (isModified, _) = PrepareBookingUpdateRequest();
+
+            if (isModified && !ShowConfirmationDialog())
             {
-                _isModified = false;
                 return;
             }
+
             await NavigateBackAsync();
         }
 
@@ -112,19 +110,20 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             return result == MessageBoxResult.Yes;
         }
 
-        private UpdateBookingRequest PrepareBookingUpdateRequest()
+        private (bool isModified, UpdateBookingRequest request) PrepareBookingUpdateRequest()
         {
             var request = new UpdateBookingRequest();
+            var isModified = false;
 
             var status = BookingStatusHelper.GetStatusFromLocalizedString(SelectedBookingStatus);
 
             if (status != OriginalBooking.Status)
             {
                 request = request with { Status = status };
-                _isModified = true;
+                isModified = true;
             }
 
-            return request;
+            return (isModified, request);
         }
     }
 }

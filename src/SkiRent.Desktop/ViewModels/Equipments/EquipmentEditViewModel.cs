@@ -60,8 +60,6 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
         private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
 
-        private bool _isModified = false;
-
         [ObservableProperty]
         private string _name = string.Empty;
 
@@ -94,14 +92,13 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [RelayCommand]
         private async Task SaveAsync()
         {
-            var request = PrepareEquipmentUpdateRequest();
+            var (isModified, request) = PrepareEquipmentUpdateRequest();
 
-            if (!_isModified)
+            if (!isModified)
             {
                 await NavigateBackAsync();
                 return;
             }
-            _isModified = false;
 
             await _validator.ValidateAndThrowAsync(request);
 
@@ -121,12 +118,13 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [RelayCommand]
         private async Task BackAsync()
         {
-            PrepareEquipmentUpdateRequest();
-            if (_isModified && !ShowConfirmationDialog())
+            var (isModified, _) = PrepareEquipmentUpdateRequest();
+
+            if (isModified && !ShowConfirmationDialog())
             {
-                _isModified = false;
                 return;
             }
+
             await NavigateBackAsync();
         }
 
@@ -141,43 +139,44 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             return result == MessageBoxResult.Yes;
         }
 
-        private UpdateEquipmentRequest PrepareEquipmentUpdateRequest()
+        private (bool isModified, UpdateEquipmentRequest request) PrepareEquipmentUpdateRequest()
         {
             var request = new UpdateEquipmentRequest();
+            var isModified = false;
 
             if (Name != _originalEquipment.Name
                 && !string.IsNullOrWhiteSpace(Name.Trim()))
             {
                 request = request with { Name = Name.Trim() };
-                _isModified = true;
+                isModified = true;
             }
 
             if (Description != _originalEquipment.Description
                 && !string.IsNullOrWhiteSpace(Description.Trim()))
             {
                 request = request with { Description = Description.Trim() };
-                _isModified = true;
+                isModified = true;
             }
 
             if (PricePerDay != _originalEquipment.PricePerDay)
             {
                 request = request with { PricePerDay = PricePerDay };
-                _isModified = true;
+                isModified = true;
             }
 
             if (AvailableQuantity != _originalEquipment.AvailableQuantity)
             {
                 request = request with { AvailableQuantity = AvailableQuantity };
-                _isModified = true;
+                isModified = true;
             }
 
             if (SelectedEquipmentCategory.Id != _originalEquipment.CategoryId)
             {
                 request = request with { CategoryId = SelectedEquipmentCategory.Id };
-                _isModified = true;
+                isModified = true;
             }
 
-            return request;
+            return (isModified, request);
         }
     }
 }
