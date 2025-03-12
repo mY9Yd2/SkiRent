@@ -14,6 +14,11 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
+        [ObservableProperty]
+        private EquipmentCategoryList _selectedEquipmentCategory = null!;
+
+        public ObservableCollection<EquipmentCategoryList> EquipmentCategories { get; } = [];
+
         public EquipmentCategoryListViewModel()
         { }
 
@@ -40,11 +45,6 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
             }
         }
 
-        public ObservableCollection<EquipmentCategoryList> EquipmentCategories { get; } = [];
-
-        [ObservableProperty]
-        private EquipmentCategoryList _selectedEquipmentCategory = null!;
-
         [RelayCommand]
         private async Task RefreshAsync()
         {
@@ -52,7 +52,7 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
         }
 
         [RelayCommand]
-        private async Task ShowEquipmentCategoryEditAsync()
+        private Task ShowEquipmentCategoryEditAsync()
         {
             throw new NotImplementedException();
         }

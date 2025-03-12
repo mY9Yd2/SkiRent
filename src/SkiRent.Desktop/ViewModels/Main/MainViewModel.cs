@@ -17,6 +17,12 @@ namespace SkiRent.Desktop.ViewModels.Main
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
+        [ObservableProperty]
+        private string _email = string.Empty;
+
+        [ObservableProperty]
+        private string _password = string.Empty;
+
         public MainViewModel()
         { }
 
@@ -24,12 +30,6 @@ namespace SkiRent.Desktop.ViewModels.Main
         {
             _skiRentApi = skiRentApi;
         }
-
-        [ObservableProperty]
-        private string _email = string.Empty;
-
-        [ObservableProperty]
-        private string _password = string.Empty;
 
         [RelayCommand]
         private async Task SignInAsync()

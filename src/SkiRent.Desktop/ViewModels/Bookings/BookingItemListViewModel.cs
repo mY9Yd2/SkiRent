@@ -13,6 +13,10 @@ namespace SkiRent.Desktop.ViewModels.Bookings
 {
     public partial class BookingItemListViewModel : BaseViewModel, IInitializeAsync<int, IEnumerable<BookingItemSummary>>
     {
+        private int _bookingId;
+
+        public ObservableCollection<BookingItemList> Items { get; } = [];
+
         public BookingItemListViewModel()
         { }
 
@@ -31,10 +35,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             }
             return Task.CompletedTask;
         }
-
-        private int _bookingId;
-
-        public ObservableCollection<BookingItemList> Items { get; } = [];
 
         [RelayCommand]
         private async Task BackAsync()

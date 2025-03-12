@@ -17,6 +17,11 @@ namespace SkiRent.Desktop.ViewModels.Bookings
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
+        [ObservableProperty]
+        private BookingList _selectedBooking = null!;
+
+        public ObservableCollection<BookingList> Bookings { get; } = [];
+
         public BookingListViewModel()
         { }
 
@@ -24,11 +29,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         {
             _skiRentApi = skiRentApi;
         }
-
-        public ObservableCollection<BookingList> Bookings { get; } = [];
-
-        [ObservableProperty]
-        private BookingList _selectedBooking = null!;
 
         public async Task InitializeAsync()
         {
@@ -63,8 +63,11 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         [RelayCommand]
         private async Task ShowBookingEditAsync()
         {
-            await Navigator.Instance.NavigateToAsync<BookingEditViewModel>(async vm =>
-                await vm.InitializeAsync(SelectedBooking.Id));
+            if (SelectedBooking is not null)
+            {
+                await Navigator.Instance.NavigateToAsync<BookingEditViewModel>(async vm =>
+                    await vm.InitializeAsync(SelectedBooking.Id));
+            }
         }
     }
 }

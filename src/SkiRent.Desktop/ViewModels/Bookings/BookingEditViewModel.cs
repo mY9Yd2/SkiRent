@@ -18,6 +18,18 @@ namespace SkiRent.Desktop.ViewModels.Bookings
     public partial class BookingEditViewModel : BaseViewModel, IInitializeAsync<int>
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IValidator<UpdateBookingRequest> _validator = null!;
+
+        [ObservableProperty]
+        private GetBookingResponse _originalBooking = null!;
+
+        [ObservableProperty]
+        private string _originalTotalPriceFormatted = string.Empty;
+
+        [ObservableProperty]
+        private string _selectedBookingStatus = string.Empty;
+
+        public IEnumerable<string> BookingStatuses { get; } = BookingStatusHelper.GetAllLocalizedStatuses();
 
         public BookingEditViewModel()
         { }
@@ -39,19 +51,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
                 OriginalTotalPriceFormatted = OriginalBooking.TotalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
             }
         }
-
-        [ObservableProperty]
-        private GetBookingResponse _originalBooking = null!;
-
-        [ObservableProperty]
-        private string _originalTotalPriceFormatted = null!;
-
-        private readonly IValidator<UpdateBookingRequest> _validator = null!;
-
-        [ObservableProperty]
-        private string _selectedBookingStatus = string.Empty;
-
-        public IEnumerable<string> BookingStatuses { get; } = BookingStatusHelper.GetAllLocalizedStatuses();
 
         [RelayCommand]
         private async Task SaveAsync()

@@ -17,6 +17,15 @@ namespace SkiRent.Desktop.ViewModels.Admin
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
+        [ObservableProperty]
+        private CurrentUser _currentUser = null!;
+
+        [ObservableProperty]
+        private AdminMenuViewModel _adminMenuViewModel = null!;
+
+        [ObservableProperty]
+        private BaseViewModel _currentView = null!;
+
         public AdminMainViewModel()
         { }
 
@@ -29,15 +38,6 @@ namespace SkiRent.Desktop.ViewModels.Admin
                 ?? throw new CurrentUserNotFoundException("Current user not found in application properties.");
             CurrentUser = (CurrentUser)user;
         }
-
-        [ObservableProperty]
-        private CurrentUser _currentUser = null!;
-
-        [ObservableProperty]
-        private AdminMenuViewModel _adminMenuViewModel = null!;
-
-        [ObservableProperty]
-        private BaseViewModel _currentView = null!;
 
         public void UpdateCurrentView(BaseViewModel viewModel)
         {

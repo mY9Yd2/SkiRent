@@ -19,6 +19,37 @@ namespace SkiRent.Desktop.ViewModels.Equipments
     public partial class EquipmentEditViewModel : BaseViewModel, IInitializeAsync<int>
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
+
+        private GetEquipmentResponse _originalEquipment = null!;
+        private decimal _pricePerDay;
+
+        [ObservableProperty]
+        private string _name = string.Empty;
+
+        [ObservableProperty]
+        private string _description = string.Empty;
+
+        [ObservableProperty]
+        private string _pricePerDayFormatted = string.Empty;
+
+        [ObservableProperty]
+        private int _availableQuantity;
+
+        [ObservableProperty]
+        private EquipmentCategory _selectedEquipmentCategory = null!;
+
+        public decimal PricePerDay
+        {
+            get => _pricePerDay;
+            set
+            {
+                SetProperty(ref _pricePerDay, value);
+                PricePerDayFormatted = value.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
+            }
+        }
+
+        public ObservableCollection<EquipmentCategory> EquipmentCategories { get; } = [];
 
         public EquipmentEditViewModel()
         { }
@@ -55,39 +86,6 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 _originalEquipment = result.Content;
             }
         }
-
-        private GetEquipmentResponse _originalEquipment = null!;
-
-        private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
-
-        [ObservableProperty]
-        private string _name = string.Empty;
-
-        [ObservableProperty]
-        private string _description = string.Empty;
-
-        private decimal _pricePerDay;
-
-        public decimal PricePerDay
-        {
-            get => _pricePerDay;
-            set
-            {
-                SetProperty(ref _pricePerDay, value);
-                PricePerDayFormatted = value.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
-            }
-        }
-
-        [ObservableProperty]
-        private string _pricePerDayFormatted = string.Empty;
-
-        [ObservableProperty]
-        private int _availableQuantity;
-
-        [ObservableProperty]
-        private EquipmentCategory _selectedEquipmentCategory = null!;
-
-        public ObservableCollection<EquipmentCategory> EquipmentCategories { get; } = [];
 
         [RelayCommand]
         private async Task SaveAsync()

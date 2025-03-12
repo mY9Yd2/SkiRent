@@ -16,6 +16,11 @@ namespace SkiRent.Desktop.ViewModels.Equipments
     {
         private readonly ISkiRentApi _skiRentApi = null!;
 
+        [ObservableProperty]
+        private EquipmentList _selectedEquipment = null!;
+
+        public ObservableCollection<EquipmentList> Equipments { get; } = [];
+
         public EquipmentListViewModel()
         { }
 
@@ -23,11 +28,6 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         {
             _skiRentApi = skiRentApi;
         }
-
-        public ObservableCollection<EquipmentList> Equipments { get; } = [];
-
-        [ObservableProperty]
-        private EquipmentList _selectedEquipment = null!;
 
         public async Task InitializeAsync()
         {
