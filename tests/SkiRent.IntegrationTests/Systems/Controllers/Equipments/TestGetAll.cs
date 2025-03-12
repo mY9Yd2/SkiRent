@@ -87,6 +87,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                 {
                     Id = createdEquipments[0].Id,
                     Name = createdEquipments[0].Name,
+                    Description = createdEquipments[0].Description,
                     CategoryId = createdEquipments[0].CategoryId,
                     CategoryName = category.Name,
                     PricePerDay = createdEquipments[0].PricePerDay,
@@ -96,6 +97,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Equipments
                 {
                     Id = createdEquipments[1].Id,
                     Name = createdEquipments[1].Name,
+                    Description = createdEquipments[1].Description,
                     CategoryId = createdEquipments[1].CategoryId,
                     CategoryName = category.Name,
                     PricePerDay = createdEquipments[1].PricePerDay,

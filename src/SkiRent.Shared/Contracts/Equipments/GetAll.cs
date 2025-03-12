@@ -6,7 +6,7 @@
 
         public required string Name { get; init; }
 
-        public string? Description { get; init; } // Hozzáadva (azért kérdőjel, mert lehet, hogy null az értéke)
+        public required string? Description { get; init; }
 
         public required int CategoryId { get; init; }
 
