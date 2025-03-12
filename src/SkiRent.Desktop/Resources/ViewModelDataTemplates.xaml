@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:equipmentCategoriesVM="clr-namespace:SkiRent.Desktop.ViewModels.EquipmentCategories"
+                    xmlns:equipmentCategories="clr-namespace:SkiRent.Desktop.Views.EquipmentCategories"
                     xmlns:bookingsVM="clr-namespace:SkiRent.Desktop.ViewModels.Bookings"
                     xmlns:bookings="clr-namespace:SkiRent.Desktop.Views.Bookings"
                     xmlns:equipmentsVM="clr-namespace:SkiRent.Desktop.ViewModels.Equipments"
@@ -39,6 +41,10 @@
 
     <DataTemplate DataType="{x:Type bookingsVM:BookingItemListViewModel}">
         <bookings:BookingItemListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type equipmentCategoriesVM:EquipmentCategoryListViewModel}">
+        <equipmentCategories:EquipmentCategoryListView />
     </DataTemplate>
 
 </ResourceDictionary>

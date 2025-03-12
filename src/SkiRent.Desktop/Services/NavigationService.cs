@@ -5,6 +5,7 @@ using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Bookings;
+using SkiRent.Desktop.ViewModels.EquipmentCategories;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Main;
 
@@ -76,6 +77,7 @@ namespace SkiRent.Desktop.Services
                 BookingListViewModel => $"{baseTitle} - Foglalások",
                 BookingEditViewModel => $"{baseTitle} - Foglalás szerkesztése",
                 BookingItemListViewModel => $"{baseTitle} - Tétellista",
+                EquipmentCategoryListViewModel => $"{baseTitle} - Felszerelés kategóriák",
                 _ => baseTitle
             };
         }

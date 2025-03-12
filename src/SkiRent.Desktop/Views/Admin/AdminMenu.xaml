@@ -16,7 +16,8 @@
         <StackPanel Margin="10,0">
 
             <Button Content="Felszerelések" Command="{Binding ShowEquipmentsCommand}" />
-            <Button Content="Foglalások" Command="{Binding ShowBookingsCommand}" Margin="0,15" />
+            <Button Content="Felszerelés kategóriák" Command="{Binding ShowEquipmentCategoriesCommand}" Margin="0,15" />
+            <Button Content="Foglalások" Command="{Binding ShowBookingsCommand}" />
 
         </StackPanel>
 
