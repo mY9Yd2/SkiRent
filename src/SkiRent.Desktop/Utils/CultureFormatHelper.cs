@@ -15,5 +15,15 @@ namespace SkiRent.Desktop.Utils
         {
             return value.ToString("C0", Culture);
         }
+
+        public static string FormatShortDate(DateOnly value)
+        {
+            return value.ToString("yyyy. MM. dd.", Culture);
+        }
+
+        public static string FormatDateTime(DateTimeOffset value)
+        {
+            return value.ToString("yyyy. MM. dd. HH:mm:ss", Culture);
+        }
     }
 }

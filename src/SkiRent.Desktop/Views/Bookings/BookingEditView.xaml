@@ -12,10 +12,10 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
 
         <Label Content="Kezdés dátuma" />
-        <TextBox Text="{Binding OriginalBooking.StartDate, Mode=OneWay}" IsReadOnly="True" />
+        <TextBox Text="{Binding OriginalBooking.StartDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
         <Label Content="Befejezés dátuma" />
-        <TextBox Text="{Binding OriginalBooking.EndDate, Mode=OneWay}" IsReadOnly="True" />
+        <TextBox Text="{Binding OriginalBooking.EndDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
         <Label Content="Összeg" />
         <TextBox Text="{Binding OriginalTotalPriceFormatted, Mode=OneWay}" IsReadOnly="True" />
@@ -28,7 +28,7 @@
                   SelectedItem="{Binding SelectedBookingStatus}" />
 
         <Label Content="Létrehozva" />
-        <TextBox Text="{Binding OriginalBooking.CreatedAt, Mode=OneWay}" IsReadOnly="True" />
+        <TextBox Text="{Binding OriginalBooking.CreatedAt, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
         <Label Content="Bérlési idő (napokban)" />
         <TextBox Text="{Binding OriginalBooking.RentalDays, Mode=OneWay}" IsReadOnly="True" />
