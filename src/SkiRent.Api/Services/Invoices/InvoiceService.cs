@@ -8,6 +8,7 @@ using SkiRent.Api.Configurations;
 using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
+using SkiRent.Shared.Contracts.Invoices;
 
 namespace SkiRent.Api.Services.Invoices;
 
@@ -40,6 +41,23 @@ public class InvoiceService : IInvoiceService
 
         var path = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Invoices", $"{invoiceId}.pdf");
         var result = await _fileSystem.File.ReadAllBytesAsync(path);
+
+        return Result.Ok(result);
+    }
+
+    public async Task<Result<IEnumerable<GetAllInvoicesResponse>>> GetAllAsync()
+    {
+        var invoices = await _unitOfWork.Invoices.GetAllInvoiceWithUserAsync();
+
+        var result = invoices.Select(invoice =>
+            new GetAllInvoicesResponse
+            {
+                Id = invoice.Id,
+                UserId = invoice.UserId,
+                BookingId = invoice.BookingId,
+                CreatedAt = invoice.CreatedAt,
+                Email = invoice.User?.Email
+            });
 
         return Result.Ok(result);
     }

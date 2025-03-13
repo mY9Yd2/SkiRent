@@ -4,6 +4,7 @@ using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.EquipmentCategories;
 using SkiRent.Shared.Contracts.Equipments;
+using SkiRent.Shared.Contracts.Invoices;
 using SkiRent.Shared.Contracts.Payments;
 using SkiRent.Shared.Contracts.Users;
 
@@ -106,5 +107,8 @@ namespace SkiRent.Shared.Clients
     {
         [Get("/api/invoices/{invoiceId}")]
         public Task<IApiResponse<Stream>> GetAsync(Guid invoiceId);
+
+        [Get("/api/invoices")]
+        public Task<IApiResponse<IEnumerable<GetAllInvoicesResponse>>> GetAllAsync();
     }
 }

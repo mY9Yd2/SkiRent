@@ -8,4 +8,11 @@ public class InvoiceRepository : BaseRepository<Invoice, Guid>, IInvoiceReposito
 {
     public InvoiceRepository(DbContext context) : base(context)
     { }
+
+    public async Task<IEnumerable<Invoice>> GetAllInvoiceWithUserAsync()
+    {
+        return await _dbSet
+            .Include(invoice => invoice.User)
+            .ToListAsync();
+    }
 }

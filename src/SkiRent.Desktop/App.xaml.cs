@@ -18,11 +18,13 @@ using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;
 using SkiRent.Desktop.ViewModels.Equipments;
+using SkiRent.Desktop.ViewModels.Invoices;
 using SkiRent.Desktop.ViewModels.Main;
 using SkiRent.Desktop.Views.Admin;
 using SkiRent.Desktop.Views.Bookings;
 using SkiRent.Desktop.Views.EquipmentCategories;
 using SkiRent.Desktop.Views.Equipments;
+using SkiRent.Desktop.Views.Invoices;
 using SkiRent.Desktop.Views.Main;
 using SkiRent.Shared.Clients;
 
@@ -101,6 +103,9 @@ public partial class App : Application
 
         builder.Services.AddTransient<EquipmentCategoryCreateViewModel>();
         builder.Services.AddTransient<EquipmentCategoryCreateView>();
+
+        builder.Services.AddTransient<InvoiceListViewModel>();
+        builder.Services.AddTransient<InvoiceListView>();
 
         _app = builder.Build();
 

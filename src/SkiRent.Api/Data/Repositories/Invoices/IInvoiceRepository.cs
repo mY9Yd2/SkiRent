@@ -3,4 +3,6 @@
 namespace SkiRent.Api.Data.Repositories.Invoices;
 
 public interface IInvoiceRepository : IRepository<Invoice, Guid>
-{ }
+{
+    public Task<IEnumerable<Invoice>> GetAllInvoiceWithUserAsync();
+}

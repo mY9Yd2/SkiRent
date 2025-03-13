@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkiRent.Api.Controllers.Base;
 using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Services.Invoices;
+using SkiRent.Shared.Contracts.Invoices;
 
 namespace SkiRent.Api.Controllers;
 
@@ -39,5 +40,19 @@ public class InvoicesController : BaseController
         }
 
         return File(result.Value, MediaTypeNames.Application.Pdf, fileDownloadName: $"Számla_{invoiceId}.pdf");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<IEnumerable<GetAllInvoicesResponse>>> GetAll()
+    {
+        var result = await _invoiceService.GetAllAsync();
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
     }
 }
