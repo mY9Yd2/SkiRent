@@ -95,7 +95,10 @@ public class PaymentService : IPaymentService
             throw new CreateInvoiceRequestNotFoundException($"Invoice with payment id '{paymentId}' not found.");
         }
 
-        var document = GenerateInvoiceDocument(invoiceRequest, paidAt ?? TimeProvider.System.GetUtcNow());
+        TimeZoneInfo cetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+        var paidAtConverted = TimeZoneInfo.ConvertTime(paidAt ?? TimeProvider.System.GetUtcNow(), cetTimeZone);
+
+        var document = GenerateInvoiceDocument(invoiceRequest, paidAtConverted);
         await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, document);
 
         await _cache.RemoveAsync(paymentId.ToString());
