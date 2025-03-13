@@ -65,5 +65,11 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                     await vm.InitializeAsync(SelectedEquipment.Id));
             }
         }
+
+        [RelayCommand]
+        private async Task ShowEquipmentCreateAsync()
+        {
+            await Navigator.Instance.NavigateToAsync<EquipmentCreateViewModel>();
+        }
     }
 }

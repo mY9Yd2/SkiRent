@@ -81,6 +81,9 @@ public partial class App : Application
         builder.Services.AddTransient<EquipmentEditViewModel>();
         builder.Services.AddTransient<EquipmentEditView>();
 
+        builder.Services.AddTransient<EquipmentCreateViewModel>();
+        builder.Services.AddTransient<EquipmentCreateView>();
+
         builder.Services.AddTransient<BookingListViewModel>();
         builder.Services.AddTransient<BookingListView>();
 

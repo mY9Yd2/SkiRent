@@ -31,6 +31,10 @@
         <equipments:EquipmentEditView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type equipmentsVM:EquipmentCreateViewModel}">
+        <equipments:EquipmentCreateView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type bookingsVM:BookingListViewModel}">
         <bookings:BookingListView />
     </DataTemplate>
