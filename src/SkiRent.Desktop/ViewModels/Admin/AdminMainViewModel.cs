@@ -50,6 +50,13 @@ namespace SkiRent.Desktop.ViewModels.Admin
         [RelayCommand]
         private async Task SignOutAsync()
         {
+            var result = MessageBox.Show("Biztosan ki szeretne jelentkezni?", "Megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             var signOutResult = await _skiRentApi.Auth.SignOutAsync(string.Empty);
 
             if (signOutResult.IsSuccessful)
