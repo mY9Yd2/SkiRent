@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -44,7 +43,7 @@ namespace SkiRent.Desktop.ViewModels.Bookings
                         Id = booking.Id,
                         StartDate = booking.StartDate,
                         EndDate = booking.EndDate,
-                        TotalPrice = booking.TotalPrice.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU")),
+                        TotalPrice = CultureFormatHelper.FormatCurrency(booking.TotalPrice),
                         PaymentId = booking.PaymentId,
                         Status = BookingStatusHelper.GetLocalizedString(booking.Status),
                         CreatedAt = booking.CreatedAt,

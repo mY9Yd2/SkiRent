@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -7,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -44,7 +44,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                         Name = equipment.Name,
                         CategoryId = equipment.CategoryId,
                         CategoryName = equipment.CategoryName,
-                        PricePerDay = equipment.PricePerDay.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU")),
+                        PricePerDay = CultureFormatHelper.FormatCurrency(equipment.PricePerDay),
                         AvailableQuantity = equipment.AvailableQuantity
                     });
                 }

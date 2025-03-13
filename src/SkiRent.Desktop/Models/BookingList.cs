@@ -1,6 +1,4 @@
-﻿using SkiRent.Shared.Contracts.Common;
-
-namespace SkiRent.Desktop.Models
+﻿namespace SkiRent.Desktop.Models
 {
     public record BookingList
     {

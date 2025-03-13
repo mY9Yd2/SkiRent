@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,6 +9,7 @@ using FluentValidation;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Equipments;
@@ -45,7 +45,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             set
             {
                 SetProperty(ref _pricePerDay, value);
-                PricePerDayFormatted = value.ToString("C0", CultureInfo.CreateSpecificCulture("hu-HU"));
+                PricePerDayFormatted = CultureFormatHelper.FormatCurrency(value);
             }
         }
 
