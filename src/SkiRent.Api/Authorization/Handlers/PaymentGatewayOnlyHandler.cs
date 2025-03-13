@@ -46,7 +46,7 @@ public class PaymentGatewayOnlyHandler : AuthorizationHandler<PaymentGatewayOnly
             return;
         }
 
-        using var hmac = new HMACSHA3_256(Encoding.UTF8.GetBytes(_paymentGatewayOptions.SharedSecret));
+        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_paymentGatewayOptions.SharedSecret));
         var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(requestBody));
         var signatureBytes = Convert.FromBase64String(signature.ToString());
 

@@ -112,7 +112,7 @@ public class PaymentService
         var jsonBody = JsonSerializer.Serialize(paymentResult);
         var content = new StringContent(jsonBody, Encoding.UTF8, MediaTypeNames.Application.Json);
 
-        using var hmac = new HMACSHA3_256(Encoding.UTF8.GetBytes(_clientOptions.SharedSecret));
+        using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_clientOptions.SharedSecret));
         var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(jsonBody));
         var signature = Convert.ToBase64String(hashBytes);
 

@@ -58,7 +58,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Payments
 
             var jsonBody = JsonSerializer.Serialize(paymentResult, options);
 
-            using var hmac = new HMACSHA3_256(Encoding.UTF8.GetBytes(_paymentGatewayOptions.SharedSecret));
+            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_paymentGatewayOptions.SharedSecret));
             var hashBytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(jsonBody));
             var signature = Convert.ToBase64String(hashBytes);
 
