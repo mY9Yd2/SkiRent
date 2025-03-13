@@ -24,6 +24,8 @@
 
             <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentCategoryEditCommand}" />
 
+            <Button Content="Új kategória" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentCategoryCreateCommand}" />
+
         </StackPanel>
 
         <DataGrid Grid.Row="1"

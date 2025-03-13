@@ -96,6 +96,9 @@ public partial class App : Application
         builder.Services.AddTransient<EquipmentCategoryEditViewModel>();
         builder.Services.AddTransient<EquipmentCategoryEditView>();
 
+        builder.Services.AddTransient<EquipmentCategoryCreateViewModel>();
+        builder.Services.AddTransient<EquipmentCategoryCreateView>();
+
         _app = builder.Build();
 
         Current.DispatcherUnhandledException += (sender, args) =>

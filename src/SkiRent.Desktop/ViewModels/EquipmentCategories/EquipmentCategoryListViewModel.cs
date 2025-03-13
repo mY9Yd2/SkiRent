@@ -55,8 +55,17 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
         [RelayCommand]
         private async Task ShowEquipmentCategoryEditAsync()
         {
-            await Navigator.Instance.NavigateToAsync<EquipmentCategoryEditViewModel>(async vm =>
-                await vm.InitializeAsync(SelectedEquipmentCategory.Id, SelectedEquipmentCategory.Name));
+            if (SelectedEquipmentCategory is not null)
+            {
+                await Navigator.Instance.NavigateToAsync<EquipmentCategoryEditViewModel>(async vm =>
+                    await vm.InitializeAsync(SelectedEquipmentCategory.Id, SelectedEquipmentCategory.Name));
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowEquipmentCategoryCreateAsync()
+        {
+            await Navigator.Instance.NavigateToAsync<EquipmentCategoryCreateViewModel>();
         }
     }
 }

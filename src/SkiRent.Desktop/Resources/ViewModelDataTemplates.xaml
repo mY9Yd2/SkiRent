@@ -51,4 +51,8 @@
         <equipmentCategories:EquipmentCategoryEditView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type equipmentCategoriesVM:EquipmentCategoryCreateViewModel}">
+        <equipmentCategories:EquipmentCategoryCreateView />
+    </DataTemplate>
+
 </ResourceDictionary>
