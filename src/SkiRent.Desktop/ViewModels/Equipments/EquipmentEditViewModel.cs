@@ -22,7 +22,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
 
         private GetEquipmentResponse _originalEquipment = null!;
-        private decimal _pricePerDay;
+        private int _pricePerDay;
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -39,7 +39,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [ObservableProperty]
         private EquipmentCategory _selectedEquipmentCategory = null!;
 
-        public decimal PricePerDay
+        public int PricePerDay
         {
             get => _pricePerDay;
             set
@@ -69,7 +69,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             {
                 Name = result.Content.Name;
                 Description = result.Content.Description ?? string.Empty;
-                PricePerDay = result.Content.PricePerDay;
+                PricePerDay = (int)result.Content.PricePerDay;
                 AvailableQuantity = result.Content.AvailableQuantity;
 
                 EquipmentCategories.Clear();
