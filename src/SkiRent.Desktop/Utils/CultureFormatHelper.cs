@@ -24,7 +24,7 @@ namespace SkiRent.Desktop.Utils
 
         public static string FormatDateTime(DateTimeOffset value)
         {
-            return TimeZoneInfo.ConvertTime(value, TimeZone).ToString("yyyy. MM. dd. HH:mm:ss", Culture);
+            return TimeZoneInfo.ConvertTime(value, TimeZone).ToString("yyyy. MM. dd. HH:mm", Culture);
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
+using PdfSharp.Quality;
 
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
@@ -52,6 +55,32 @@ namespace SkiRent.Desktop.ViewModels.Invoices
         private async Task RefreshAsync()
         {
             await InitializeAsync();
+        }
+
+        [RelayCommand]
+        private async Task ShowPdf()
+        {
+            var result = await _skiRentApi.Invoices.GetAsync(SelectedInvoice.Id);
+
+            if (result.IsSuccessful)
+            {
+                var invoiceFileName = result.ContentHeaders?.ContentDisposition?.FileNameStar
+                    ?? $"Számla_{SelectedInvoice.Id}.pdf";
+
+                await using var memoryStream = new MemoryStream();
+                await result.Content.CopyToAsync(memoryStream);
+                var contentBytes = memoryStream.ToArray();
+
+                var tempPath = Path.GetFullPath(Path.GetTempPath());
+                var path = Path.Combine(tempPath, "SkiRent");
+
+                var directory = Directory.CreateDirectory(path);
+                var filePath = Path.Combine(directory.FullName, invoiceFileName);
+
+                await File.WriteAllBytesAsync(filePath, contentBytes);
+
+                PdfFileUtility.ShowDocument(filePath);
+            }
         }
     }
 }
