@@ -10,6 +10,8 @@ namespace SkiRent.Shared.Contracts.Users
 
         public string? Password { get; init; }
 
+        public required string CurrentPassword { get; init; }
+
         public RoleTypes? Role { get; init; }
 
         [JsonIgnore]

@@ -98,6 +98,16 @@ public class UserService : IUserService
             return Result.Fail(new UserNotFoundError(userId));
         }
 
+        if (!isInRole(Roles.Admin))
+        {
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.CurrentPassword);
+
+            if (passwordVerificationResult == PasswordVerificationResult.Failed)
+            {
+                return Result.Fail(new PasswordVerificationFailedError());
+            }
+        }
+
         if (request.Email is not null)
         {
             if (await _unitOfWork.Users.ExistsAsync(user => user.Email == request.Email))
