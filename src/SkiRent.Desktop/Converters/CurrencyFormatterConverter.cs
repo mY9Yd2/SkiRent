@@ -5,14 +5,14 @@ using SkiRent.Desktop.Utils;
 
 namespace SkiRent.Desktop.Converters
 {
-    public class DateFormatterConverter : IValueConverter
+    public class CurrencyFormatterConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value switch
             {
-                DateOnly date => CultureFormatHelper.FormatShortDate(date),
-                DateTimeOffset dateTime => CultureFormatHelper.FormatDateTime(dateTime),
+                decimal currencyDecimal => CultureFormatHelper.FormatCurrency(currencyDecimal),
+                int currencyInt => CultureFormatHelper.FormatCurrency(currencyInt),
                 _ => value
             };
         }

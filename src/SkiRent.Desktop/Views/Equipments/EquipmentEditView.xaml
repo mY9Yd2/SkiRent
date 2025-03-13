@@ -31,7 +31,7 @@
                   DisplayMemberPath="Name" />
 
         <Label Content="Ár/nap" />
-        <Label Content="{Binding PricePerDayFormatted}" />
+        <Label Content="{Binding PricePerDay, Converter={StaticResource CurrencyFormatterConverter}}" />
         <TextBox Text="{Binding PricePerDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Label Content="Elérhető mennyiség" />

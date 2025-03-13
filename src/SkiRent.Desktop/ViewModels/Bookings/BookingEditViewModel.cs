@@ -23,9 +23,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         private GetBookingResponse _originalBooking = null!;
 
         [ObservableProperty]
-        private string _originalTotalPriceFormatted = string.Empty;
-
-        [ObservableProperty]
         private string _selectedBookingStatus = string.Empty;
 
         public IEnumerable<string> BookingStatuses { get; } = BookingStatusHelper.GetAllLocalizedStatuses();
@@ -47,7 +44,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             {
                 SelectedBookingStatus = BookingStatusHelper.GetLocalizedString(result.Content.Status);
                 OriginalBooking = result.Content;
-                OriginalTotalPriceFormatted = CultureFormatHelper.FormatCurrency(OriginalBooking.TotalPrice);
             }
         }
 

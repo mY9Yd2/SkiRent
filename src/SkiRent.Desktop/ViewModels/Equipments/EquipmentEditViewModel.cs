@@ -9,7 +9,6 @@ using FluentValidation;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
-using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 using SkiRent.Shared.Contracts.Equipments;
@@ -22,7 +21,6 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
 
         private GetEquipmentResponse _originalEquipment = null!;
-        private int _pricePerDay;
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -31,23 +29,13 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private string _description = string.Empty;
 
         [ObservableProperty]
-        private string _pricePerDayFormatted = string.Empty;
+        private int _pricePerDay;
 
         [ObservableProperty]
         private int _availableQuantity;
 
         [ObservableProperty]
         private EquipmentCategory _selectedEquipmentCategory = null!;
-
-        public int PricePerDay
-        {
-            get => _pricePerDay;
-            set
-            {
-                SetProperty(ref _pricePerDay, value);
-                PricePerDayFormatted = CultureFormatHelper.FormatCurrency(value);
-            }
-        }
 
         public ObservableCollection<EquipmentCategory> EquipmentCategories { get; } = [];
 

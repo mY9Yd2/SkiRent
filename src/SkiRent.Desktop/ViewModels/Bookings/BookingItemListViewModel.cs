@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
-using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Contracts.Common;
 
@@ -29,8 +28,8 @@ namespace SkiRent.Desktop.ViewModels.Bookings
                 {
                     Name = item.Name,
                     Quantity = item.Quantity,
-                    PricePerDay = CultureFormatHelper.FormatCurrency(item.PricePerDay),
-                    TotalPrice = CultureFormatHelper.FormatCurrency(item.TotalPrice)
+                    PricePerDay = item.PricePerDay,
+                    TotalPrice = item.TotalPrice
                 });
             }
             return Task.CompletedTask;

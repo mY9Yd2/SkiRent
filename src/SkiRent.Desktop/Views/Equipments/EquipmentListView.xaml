@@ -40,7 +40,7 @@
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
                 <DataGridTextColumn Header="Név" Binding="{Binding Name}" Width="Auto" />
                 <DataGridTextColumn Header="Kategória" Binding="{Binding CategoryName}" Width="Auto" />
-                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay}" Width="Auto" />
+                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay, Converter={StaticResource CurrencyFormatterConverter}}" Width="Auto" />
                 <DataGridTextColumn Header="Elérhető mennyiség" Binding="{Binding AvailableQuantity}" Width="*" />
             </DataGrid.Columns>
 

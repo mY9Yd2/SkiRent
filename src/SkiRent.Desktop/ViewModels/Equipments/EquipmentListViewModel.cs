@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
-using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -44,7 +43,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                         Name = equipment.Name,
                         CategoryId = equipment.CategoryId,
                         CategoryName = equipment.CategoryName,
-                        PricePerDay = CultureFormatHelper.FormatCurrency(equipment.PricePerDay),
+                        PricePerDay = equipment.PricePerDay,
                         AvailableQuantity = equipment.AvailableQuantity
                     });
                 }

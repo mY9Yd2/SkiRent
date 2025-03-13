@@ -13,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DateFormatterConverter x:Key="DateFormatterConverter" />
+            <converters:CurrencyFormatterConverter x:Key="CurrencyFormatterConverter" />
 
         </ResourceDictionary>
 

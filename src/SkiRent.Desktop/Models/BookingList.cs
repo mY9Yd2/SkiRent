@@ -8,7 +8,7 @@
 
         public required DateOnly EndDate { get; init; }
 
-        public required string TotalPrice { get; init; }
+        public required decimal TotalPrice { get; init; }
 
         public required Guid PaymentId { get; init; }
 

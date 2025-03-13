@@ -43,7 +43,7 @@ namespace SkiRent.Desktop.ViewModels.Bookings
                         Id = booking.Id,
                         StartDate = booking.StartDate,
                         EndDate = booking.EndDate,
-                        TotalPrice = CultureFormatHelper.FormatCurrency(booking.TotalPrice),
+                        TotalPrice = booking.TotalPrice,
                         PaymentId = booking.PaymentId,
                         Status = BookingStatusHelper.GetLocalizedString(booking.Status),
                         CreatedAt = booking.CreatedAt,

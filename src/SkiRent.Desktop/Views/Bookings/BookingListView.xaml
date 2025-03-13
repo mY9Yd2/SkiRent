@@ -40,7 +40,7 @@
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
                 <DataGridTextColumn Header="Kezdés dátuma" Binding="{Binding StartDate, Converter={StaticResource DateFormatterConverter}}" Width="Auto" />
                 <DataGridTextColumn Header="Befejezés dátuma" Binding="{Binding EndDate, Converter={StaticResource DateFormatterConverter}}" Width="Auto" />
-                <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice}" Width="Auto" />
+                <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice, Converter={StaticResource CurrencyFormatterConverter}}" Width="Auto" />
                 <DataGridTextColumn Header="Fizetési azonosító" Binding="{Binding PaymentId}" Width="Auto" />
                 <DataGridTextColumn Header="Állapot" Binding="{Binding Status}" Width="Auto" />
                 <DataGridTextColumn Header="Létrehozva" Binding="{Binding CreatedAt, Converter={StaticResource DateFormatterConverter}}" Width="*" />

@@ -36,8 +36,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Név" Binding="{Binding Name}" Width="Auto" />
                 <DataGridTextColumn Header="Mennyiség" Binding="{Binding Quantity}" Width="Auto" />
-                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay}" Width="Auto" />
-                <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice}" Width="*" />
+                <DataGridTextColumn Header="Ár/nap" Binding="{Binding PricePerDay, Converter={StaticResource CurrencyFormatterConverter}}" Width="Auto" />
+                <DataGridTextColumn Header="Összeg" Binding="{Binding TotalPrice, Converter={StaticResource CurrencyFormatterConverter}}" Width="*" />
             </DataGrid.Columns>
 
         </DataGrid>
