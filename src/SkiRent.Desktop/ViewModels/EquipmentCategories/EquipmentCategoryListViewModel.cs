@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
+using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -52,9 +53,10 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
         }
 
         [RelayCommand]
-        private Task ShowEquipmentCategoryEditAsync()
+        private async Task ShowEquipmentCategoryEditAsync()
         {
-            throw new NotImplementedException();
+            await Navigator.Instance.NavigateToAsync<EquipmentCategoryEditViewModel>(async vm =>
+                await vm.InitializeAsync(SelectedEquipmentCategory.Id, SelectedEquipmentCategory.Name));
         }
     }
 }

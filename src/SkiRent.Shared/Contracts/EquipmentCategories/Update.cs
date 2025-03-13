@@ -2,6 +2,6 @@
 {
     public record UpdateEquipmentCategoryRequest
     {
-        public required string Name { get; init; }
+        public string? Name { get; init; }
     }
 }

@@ -47,4 +47,8 @@
         <equipmentCategories:EquipmentCategoryListView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type equipmentCategoriesVM:EquipmentCategoryEditViewModel}">
+        <equipmentCategories:EquipmentCategoryEditView />
+    </DataTemplate>
+
 </ResourceDictionary>

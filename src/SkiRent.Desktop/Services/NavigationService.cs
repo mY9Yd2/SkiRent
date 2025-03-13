@@ -78,6 +78,7 @@ namespace SkiRent.Desktop.Services
                 BookingEditViewModel => $"{baseTitle} - Foglalás szerkesztése",
                 BookingItemListViewModel => $"{baseTitle} - Tétellista",
                 EquipmentCategoryListViewModel => $"{baseTitle} - Felszerelés kategóriák",
+                EquipmentCategoryEditViewModel => $"{baseTitle} - Felszerelés kategória szerkesztése",
                 _ => baseTitle
             };
         }
