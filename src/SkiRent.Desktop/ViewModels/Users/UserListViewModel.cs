@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
+using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -52,11 +53,14 @@ namespace SkiRent.Desktop.ViewModels.Users
             await InitializeAsync();
         }
 
-
         [RelayCommand]
-        private Task ShowUserEditAsync()
+        private async Task ShowUserEditAsync()
         {
-            throw new NotImplementedException();
+            if (SelectedUser is not null)
+            {
+                await Navigator.Instance.NavigateToAsync<UserEditViewModel>(async vm =>
+                    await vm.InitializeAsync(SelectedUser.Id));
+            }
         }
     }
 }

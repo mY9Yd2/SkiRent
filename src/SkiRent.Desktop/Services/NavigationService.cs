@@ -85,6 +85,7 @@ namespace SkiRent.Desktop.Services
                 EquipmentCategoryCreateViewModel => $"{baseTitle} - Felszerelés kategória létrehozása",
                 InvoiceListViewModel => $"{baseTitle} - Számlák",
                 UserListViewModel => $"{baseTitle} - Felhasználók",
+                UserEditViewModel => $"{baseTitle} - Felhasználó szerkesztése",
                 _ => baseTitle
             };
         }

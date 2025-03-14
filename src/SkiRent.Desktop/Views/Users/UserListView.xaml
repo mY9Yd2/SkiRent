@@ -39,7 +39,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="Auto" />
-                <DataGridTextColumn Header="Jogkör" Binding="{Binding Role}" Width="*" />
+                <DataGridTextColumn Header="Jogkör" Binding="{Binding Role, Converter={StaticResource UserRoleFormatterConverter}}" Width="*" />
             </DataGrid.Columns>
 
         </DataGrid>
