@@ -115,6 +115,9 @@ public partial class App : Application
         builder.Services.AddTransient<UserEditViewModel>();
         builder.Services.AddTransient<UserEditView>();
 
+        builder.Services.AddTransient<UserCreateViewModel>();
+        builder.Services.AddTransient<UserCreateView>();
+
         _app = builder.Build();
 
         Current.DispatcherUnhandledException += (sender, args) =>

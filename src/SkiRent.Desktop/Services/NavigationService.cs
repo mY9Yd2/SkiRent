@@ -86,6 +86,7 @@ namespace SkiRent.Desktop.Services
                 InvoiceListViewModel => $"{baseTitle} - Számlák",
                 UserListViewModel => $"{baseTitle} - Felhasználók",
                 UserEditViewModel => $"{baseTitle} - Felhasználó szerkesztése",
+                UserCreateViewModel => $"{baseTitle} - Felhasználó létrehozása",
                 _ => baseTitle
             };
         }

@@ -75,4 +75,8 @@
         <users:UserEditView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type usersVM:UserCreateViewModel}">
+        <users:UserCreateView />
+    </DataTemplate>
+
 </ResourceDictionary>

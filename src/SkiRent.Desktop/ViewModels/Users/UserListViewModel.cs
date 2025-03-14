@@ -62,5 +62,11 @@ namespace SkiRent.Desktop.ViewModels.Users
                     await vm.InitializeAsync(SelectedUser.Id));
             }
         }
+
+        [RelayCommand]
+        private async Task ShowUserCreateAsync()
+        {
+            await Navigator.Instance.NavigateToAsync<UserCreateViewModel>();
+        }
     }
 }
