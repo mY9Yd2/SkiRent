@@ -47,8 +47,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = RoleTypes.Customer,
-                CurrentPassword = string.Empty
+                Role = RoleTypes.Customer
             };
 
             // Act
@@ -70,8 +69,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = RoleTypes.Customer,
-                CurrentPassword = string.Empty
+                Role = RoleTypes.Customer
             };
 
             var expectedResponse = new GetUserResponse
@@ -100,8 +98,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Users
             {
                 Email = "new@example.com",
                 Password = "NewPassword123",
-                Role = RoleTypes.Customer,
-                CurrentPassword = string.Empty
+                Role = RoleTypes.Customer
             };
             await _client.Users.UpdateAsync(createdAdminUser.Id, updateRequest);
 

@@ -17,6 +17,9 @@ namespace SkiRent.Shared.Validators.Users
 
             RuleFor(request => request.RoleAsNonNull).SetValidator(new RoleValidator())
                 .When(request => request.Role is not null);
+
+            RuleFor(request => request.CurrentPasswordAsNonNull).SetValidator(new PasswordValidator())
+                .When(request => request.CurrentPassword is not null);
         }
     }
 }

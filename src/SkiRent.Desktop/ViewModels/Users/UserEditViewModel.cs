@@ -118,7 +118,7 @@ namespace SkiRent.Desktop.ViewModels.Users
 
         private (bool isModified, UpdateUserRequest request) PrepareUserUpdateRequest()
         {
-            var request = new UpdateUserRequest() { CurrentPassword = string.Empty };
+            var request = new UpdateUserRequest();
             var isModified = false;
 
             var userRole = UserRoleHelper.GetUserRoleFromLocalizedString(SelectedUserRole);

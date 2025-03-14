@@ -100,7 +100,7 @@ public class UserService : IUserService
 
         if (!isInRole(Roles.Admin))
         {
-            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.CurrentPassword);
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.CurrentPasswordAsNonNull);
 
             if (passwordVerificationResult == PasswordVerificationResult.Failed)
             {
