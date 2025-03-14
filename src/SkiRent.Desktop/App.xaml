@@ -15,6 +15,7 @@
             <converters:DateFormatterConverter x:Key="DateFormatterConverter" />
             <converters:CurrencyFormatterConverter x:Key="CurrencyFormatterConverter" />
             <converters:UserRoleFormatterConverter x:Key="UserRoleFormatterConverter" />
+            <converters:NullToBooleanConverter x:Key="NullToBooleanConverter" />
 
         </ResourceDictionary>
 

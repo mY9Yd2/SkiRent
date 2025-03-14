@@ -22,7 +22,8 @@
 
             <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
 
-            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentEditCommand}" />
+            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentEditCommand}"
+                    IsEnabled="{Binding SelectedEquipment, Converter={StaticResource NullToBooleanConverter}}" />
 
             <Button Content="Új felszerelés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentCreateCommand}" />
 

@@ -22,7 +22,8 @@
 
             <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
 
-            <Button Content="Megtekintés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowPdfCommand}" />
+            <Button Content="Megtekintés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowPdfCommand}"
+                    IsEnabled="{Binding SelectedInvoice, Converter={StaticResource NullToBooleanConverter}}" />
 
         </StackPanel>
 

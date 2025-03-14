@@ -22,7 +22,8 @@
 
             <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
 
-            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowBookingEditCommand}" />
+            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowBookingEditCommand}"
+                    IsEnabled="{Binding SelectedBooking, Converter={StaticResource NullToBooleanConverter}}"/>
 
         </StackPanel>
 
