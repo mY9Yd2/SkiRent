@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="SkiRent.Desktop.Views.Users.UserListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SkiRent.Desktop.Views.Users"
+             xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.Users"
+             d:DataContext="{d:DesignInstance vm:UserListViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+
+            <Label Content="Felhasználók" FontSize="18" />
+
+            <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
+
+            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowUserEditCommand}" />
+
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+          IsReadOnly="True"
+          ItemsSource="{Binding Users}"
+          SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+          AutoGenerateColumns="False"
+          CanUserAddRows="False"
+          CanUserDeleteRows="False"
+          CanUserReorderColumns="False"
+          HeadersVisibility="Column">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="Auto" />
+                <DataGridTextColumn Header="Jogkör" Binding="{Binding Role}" Width="*" />
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+</UserControl>

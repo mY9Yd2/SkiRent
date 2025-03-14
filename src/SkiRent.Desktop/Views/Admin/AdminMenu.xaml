@@ -19,6 +19,7 @@
             <Button Content="Felszerelés kategóriák" Command="{Binding ShowEquipmentCategoriesCommand}" Margin="0,0,0,15" />
             <Button Content="Foglalások" Command="{Binding ShowBookingsCommand}" Margin="0,0,0,15" />
             <Button Content="Számlák" Command="{Binding ShowInvoicesCommand}" Margin="0,0,0,15" />
+            <Button Content="Felhasználók" Command="{Binding ShowUsersCommand}" Margin="0,0,0,15" />
 
         </StackPanel>
 

@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:usersVM="clr-namespace:SkiRent.Desktop.ViewModels.Users"
+                    xmlns:users="clr-namespace:SkiRent.Desktop.Views.Users"
                     xmlns:invoicesVM="clr-namespace:SkiRent.Desktop.ViewModels.Invoices"
                     xmlns:invoices="clr-namespace:SkiRent.Desktop.Views.Invoices"
                     xmlns:equipmentCategoriesVM="clr-namespace:SkiRent.Desktop.ViewModels.EquipmentCategories"
@@ -63,6 +65,10 @@
 
     <DataTemplate DataType="{x:Type invoicesVM:InvoiceListViewModel}">
         <invoices:InvoiceListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type usersVM:UserListViewModel}">
+        <users:UserListView />
     </DataTemplate>
 
 </ResourceDictionary>

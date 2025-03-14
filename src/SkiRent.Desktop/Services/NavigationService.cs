@@ -9,6 +9,7 @@ using SkiRent.Desktop.ViewModels.EquipmentCategories;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Invoices;
 using SkiRent.Desktop.ViewModels.Main;
+using SkiRent.Desktop.ViewModels.Users;
 
 namespace SkiRent.Desktop.Services
 {
@@ -83,6 +84,7 @@ namespace SkiRent.Desktop.Services
                 EquipmentCategoryEditViewModel => $"{baseTitle} - Felszerelés kategória szerkesztése",
                 EquipmentCategoryCreateViewModel => $"{baseTitle} - Felszerelés kategória létrehozása",
                 InvoiceListViewModel => $"{baseTitle} - Számlák",
+                UserListViewModel => $"{baseTitle} - Felhasználók",
                 _ => baseTitle
             };
         }

@@ -6,6 +6,7 @@ using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Invoices;
+using SkiRent.Desktop.ViewModels.Users;
 
 namespace SkiRent.Desktop.ViewModels.Admin
 {
@@ -36,6 +37,12 @@ namespace SkiRent.Desktop.ViewModels.Admin
         private async Task ShowInvoicesAsync()
         {
             await Navigator.Instance.NavigateToAsync<InvoiceListViewModel>();
+        }
+
+        [RelayCommand]
+        private async Task ShowUsersAsync()
+        {
+            await Navigator.Instance.NavigateToAsync<UserListViewModel>();
         }
     }
 }
