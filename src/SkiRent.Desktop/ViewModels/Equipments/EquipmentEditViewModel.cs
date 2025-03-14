@@ -130,14 +130,14 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             var request = new UpdateEquipmentRequest();
             var isModified = false;
 
-            if (Name != _originalEquipment.Name
+            if (Name.Trim() != _originalEquipment.Name
                 && !string.IsNullOrWhiteSpace(Name.Trim()))
             {
                 request = request with { Name = Name.Trim() };
                 isModified = true;
             }
 
-            if (Description != _originalEquipment.Description
+            if (Description.Trim() != _originalEquipment.Description
                 && !string.IsNullOrWhiteSpace(Description.Trim()))
             {
                 request = request with { Description = Description.Trim() };

@@ -101,7 +101,7 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
             var request = new UpdateEquipmentCategoryRequest();
             var isModified = false;
 
-            if (Name != _originalEquipmentCategory.Name
+            if (Name.Trim() != _originalEquipmentCategory.Name
                 && !string.IsNullOrWhiteSpace(Name.Trim()))
             {
                 request = request with { Name = Name.Trim() };

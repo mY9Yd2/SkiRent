@@ -123,7 +123,7 @@ namespace SkiRent.Desktop.ViewModels.Users
 
             var userRole = UserRoleHelper.GetUserRoleFromLocalizedString(SelectedUserRole);
 
-            if (Email != _originalUser.Email
+            if (Email.Trim() != _originalUser.Email
                 && !string.IsNullOrWhiteSpace(Email.Trim()))
             {
                 request = request with { Email = Email.Trim() };
