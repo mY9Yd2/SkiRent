@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -66,6 +67,35 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
         private async Task ShowEquipmentCategoryCreateAsync()
         {
             await Navigator.Instance.NavigateToAsync<EquipmentCategoryCreateViewModel>();
+        }
+
+        [RelayCommand]
+        private async Task DeleteEquipmentCategoryAsync()
+        {
+            if (SelectedEquipmentCategory is not null)
+            {
+                var result = MessageBox.Show("Biztosan törölni szeretné ezt a kategóriát?", "Törlés megerősítése",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                var deleteResult = await _skiRentApi.EquipmentCategories.DeleteAsync(SelectedEquipmentCategory.Id);
+
+                if (deleteResult.IsSuccessful)
+                {
+                    MessageBox.Show("A kategória sikeresen törölve lett.", "Sikeres törlés",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    await RefreshAsync();
+                }
+                else
+                {
+                    MessageBox.Show("A kategóriát nem lehet törölni, mert még van hozzá kapcsolódó felszerelés.", "Hiba",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

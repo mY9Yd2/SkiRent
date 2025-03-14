@@ -55,7 +55,7 @@ public class EquipmentCategoryService : IEquipmentCategoryService
 
     public async Task<Result<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request)
     {
-        var category = await _unitOfWork.EquipmentCategories.FindAsync(category => category.Id == categoryId);
+        var category = await _unitOfWork.EquipmentCategories.GetByIdAsync(categoryId);
 
         if (category is null)
         {
@@ -80,5 +80,27 @@ public class EquipmentCategoryService : IEquipmentCategoryService
         };
 
         return Result.Ok(result);
+    }
+
+    public async Task<Result> DeleteAsync(int categoryId)
+    {
+        var category = await _unitOfWork.EquipmentCategories.GetByIdAsync(categoryId);
+
+        if (category is null)
+        {
+            return Result.Fail(new EquipmentCategoryNotFound(categoryId));
+        }
+
+        var hasEquipment = await _unitOfWork.Equipments.ExistsAsync(equipment => equipment.CategoryId == categoryId);
+
+        if (hasEquipment)
+        {
+            return Result.Fail(new EquipmentCategoryNotEmptyError(categoryId));
+        }
+
+        _unitOfWork.EquipmentCategories.Delete(category);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result.Ok();
     }
 }

@@ -78,4 +78,18 @@ public class EquipmentCategoriesController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpDelete("{categoryId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Delete([FromRoute] int categoryId)
+    {
+        var result = await _equipmentCategoryService.DeleteAsync(categoryId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok();
+    }
 }

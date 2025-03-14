@@ -65,6 +65,9 @@ namespace SkiRent.Shared.Clients
 
         [Put("/api/equipment-categories/{categoryId}")]
         public Task<IApiResponse<GetEquipmentCategoryResponse>> UpdateAsync(int categoryId, UpdateEquipmentCategoryRequest request);
+
+        [Delete("/api/equipment-categories/{categoryId}")]
+        public Task<IApiResponse> DeleteAsync(int categoryId);
     }
 
     public interface IEquipmentsApi
