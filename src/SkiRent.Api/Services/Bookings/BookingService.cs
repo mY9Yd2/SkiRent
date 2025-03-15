@@ -250,6 +250,26 @@ public class BookingService : IBookingService
         return Result.Ok(result);
     }
 
+    public async Task<Result> DeleteAsync(int bookingId)
+    {
+        var booking = await _unitOfWork.Bookings.GetByIdAsync(bookingId);
+
+        if (booking is null)
+        {
+            return Result.Fail(new BookingNotFoundError(bookingId));
+        }
+
+        if (booking.Status != BookingStatus.Cancelled && booking.Status != BookingStatus.Returned)
+        {
+            return Result.Fail(new BookingDeletionNotAllowedError(bookingId));
+        }
+
+        _unitOfWork.Bookings.Delete(booking);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result.Ok();
+    }
+
     protected virtual async Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, decimal totalPrice, Uri successUrl, Uri cancelUrl)
     {
         var client = _clientFactory.CreateClient();

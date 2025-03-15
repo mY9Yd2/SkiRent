@@ -112,4 +112,18 @@ public class BookingsController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpDelete("{bookingId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Delete([FromRoute] int bookingId)
+    {
+        var result = await _bookingService.DeleteAsync(bookingId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok();
+    }
 }

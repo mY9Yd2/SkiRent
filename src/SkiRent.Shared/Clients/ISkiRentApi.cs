@@ -98,6 +98,9 @@ namespace SkiRent.Shared.Clients
 
         [Put("/api/bookings/{bookingId}")]
         public Task<IApiResponse<GetBookingResponse>> UpdateAsync(int bookingId, UpdateBookingRequest request);
+
+        [Delete("/api/bookings/{bookingId}")]
+        public Task<IApiResponse> DeleteAsync(int bookingId);
     }
 
     public interface IPaymentsApi
