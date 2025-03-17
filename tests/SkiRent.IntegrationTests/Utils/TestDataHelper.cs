@@ -1,4 +1,11 @@
-﻿using AutoFixture;
+﻿using System.Net.Mime;
+
+using AutoFixture;
+
+using Microsoft.AspNetCore.Http;
+
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Bookings;
@@ -46,12 +53,29 @@ namespace SkiRent.IntegrationTests.Utils
                 .With(request => request.CategoryId, categoryId)
                 .With(request => request.PricePerDay, fixture.Create<decimal>())
                 .With(request => request.AvailableQuantity, fixture.Create<int>())
+                .Without(request => request.MainImageId)
                 .Create();
         }
 
         public static IEnumerable<CreateEquipmentRequest> CreateManyEquipment(Fixture fixture, int count = 2, int categoryId = 1)
         {
             return [.. Enumerable.Range(0, count).Select(_ => CreateEquipment(fixture))];
+        }
+
+        public static IFormFile CreateEquipmentImage()
+        {
+            using var image = new Image<Rgba32>(250, 250);
+            var memoryStream = new MemoryStream();
+
+            image.SaveAsJpeg(memoryStream);
+
+            var formFile = new FormFile(memoryStream, 0, memoryStream.Length, "formFile", "test-image.jpg")
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = MediaTypeNames.Image.Jpeg
+            };
+
+            return formFile;
         }
 
         public static CreateBookingRequest CreateBooking(Fixture fixture, IEnumerable<EquipmentBooking> equipmentBookings)

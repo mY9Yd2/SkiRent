@@ -9,7 +9,8 @@ namespace SkiRent.Shared.Validators.EquipmentCategories
     {
         public UpdateEquipmentCategoryRequestValidator()
         {
-            RuleFor(request => request.Name).SetValidator(new EquipmentCategoryNameValidator());
+            RuleFor(request => request.NameAsNonNull).SetValidator(new EquipmentCategoryNameValidator())
+                .When(request => request.Name is not null);
         }
     }
 }

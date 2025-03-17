@@ -37,6 +37,8 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 Equipments.Clear();
                 foreach (var equipment in result.Content)
                 {
+                    string imageId = equipment.MainImageId?.ToString() ?? "placeholder";
+
                     Equipments.Add(new()
                     {
                         Id = equipment.Id,
@@ -44,7 +46,8 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                         CategoryId = equipment.CategoryId,
                         CategoryName = equipment.CategoryName,
                         PricePerDay = equipment.PricePerDay,
-                        AvailableQuantity = equipment.AvailableQuantity
+                        AvailableQuantity = equipment.AvailableQuantity,
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{imageId}.jpg")
                     });
                 }
             }

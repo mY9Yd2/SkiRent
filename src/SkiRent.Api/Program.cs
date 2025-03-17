@@ -1,3 +1,7 @@
+using System.IO.Abstractions;
+
+using Microsoft.Extensions.Options;
+
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Extensions;
 
@@ -19,6 +23,11 @@ if (environment.IsDevelopment())
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseStaticFiles(StaticFileConfiguration.Configure(
+    app.Services.GetRequiredService<IOptions<AppSettings>>().Value,
+    app.Services.GetRequiredService<IFileSystem>()
+));
 
 app.UseExceptionHandler();
 

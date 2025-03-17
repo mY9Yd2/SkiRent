@@ -137,6 +137,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
                 PaymentId = booking.PaymentId,
                 Status = BookingStatusTypes.Returned,
                 CreatedAt = booking.CreatedAt,
+                UpdatedAt = booking.UpdatedAt,
                 Items = booking.BookingItems.Select(item => new BookingItemSummary
                 {
                     Name = item.NameAtBooking,

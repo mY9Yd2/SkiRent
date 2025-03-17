@@ -15,6 +15,7 @@ using SkiRent.Api.ExceptionHandlers;
 using SkiRent.Api.Services.Auth;
 using SkiRent.Api.Services.Bookings;
 using SkiRent.Api.Services.EquipmentCategories;
+using SkiRent.Api.Services.EquipmentImages;
 using SkiRent.Api.Services.Equipments;
 using SkiRent.Api.Services.Invoices;
 using SkiRent.Api.Services.Payments;
@@ -42,6 +43,8 @@ public static class WebApplicationBuilderExtensions
         services.ConfigureAuthentication();
         services.ConfigureAuthorization();
 
+        services.ConfigureImageSharp();
+
         services.AddControllers()
             .AddJsonOptions(JsonOptionsConfiguration.Configure);
 
@@ -64,12 +67,14 @@ public static class WebApplicationBuilderExtensions
         services.AddSingleton<IAuthorizationHandler, SelfOrAdminAccessHandler>();
         services.AddSingleton<IAuthorizationHandler, CustomerOrAdminAccessHandler>();
 
-        services.AddScoped<IFileSystem, FileSystem>();
+        services.AddTransient<IFileSystem, FileSystem>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEquipmentService, EquipmentService>();
         services.AddScoped<IEquipmentCategoryService, EquipmentCategoryService>();
+        services.AddScoped<IEquipmentImageService, EquipmentImageService>();
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IInvoiceService, InvoiceService>();

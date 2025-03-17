@@ -12,11 +12,15 @@ using Microsoft.Extensions.Options;
 
 using Refit;
 
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Memory;
+
 using SkiRent.Desktop.Configurations;
 using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;
+using SkiRent.Desktop.ViewModels.EquipmentImages;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Invoices;
 using SkiRent.Desktop.ViewModels.Main;
@@ -24,6 +28,7 @@ using SkiRent.Desktop.ViewModels.Users;
 using SkiRent.Desktop.Views.Admin;
 using SkiRent.Desktop.Views.Bookings;
 using SkiRent.Desktop.Views.EquipmentCategories;
+using SkiRent.Desktop.Views.EquipmentImages;
 using SkiRent.Desktop.Views.Equipments;
 using SkiRent.Desktop.Views.Invoices;
 using SkiRent.Desktop.Views.Main;
@@ -62,6 +67,11 @@ public partial class App : Application
                     CookieContainer = cookieContainer
                 };
             });
+
+        Configuration.Default.MemoryAllocator = MemoryAllocator.Create(new MemoryAllocatorOptions()
+        {
+            AllocationLimitMegabytes = 32
+        });
 
         builder.Services.AddValidatorsFromAssemblies([Assembly.GetExecutingAssembly(), Assembly.Load("SkiRent.Shared")]);
 
@@ -117,6 +127,9 @@ public partial class App : Application
 
         builder.Services.AddTransient<UserCreateViewModel>();
         builder.Services.AddTransient<UserCreateView>();
+
+        builder.Services.AddTransient<EquipmentImageListViewModel>();
+        builder.Services.AddTransient<EquipmentImageListView>();
 
         _app = builder.Build();
 

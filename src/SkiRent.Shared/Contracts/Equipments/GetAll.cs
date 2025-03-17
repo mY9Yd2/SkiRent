@@ -16,6 +16,8 @@
 
         public required int AvailableQuantity { get; init; }
 
+        public required Guid? MainImageId { get; init; }
+
         public bool IsAvailable => AvailableQuantity > 0;
     }
 }

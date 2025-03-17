@@ -14,6 +14,8 @@ namespace SkiRent.Shared.Contracts.Equipments
 
         public required int AvailableQuantity { get; init; }
 
+        public required Guid? MainImageId { get; init; }
+
         [JsonIgnore]
         public string DescriptionAsNonNull => Description ?? string.Empty;
     }
@@ -31,5 +33,7 @@ namespace SkiRent.Shared.Contracts.Equipments
         public required decimal PricePerDay { get; init; }
 
         public required int AvailableQuantity { get; init; }
+
+        public required Guid? MainImageId { get; init; }
     }
 }

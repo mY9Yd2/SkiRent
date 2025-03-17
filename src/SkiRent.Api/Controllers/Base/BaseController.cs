@@ -37,6 +37,7 @@ public abstract class BaseController : ControllerBase
                         statusCode: StatusCodes.Status403Forbidden);
             case BookingNotFoundError:
             case InvoiceNotFoundError:
+            case EquipmentImageNotFound:
             case EquipmentCategoryNotFound:
             case EquipmentNotFoundError:
             case UserNotFoundError:
@@ -44,6 +45,7 @@ public abstract class BaseController : ControllerBase
                         title: "Not Found",
                         detail: error.Message,
                         statusCode: StatusCodes.Status404NotFound);
+            case EquipmentImageInUseError:
             case BookingDeletionNotAllowedError:
             case EquipmentCategoryNotEmptyError:
             case EquipmentCategoryAlreadyExistsError:

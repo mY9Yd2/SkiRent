@@ -37,6 +37,7 @@ public partial class SkiRentContext : DbContext
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("utc_timestamp()");
             entity.Property(e => e.Status).HasDefaultValueSql("'Pending'");
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("utc_timestamp()");
 
             entity.HasOne(d => d.User).WithMany(p => p.Bookings)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -58,9 +59,7 @@ public partial class SkiRentContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("equipments_ibfk_1");
 
-            entity.HasOne(d => d.MainImage).WithMany(p => p.Equipment)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("equipments_ibfk_2");
+            entity.HasOne(d => d.MainImage).WithMany(p => p.Equipment).HasConstraintName("equipments_ibfk_2");
         });
 
         modelBuilder.Entity<EquipmentCategory>(entity =>
@@ -72,9 +71,8 @@ public partial class SkiRentContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.HasOne(d => d.EquipmentNavigation).WithMany(p => p.EquipmentImages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("equipmentimages_ibfk_1");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("utc_timestamp()");
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("utc_timestamp()");
         });
 
         modelBuilder.Entity<Invoice>(entity =>

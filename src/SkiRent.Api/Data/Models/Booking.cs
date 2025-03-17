@@ -32,6 +32,9 @@ public partial class Booking
     [Column(TypeName = "timestamp")]
     public DateTimeOffset CreatedAt { get; set; }
 
+    [Column(TypeName = "timestamp")]
+    public DateTimeOffset UpdatedAt { get; set; }
+
     [InverseProperty("Booking")]
     public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
 

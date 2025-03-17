@@ -177,9 +177,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Invoices
             // Assert
             Assert.That(content, Is.Not.Null);
 
-            await using var memoryStream = new MemoryStream();
-            await content.CopyToAsync(memoryStream);
-            var contentBytes = memoryStream.ToArray();
+            var contentBytes = await content.ReadAsByteArrayAsync();
 
             Assert.That(contentBytes, Is.EqualTo(invoiceFile));
 

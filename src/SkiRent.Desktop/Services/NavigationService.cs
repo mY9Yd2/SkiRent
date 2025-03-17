@@ -6,6 +6,7 @@ using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;
+using SkiRent.Desktop.ViewModels.EquipmentImages;
 using SkiRent.Desktop.ViewModels.Equipments;
 using SkiRent.Desktop.ViewModels.Invoices;
 using SkiRent.Desktop.ViewModels.Main;
@@ -87,6 +88,7 @@ namespace SkiRent.Desktop.Services
                 UserListViewModel => $"{baseTitle} - Felhasználók",
                 UserEditViewModel => $"{baseTitle} - Felhasználó szerkesztése",
                 UserCreateViewModel => $"{baseTitle} - Felhasználó létrehozása",
+                EquipmentImageListViewModel => $"{baseTitle} - Felszerelésképek",
                 _ => baseTitle
             };
         }

@@ -153,6 +153,7 @@ public class BookingService : IBookingService
             PaymentId = booking.PaymentId,
             Status = Enum.Parse<BookingStatusTypes>(booking.Status),
             CreatedAt = booking.CreatedAt,
+            UpdatedAt = booking.UpdatedAt,
             Items = booking.BookingItems.Select(item => new BookingItemSummary
             {
                 Name = item.NameAtBooking,
@@ -183,6 +184,7 @@ public class BookingService : IBookingService
                 PaymentId = booking.PaymentId,
                 Status = Enum.Parse<BookingStatusTypes>(booking.Status),
                 CreatedAt = booking.CreatedAt,
+                UpdatedAt = booking.UpdatedAt,
                 IsOverdue = IsOverdue(booking.EndDate, booking.Status)
             });
 
@@ -236,6 +238,7 @@ public class BookingService : IBookingService
             PaymentId = booking.PaymentId,
             Status = Enum.Parse<BookingStatusTypes>(booking.Status),
             CreatedAt = booking.CreatedAt,
+            UpdatedAt = booking.UpdatedAt,
             Items = booking.BookingItems.Select(item => new BookingItemSummary
             {
                 Name = item.NameAtBooking,

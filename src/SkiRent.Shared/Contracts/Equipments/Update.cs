@@ -14,6 +14,8 @@ namespace SkiRent.Shared.Contracts.Equipments
 
         public int? AvailableQuantity { get; init; }
 
+        public Guid? MainImageId { get; init; }
+
         [JsonIgnore]
         public string NameAsNonNull => Name ?? string.Empty;
 
@@ -28,5 +30,8 @@ namespace SkiRent.Shared.Contracts.Equipments
 
         [JsonIgnore]
         public int AvailableQuantityAsNonNull => AvailableQuantity ?? -1;
+
+        [JsonIgnore]
+        public Guid MainImageIdAsNonNull => MainImageId ?? Guid.Empty;
     }
 }

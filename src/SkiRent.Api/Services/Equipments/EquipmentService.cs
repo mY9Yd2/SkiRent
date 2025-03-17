@@ -23,13 +23,21 @@ public class EquipmentService : IEquipmentService
             return Result.Fail(new EquipmentCategoryNotFound(request.CategoryId));
         }
 
-        var equipment = new Equipment();
+        if (request.MainImageId is not null
+            && !await _unitOfWork.EquipmentImages.ExistsAsync(image => image.Id == request.MainImageId))
+        {
+            return Result.Fail(new EquipmentImageNotFound((Guid)request.MainImageId));
+        }
 
-        equipment.Name = request.Name;
-        equipment.Description = request.Description;
-        equipment.CategoryId = request.CategoryId;
-        equipment.PricePerDay = request.PricePerDay;
-        equipment.AvailableQuantity = request.AvailableQuantity;
+        var equipment = new Equipment
+        {
+            Name = request.Name,
+            Description = request.Description,
+            CategoryId = request.CategoryId,
+            PricePerDay = request.PricePerDay,
+            AvailableQuantity = request.AvailableQuantity,
+            MainImageId = request.MainImageId
+        };
 
         await _unitOfWork.Equipments.AddAsync(equipment);
         await _unitOfWork.SaveChangesAsync();
@@ -41,7 +49,8 @@ public class EquipmentService : IEquipmentService
             Description = equipment.Description,
             CategoryId = equipment.CategoryId,
             PricePerDay = equipment.PricePerDay,
-            AvailableQuantity = equipment.AvailableQuantity
+            AvailableQuantity = equipment.AvailableQuantity,
+            MainImageId = equipment.MainImageId
         };
 
         return Result.Ok(result);
@@ -64,7 +73,8 @@ public class EquipmentService : IEquipmentService
             CategoryId = equipment.CategoryId,
             CategoryName = equipment.Category.Name,
             AvailableQuantity = equipment.AvailableQuantity,
-            PricePerDay = equipment.PricePerDay
+            PricePerDay = equipment.PricePerDay,
+            MainImageId = equipment.MainImageId
         };
 
         return Result.Ok(result);
@@ -83,7 +93,8 @@ public class EquipmentService : IEquipmentService
                 CategoryId = equipment.CategoryId,
                 CategoryName = equipment.Category.Name,
                 PricePerDay = equipment.PricePerDay,
-                AvailableQuantity = equipment.AvailableQuantity
+                AvailableQuantity = equipment.AvailableQuantity,
+                MainImageId = equipment.MainImageId
             });
 
         return Result.Ok(result);
@@ -100,10 +111,14 @@ public class EquipmentService : IEquipmentService
 
         equipment.Name = request.Name ?? equipment.Name;
 
-        if (request.Description is not null)
+        if (request.Description is not null
+            && request.Description.Trim() == string.Empty)
         {
-            equipment.Description = string.IsNullOrWhiteSpace(request.Description)
-                ? null : request.Description;
+            equipment.Description = null;
+        }
+        else if (!string.IsNullOrWhiteSpace(request.Description))
+        {
+            equipment.Description = request.Description;
         }
 
         if (request.CategoryId is not null)
@@ -114,6 +129,25 @@ public class EquipmentService : IEquipmentService
                 return Result.Fail(new EquipmentCategoryNotFound((int)request.CategoryId));
             }
             equipment.Category = category;
+        }
+
+        if (request.MainImageId != equipment.MainImageId)
+        {
+            if (request.MainImageId is null)
+            {
+                equipment.MainImage = null;
+                equipment.MainImageId = null;
+            }
+            else
+            {
+                var image = await _unitOfWork.EquipmentImages.GetByIdAsync(request.MainImageIdAsNonNull);
+                if (image is null)
+                {
+                    return Result.Fail(new EquipmentImageNotFound((Guid)request.MainImageId));
+                }
+                equipment.MainImage = image;
+                equipment.MainImageId = image.Id;
+            }
         }
 
         equipment.PricePerDay = request.PricePerDay ?? equipment.PricePerDay;
@@ -129,7 +163,8 @@ public class EquipmentService : IEquipmentService
             CategoryId = equipment.CategoryId,
             CategoryName = equipment.Category.Name,
             PricePerDay = equipment.PricePerDay,
-            AvailableQuantity = equipment.AvailableQuantity
+            AvailableQuantity = equipment.AvailableQuantity,
+            MainImageId = equipment.MainImageId
         };
 
         return Result.Ok(result);

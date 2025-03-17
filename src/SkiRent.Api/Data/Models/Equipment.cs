@@ -35,9 +35,6 @@ public partial class Equipment
     [InverseProperty("Equipment")]
     public virtual EquipmentCategory Category { get; set; } = null!;
 
-    [InverseProperty("EquipmentNavigation")]
-    public virtual ICollection<EquipmentImage> EquipmentImages { get; set; } = new List<EquipmentImage>();
-
     [ForeignKey("MainImageId")]
     [InverseProperty("Equipment")]
     public virtual EquipmentImage? MainImage { get; set; }

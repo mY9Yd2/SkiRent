@@ -43,11 +43,11 @@ public class EquipmentCategoryService : IEquipmentCategoryService
     {
         var equipmentCategories = await _unitOfWork.EquipmentCategories.GetAllAsync();
 
-        var result = equipmentCategories.Select(equipment =>
+        var result = equipmentCategories.Select(category =>
             new GetAllEquipmentCategoryResponse
             {
-                Id = equipment.Id,
-                Name = equipment.Name
+                Id = category.Id,
+                Name = category.Name
             });
 
         return Result.Ok(result);

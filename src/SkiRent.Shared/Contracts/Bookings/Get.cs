@@ -20,6 +20,8 @@ namespace SkiRent.Shared.Contracts.Bookings
 
         public required DateTimeOffset CreatedAt { get; init; }
 
+        public required DateTimeOffset UpdatedAt { get; init; }
+
         public required IEnumerable<BookingItemSummary> Items { get; init; }
 
         public required int RentalDays { get; init; }

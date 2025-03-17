@@ -20,6 +20,17 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private readonly ISkiRentApi _skiRentApi = null!;
         private readonly IValidator<CreateEquipmentRequest> _validator = null!;
 
+        private Guid? _selectedImageId = null;
+
+        [ObservableProperty]
+        private bool _isImageSelectorVisible = false;
+
+        [ObservableProperty]
+        private EquipmentImagesList? _selectedImage;
+
+        [ObservableProperty]
+        private Uri _mainImageUrl = null!;
+
         [ObservableProperty]
         private string _name = string.Empty;
 
@@ -37,6 +48,8 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
         public ObservableCollection<EquipmentCategory> EquipmentCategories { get; } = [];
 
+        public ObservableCollection<EquipmentImagesList> AvailableImages { get; } = [];
+
         public EquipmentCreateViewModel()
         { }
 
@@ -44,6 +57,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         {
             _skiRentApi = skiRentApi;
             _validator = validator;
+            ClearMainImage();
         }
 
         public async Task InitializeAsync()
@@ -103,6 +117,36 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             await NavigateBackAsync();
         }
 
+        [RelayCommand]
+        private async Task ToggleImageSelectionAsync()
+        {
+            IsImageSelectorVisible = !IsImageSelectorVisible;
+            SelectedImage = null;
+            if (IsImageSelectorVisible)
+            {
+                await LoadAvailableImagesAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task SelectMainImageAsync()
+        {
+            if (SelectedImage is not null)
+            {
+                MainImageUrl = SelectedImage.ImageUrl;
+                _selectedImageId = SelectedImage.Id;
+                await ToggleImageSelectionAsync();
+            }
+        }
+
+        [RelayCommand]
+        private void ClearMainImage()
+        {
+            MainImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/placeholder.jpg");
+            SelectedImage = null;
+            _selectedImageId = null;
+        }
+
         private static async Task NavigateBackAsync()
         {
             await Navigator.Instance.NavigateToAsync<EquipmentListViewModel>();
@@ -144,16 +188,42 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 hasChanges = true;
             }
 
+            if (!MainImageUrl.AbsolutePath.EndsWith("placeholder.jpg"))
+            {
+                hasChanges = true;
+            }
+
             var request = new CreateEquipmentRequest()
             {
                 Name = Name.Trim(),
-                Description = Description.Trim(),
+                Description = string.IsNullOrWhiteSpace(Description.Trim()) ? null : Description.Trim(),
                 CategoryId = SelectedEquipmentCategory.Id,
                 PricePerDay = PricePerDay ?? -1,
-                AvailableQuantity = AvailableQuantity ?? -1
+                AvailableQuantity = AvailableQuantity ?? -1,
+                MainImageId = _selectedImageId
             };
 
             return (hasChanges, request);
+        }
+
+        private async Task LoadAvailableImagesAsync()
+        {
+            var result = await _skiRentApi.EquipmentImages.GetAllAsync();
+
+            if (result.IsSuccessful)
+            {
+                AvailableImages.Clear();
+                foreach (var image in result.Content)
+                {
+                    AvailableImages.Add(new()
+                    {
+                        Id = image.Id,
+                        DisplayName = image.DisplayName,
+                        CreatedAt = image.CreatedAt,
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg")
+                    });
+                }
+            }
         }
     }
 }

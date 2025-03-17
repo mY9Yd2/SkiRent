@@ -23,6 +23,10 @@ namespace SkiRent.Shared.Validators.Equipments
 
             RuleFor(request => request.AvailableQuantityAsNonNull).SetValidator(new AvailableQuantityValidator())
                 .When(request => request.AvailableQuantity is not null);
+
+            RuleFor(request => request.MainImageId)
+                .NotEqual(Guid.Empty)
+                .When(request => request.MainImageId is not null);
         }
     }
 }

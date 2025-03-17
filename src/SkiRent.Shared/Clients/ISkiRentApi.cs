@@ -3,6 +3,7 @@
 using SkiRent.Shared.Contracts.Auth;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.EquipmentCategories;
+using SkiRent.Shared.Contracts.EquipmentImages;
 using SkiRent.Shared.Contracts.Equipments;
 using SkiRent.Shared.Contracts.Invoices;
 using SkiRent.Shared.Contracts.Payments;
@@ -23,6 +24,7 @@ namespace SkiRent.Shared.Clients
         public IUsersApi Users => RestService.For<IUsersApi>(Client);
         public IEquipmentCategoriesApi EquipmentCategories => RestService.For<IEquipmentCategoriesApi>(Client);
         public IEquipmentsApi Equipments => RestService.For<IEquipmentsApi>(Client);
+        public IEquipmentImagesApi EquipmentImages => RestService.For<IEquipmentImagesApi>(Client);
         public IBookingsApi Bookings => RestService.For<IBookingsApi>(Client);
         public IPaymentsApi Payments => RestService.For<IPaymentsApi>(Client);
         public IInvoicesApi Invoices => RestService.For<IInvoicesApi>(Client);
@@ -85,6 +87,18 @@ namespace SkiRent.Shared.Clients
         public Task<IApiResponse<GetEquipmentResponse>> UpdateAsync(int equipmentId, UpdateEquipmentRequest request);
     }
 
+    public interface IEquipmentImagesApi
+    {
+        [Post("/api/equipment-images")]
+        public Task<IApiResponse<CreatedEquipmentImageResponse>> CreateAsync(MultipartFormDataContent formData);
+
+        [Get("/api/equipment-images")]
+        public Task<IApiResponse<IEnumerable<GetAllEquipmentImageResponse>>> GetAllAsync();
+
+        [Delete("/api/equipment-images/{imageId}")]
+        public Task<IApiResponse> DeleteAsync(Guid imageId);
+    }
+
     public interface IBookingsApi
     {
         [Post("/api/bookings")]
@@ -112,7 +126,7 @@ namespace SkiRent.Shared.Clients
     public interface IInvoicesApi
     {
         [Get("/api/invoices/{invoiceId}")]
-        public Task<IApiResponse<Stream>> GetAsync(Guid invoiceId);
+        public Task<IApiResponse<HttpContent>> GetAsync(Guid invoiceId);
 
         [Get("/api/invoices")]
         public Task<IApiResponse<IEnumerable<GetAllInvoicesResponse>>> GetAllAsync();

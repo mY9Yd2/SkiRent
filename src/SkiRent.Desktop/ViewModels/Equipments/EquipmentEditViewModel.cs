@@ -21,6 +21,16 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private readonly IValidator<UpdateEquipmentRequest> _validator = null!;
 
         private GetEquipmentResponse _originalEquipment = null!;
+        private Guid? _currentImageId = null;
+
+        [ObservableProperty]
+        private bool _isImageSelectorVisible = false;
+
+        [ObservableProperty]
+        private EquipmentImagesList? _selectedImage;
+
+        [ObservableProperty]
+        private Uri _mainImageUrl = null!;
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -39,6 +49,8 @@ namespace SkiRent.Desktop.ViewModels.Equipments
 
         public ObservableCollection<EquipmentCategory> EquipmentCategories { get; } = [];
 
+        public ObservableCollection<EquipmentImagesList> AvailableImages { get; } = [];
+
         public EquipmentEditViewModel()
         { }
 
@@ -46,6 +58,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         {
             _skiRentApi = skiRentApi;
             _validator = validator;
+            ClearMainImage();
         }
 
         public async Task InitializeAsync(int equipmentId)
@@ -59,6 +72,12 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 Description = result.Content.Description ?? string.Empty;
                 PricePerDay = (int)result.Content.PricePerDay;
                 AvailableQuantity = result.Content.AvailableQuantity;
+
+                _currentImageId = result.Content.MainImageId;
+                if (result.Content.MainImageId is not null)
+                {
+                    MainImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{result.Content.MainImageId}.jpg");
+                }
 
                 EquipmentCategories.Clear();
                 foreach (var equipmentCategory in categoriesResult.Content)
@@ -114,6 +133,35 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             await NavigateBackAsync();
         }
 
+        [RelayCommand]
+        private async Task ToggleImageSelectionAsync()
+        {
+            IsImageSelectorVisible = !IsImageSelectorVisible;
+            if (IsImageSelectorVisible)
+            {
+                await LoadAvailableImagesAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task SelectMainImageAsync()
+        {
+            if (SelectedImage is not null)
+            {
+                MainImageUrl = SelectedImage.ImageUrl;
+                _currentImageId = SelectedImage.Id;
+                await ToggleImageSelectionAsync();
+            }
+        }
+
+        [RelayCommand]
+        private void ClearMainImage()
+        {
+            MainImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/placeholder.jpg");
+            SelectedImage = null;
+            _currentImageId = null;
+        }
+
         private static async Task NavigateBackAsync()
         {
             await Navigator.Instance.NavigateToAsync<EquipmentListViewModel>();
@@ -137,8 +185,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 isModified = true;
             }
 
-            if (Description.Trim() != _originalEquipment.Description
-                && !string.IsNullOrWhiteSpace(Description.Trim()))
+            if (Description.Trim() != (_originalEquipment.Description ?? string.Empty))
             {
                 request = request with { Description = Description.Trim() };
                 isModified = true;
@@ -162,7 +209,33 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 isModified = true;
             }
 
+            if (_currentImageId != _originalEquipment.MainImageId)
+            {
+                request = request with { MainImageId = _currentImageId };
+                isModified = true;
+            }
+
             return (isModified, request);
+        }
+
+        private async Task LoadAvailableImagesAsync()
+        {
+            var result = await _skiRentApi.EquipmentImages.GetAllAsync();
+
+            if (result.IsSuccessful)
+            {
+                AvailableImages.Clear();
+                foreach (var image in result.Content)
+                {
+                    AvailableImages.Add(new()
+                    {
+                        Id = image.Id,
+                        DisplayName = image.DisplayName,
+                        CreatedAt = image.CreatedAt,
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg")
+                    });
+                }
+            }
         }
     }
 }

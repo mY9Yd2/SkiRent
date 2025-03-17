@@ -29,17 +29,15 @@ CREATE TABLE `Equipments` (
 
 CREATE TABLE `EquipmentImages` (
     `Id` CHAR(36) PRIMARY KEY,
-    `EquipmentId` INT NOT NULL,
-    `DisplayName` VARCHAR(255) NOT NULL,
-    FOREIGN KEY (`EquipmentId`) REFERENCES `Equipments` (`Id`)
-    ON DELETE RESTRICT,
-    UNIQUE (`EquipmentId`, `DisplayName`)
+    `DisplayName` VARCHAR(255) NULL,
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
+    `UpdatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP()
 );
 
 ALTER TABLE `Equipments`
 ADD COLUMN `MainImageId` CHAR(36) NULL,
 ADD FOREIGN KEY (`MainImageId`) REFERENCES `EquipmentImages` (`Id`)
-ON DELETE SET NULL;
+ON DELETE RESTRICT;
 
 CREATE TABLE `Bookings` (
     `Id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,7 +49,8 @@ CREATE TABLE `Bookings` (
     `Status` ENUM(
         'Pending', 'Paid', 'InDelivery', 'Received', 'Cancelled', 'Returned'
     ) NOT NULL DEFAULT 'Pending',
-    `CreatedAt` TIMESTAMP DEFAULT UTC_TIMESTAMP(),
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
+    `UpdatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
     FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
     ON DELETE RESTRICT
 );
@@ -72,9 +71,31 @@ CREATE TABLE `Invoices` (
     `Id` CHAR(36) PRIMARY KEY,
     `UserId` INT NULL,
     `BookingId` INT NULL UNIQUE,
-    `CreatedAt` TIMESTAMP DEFAULT UTC_TIMESTAMP(),
+    `CreatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
     FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
     ON DELETE SET NULL,
     FOREIGN KEY (`BookingId`) REFERENCES `Bookings` (`Id`)
     ON DELETE SET NULL
 );
+
+DELIMITER //
+
+-- Workaround for the current MariaDB version
+-- which does not support setting both DEFAULT and ON UPDATE
+-- for a TIMESTAMP column simultaneously.
+
+CREATE TRIGGER `Update_UpdatedAt_EquipmentImages`
+BEFORE UPDATE ON `EquipmentImages`
+FOR EACH ROW
+BEGIN
+    SET NEW.`UpdatedAt` = UTC_TIMESTAMP();
+END //
+
+CREATE TRIGGER `Update_UpdatedAt_Bookings`
+BEFORE UPDATE ON `Bookings`
+FOR EACH ROW
+BEGIN
+    SET NEW.`UpdatedAt` = UTC_TIMESTAMP();
+END //
+
+DELIMITER ;

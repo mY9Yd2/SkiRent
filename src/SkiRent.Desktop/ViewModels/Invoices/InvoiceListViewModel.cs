@@ -67,9 +67,7 @@ namespace SkiRent.Desktop.ViewModels.Invoices
                 var invoiceFileName = result.ContentHeaders?.ContentDisposition?.FileNameStar
                     ?? $"Számla_{SelectedInvoice.Id}.pdf";
 
-                await using var memoryStream = new MemoryStream();
-                await result.Content.CopyToAsync(memoryStream);
-                var contentBytes = memoryStream.ToArray();
+                var contentBytes = await result.Content.ReadAsByteArrayAsync();
 
                 var tempPath = Path.GetFullPath(Path.GetTempPath());
                 var path = Path.Combine(tempPath, "SkiRent");

@@ -19,6 +19,10 @@ namespace SkiRent.Shared.Validators.Equipments
             RuleFor(request => request.PricePerDay).SetValidator(new PricePerDayValidator());
 
             RuleFor(request => request.AvailableQuantity).SetValidator(new AvailableQuantityValidator());
+
+            RuleFor(request => request.MainImageId)
+                .NotEqual(Guid.Empty)
+                .When(request => request.MainImageId is not null);
         }
     }
 }

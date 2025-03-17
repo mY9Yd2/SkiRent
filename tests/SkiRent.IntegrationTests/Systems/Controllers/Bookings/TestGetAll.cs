@@ -120,6 +120,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
                     PaymentId = booking.PaymentId,
                     Status = Enum.Parse<BookingStatusTypes>(booking.Status),
                     CreatedAt = booking.CreatedAt,
+                    UpdatedAt = booking.UpdatedAt,
                     IsOverdue = false
                 }
             };

@@ -14,6 +14,8 @@
 
         public required int AvailableQuantity { get; init; }
 
+        public required Uri ImageUrl { get; init; }
+
         public bool IsAvailable => AvailableQuantity > 0;
     }
 }

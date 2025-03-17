@@ -18,6 +18,8 @@ namespace SkiRent.Shared.Contracts.Bookings
 
         public required DateTimeOffset CreatedAt { get; init; }
 
+        public required DateTimeOffset UpdatedAt { get; init; }
+
         public required bool IsOverdue { get; init; }
     }
 }
