@@ -51,7 +51,7 @@ namespace SkiRent.Shared.Validators.Common.EquipmentImages
 
             RuleFor(imageFile => imageFile)
                 .Must(HaveValidDimensions)
-                .WithMessage("Image dimensions must be 750x750 or smaller.");
+                .WithMessage("Image dimensions must be between 150x150 and 750x750 pixels (inclusive).");
         }
 
         public static bool HaveValidDimensions(IFormFile file)
