@@ -48,8 +48,9 @@ namespace SkiRent.Desktop.ViewModels.EquipmentImages
             DisplayName = displayName ?? string.Empty;
             _originalDisplayName = displayName;
 
-            MainImageUrl = new UriBuilder(imageUrl) { Query = $"t={DateTime.UtcNow.Ticks}" }.Uri;
-            _originalImageUrl = new UriBuilder(imageUrl) { Query = $"t={DateTime.UtcNow.Ticks}" }.Uri;
+            var utcTicks = DateTimeOffset.UtcNow.Ticks;
+            MainImageUrl = new UriBuilder(imageUrl) { Query = $"t={utcTicks}" }.Uri;
+            _originalImageUrl = new UriBuilder(imageUrl) { Query = $"t={utcTicks}" }.Uri;
 
             return Task.CompletedTask;
         }
