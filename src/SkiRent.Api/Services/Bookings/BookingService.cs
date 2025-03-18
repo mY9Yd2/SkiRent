@@ -9,7 +9,6 @@ using SkiRent.Api.Data.Auth;
 using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.Errors;
-using SkiRent.Api.Exceptions;
 using SkiRent.Api.Extensions;
 using SkiRent.Shared.Contracts.Bookings;
 using SkiRent.Shared.Contracts.Common;
@@ -215,12 +214,10 @@ public class BookingService : IBookingService
             {
                 var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
 
-                if (equipment is null)
+                if (equipment is not null)
                 {
-                    throw new EquipmentNotFoundException($"Equipment with id '{item.EquipmentId}' not found.");
+                    equipment.AvailableQuantity += item.Quantity;
                 }
-
-                equipment.AvailableQuantity += item.Quantity;
             }
         }
 

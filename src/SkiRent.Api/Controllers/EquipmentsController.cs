@@ -92,4 +92,18 @@ public class EquipmentsController : BaseController
 
         return Ok(result.Value);
     }
+
+    [HttpDelete("{equipmentId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Delete([FromRoute] int equipmentId)
+    {
+        var result = await _equipmentService.DeleteAsync(equipmentId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok();
+    }
 }

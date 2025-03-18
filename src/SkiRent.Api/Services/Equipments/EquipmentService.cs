@@ -169,4 +169,19 @@ public class EquipmentService : IEquipmentService
 
         return Result.Ok(result);
     }
+
+    public async Task<Result> DeleteAsync(int equipmentId)
+    {
+        var equipment = await _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId);
+
+        if (equipment is null)
+        {
+            return Result.Fail(new EquipmentNotFoundError(equipmentId));
+        }
+
+        _unitOfWork.Equipments.Delete(equipment);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result.Ok();
+    }
 }

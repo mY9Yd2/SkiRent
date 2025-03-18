@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -73,6 +74,35 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private async Task ShowEquipmentCreateAsync()
         {
             await Navigator.Instance.NavigateToAsync<EquipmentCreateViewModel>();
+        }
+
+        [RelayCommand]
+        private async Task DeleteEquipmentAsync()
+        {
+            if (SelectedEquipment is not null)
+            {
+                var result = MessageBox.Show("Biztosan törölni szeretné ezt a felszerelést?", "Törlés megerősítése",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                var deleteResult = await _skiRentApi.Equipments.DeleteAsync(SelectedEquipment.Id);
+
+                if (deleteResult.IsSuccessful)
+                {
+                    MessageBox.Show("A felszerelés sikeresen törölve lett.", "Sikeres törlés",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    await RefreshAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Hiba történt a felszerelés törlése során.", "Hiba",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

@@ -28,6 +28,9 @@
 
             <Button Content="Új felszerelés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentCreateCommand}" />
 
+            <Button Content="Törlés" Height="20" Width="80" Margin="10,0" Command="{Binding DeleteEquipmentCommand}"
+                    IsEnabled="{Binding SelectedEquipment, Converter={StaticResource NullToBooleanConverter}}" />
+
         </StackPanel>
 
         <DataGrid Grid.Row="2"
