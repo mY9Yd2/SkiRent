@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="bg-dark text-light">
+<body>
     <!-- Felső menü -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
         <div class="container">
@@ -38,7 +38,7 @@
     </nav>
 
     <!-- Tartalom -->
-    <div class="container mt-5 text-left bg-light text-dark p-4 rounded shadow">
+    <div class="container mt-5 text-left bg-light text-dark p-4 rounded shadow rental-card">
         <h1 class="fw-bold text-warning">Foglalásaim</h1>
         <p>Itt láthatod a korábbi és aktuális bérléseidet.</p>
         
