@@ -55,6 +55,9 @@ namespace SkiRent.Shared.Clients
 
         [Put("/api/users/{userId}")]
         public Task<IApiResponse<GetUserResponse>> UpdateAsync(int userId, UpdateUserRequest request);
+
+        [Delete("/api/users/{userId}")]
+        public Task<IApiResponse> DeleteAsync(int userId);
     }
 
     public interface IEquipmentCategoriesApi

@@ -28,6 +28,9 @@
 
             <Button Content="Új felhasználó" Height="20" Width="80" Margin="10,0" Command="{Binding ShowUserCreateCommand}" />
 
+            <Button Content="Törlés" Height="20" Width="80" Margin="10,0" Command="{Binding DeleteUserCommand}"
+                    IsEnabled="{Binding SelectedUser, Converter={StaticResource NullToBooleanConverter}}" />
+
         </StackPanel>
 
         <DataGrid Grid.Row="2"

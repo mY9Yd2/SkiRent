@@ -143,4 +143,28 @@ public class UserService : IUserService
 
         return Result.Ok(result);
     }
+
+    public async Task<Result> DeleteAsync(int userId)
+    {
+        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+        if (user is null)
+        {
+            return Result.Fail(new UserNotFoundError(userId));
+        }
+
+        var hasActiveBookings = await _unitOfWork.Bookings.ExistsAsync(booking => booking.UserId == userId
+            && booking.Status != BookingStatus.Cancelled
+            && booking.Status != BookingStatus.Returned);
+
+        if (hasActiveBookings)
+        {
+            return Result.Fail(new UserHasActiveBookingsError(userId));
+        }
+
+        _unitOfWork.Users.Delete(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        return Result.Ok();
+    }
 }

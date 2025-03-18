@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Security.Claims;
+
+using FluentValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -91,5 +93,26 @@ public class UsersController : BaseController
         }
 
         return Ok(result.Value);
+    }
+
+    [HttpDelete("{userId:int}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> Delete([FromRoute] int userId)
+    {
+        var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(nameIdentifier, out int currentUserId)
+            && userId == currentUserId)
+        {
+            return Forbid();
+        }
+
+        var result = await _userService.DeleteAsync(userId);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok();
     }
 }

@@ -11,4 +11,5 @@ public interface IUserService
     public Task<Result<GetUserResponse>> GetAsync(int userId);
     public Task<Result<IEnumerable<GetAllUserResponse>>> GetAllAsync();
     public Task<Result<GetUserResponse>> UpdateAsync(int userId, UpdateUserRequest request, Func<string, bool> isInRole);
+    public Task<Result> DeleteAsync(int userId);
 }
