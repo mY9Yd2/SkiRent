@@ -32,14 +32,15 @@
         </StackPanel>
 
         <DataGrid Grid.Row="2"
-              IsReadOnly="True"
-              ItemsSource="{Binding Bookings}"
-              SelectedItem="{Binding SelectedBooking, Mode=TwoWay}"
-              AutoGenerateColumns="False"
-              CanUserAddRows="False"
-              CanUserDeleteRows="False"
-              CanUserReorderColumns="False"
-              HeadersVisibility="Column">
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding Bookings}"
+                  SelectedItem="{Binding SelectedBooking, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  HeadersVisibility="Column">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />

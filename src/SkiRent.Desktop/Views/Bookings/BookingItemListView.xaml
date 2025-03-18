@@ -26,6 +26,7 @@
 
         <DataGrid Grid.Row="1"
                   IsReadOnly="True"
+                  SelectionMode="Single"
                   ItemsSource="{Binding Items}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"

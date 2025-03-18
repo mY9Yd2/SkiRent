@@ -34,14 +34,15 @@
         </StackPanel>
 
         <DataGrid Grid.Row="2"
-              IsReadOnly="True"
-              ItemsSource="{Binding EquipmentCategories}"
-              SelectedItem="{Binding SelectedEquipmentCategory, Mode=TwoWay}"
-              AutoGenerateColumns="False"
-              CanUserAddRows="False"
-              CanUserDeleteRows="False"
-              CanUserReorderColumns="False"
-              HeadersVisibility="Column">
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding EquipmentCategories}"
+                  SelectedItem="{Binding SelectedEquipmentCategory, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  HeadersVisibility="Column">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />

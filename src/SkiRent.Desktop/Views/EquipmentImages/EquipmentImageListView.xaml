@@ -35,6 +35,7 @@
 
         <DataGrid Grid.Row="2"
                   IsReadOnly="True"
+                  SelectionMode="Single"
                   ItemsSource="{Binding EquipmentImages}"
                   SelectedItem="{Binding SelectedEquipmentImage, Mode=TwoWay}"
                   AutoGenerateColumns="False"

@@ -29,14 +29,15 @@
         </StackPanel>
 
         <DataGrid Grid.Row="2"
-          IsReadOnly="True"
-          ItemsSource="{Binding Invoices}"
-          SelectedItem="{Binding SelectedInvoice, Mode=TwoWay}"
-          AutoGenerateColumns="False"
-          CanUserAddRows="False"
-          CanUserDeleteRows="False"
-          CanUserReorderColumns="False"
-          HeadersVisibility="Column">
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  ItemsSource="{Binding Invoices}"
+                  SelectedItem="{Binding SelectedInvoice, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  HeadersVisibility="Column">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />
