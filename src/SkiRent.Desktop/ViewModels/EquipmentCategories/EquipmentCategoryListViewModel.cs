@@ -72,30 +72,31 @@ namespace SkiRent.Desktop.ViewModels.EquipmentCategories
         [RelayCommand]
         private async Task DeleteEquipmentCategoryAsync()
         {
-            if (SelectedEquipmentCategory is not null)
+            if (SelectedEquipmentCategory is null)
             {
-                var result = MessageBox.Show("Biztosan törölni szeretné ezt a kategóriát?", "Törlés megerősítése",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result != MessageBoxResult.Yes)
-                {
-                    return;
-                }
-
-                var deleteResult = await _skiRentApi.EquipmentCategories.DeleteAsync(SelectedEquipmentCategory.Id);
-
-                if (deleteResult.IsSuccessful)
-                {
-                    MessageBox.Show("A kategória sikeresen törölve lett.", "Sikeres törlés",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    await RefreshAsync();
-                }
-                else
-                {
-                    MessageBox.Show("A kategóriát nem lehet törölni, mert még van hozzá kapcsolódó felszerelés.", "Hiba",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                return;
             }
+
+            var result = MessageBox.Show("Biztosan törölni szeretné ezt a kategóriát?", "Törlés megerősítése",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var deleteResult = await _skiRentApi.EquipmentCategories.DeleteAsync(SelectedEquipmentCategory.Id);
+
+            if (deleteResult.IsSuccessful)
+            {
+                MessageBox.Show("A kategória sikeresen törölve lett.", "Sikeres törlés",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                await RefreshAsync();
+                return;
+            }
+
+            MessageBox.Show("A kategóriát nem lehet törölni, mert még van hozzá kapcsolódó felszerelés.", "Hiba",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

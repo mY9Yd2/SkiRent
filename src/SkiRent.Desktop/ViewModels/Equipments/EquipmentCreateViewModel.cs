@@ -131,12 +131,14 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         [RelayCommand]
         private async Task SelectMainImageAsync()
         {
-            if (SelectedImage is not null)
+            if (SelectedImage is null)
             {
-                MainImageUrl = SelectedImage.ImageUrl;
-                _selectedImageId = SelectedImage.Id;
-                await ToggleImageSelectionAsync();
+                return;
             }
+
+            MainImageUrl = SelectedImage.ImageUrl;
+            _selectedImageId = SelectedImage.Id;
+            await ToggleImageSelectionAsync();
         }
 
         [RelayCommand]

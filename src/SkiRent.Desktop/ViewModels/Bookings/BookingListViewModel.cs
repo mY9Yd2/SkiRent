@@ -73,30 +73,31 @@ namespace SkiRent.Desktop.ViewModels.Bookings
         [RelayCommand]
         private async Task DeleteBookingAsync()
         {
-            if (SelectedBooking is not null)
+            if (SelectedBooking is null)
             {
-                var result = MessageBox.Show("Biztosan törölni szeretné ezt a foglalást?", "Törlés megerősítése",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result != MessageBoxResult.Yes)
-                {
-                    return;
-                }
-
-                var deleteResult = await _skiRentApi.Bookings.DeleteAsync(SelectedBooking.Id);
-
-                if (deleteResult.IsSuccessful)
-                {
-                    MessageBox.Show("A foglalás sikeresen törölve lett.", "Sikeres törlés",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    await RefreshAsync();
-                }
-                else
-                {
-                    MessageBox.Show("A foglalást nem lehet törölni, mert még nincs 'Törölve' vagy 'Visszahozva' állapotban.", "Hiba",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                return;
             }
+
+            var result = MessageBox.Show("Biztosan törölni szeretné ezt a foglalást?", "Törlés megerősítése",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var deleteResult = await _skiRentApi.Bookings.DeleteAsync(SelectedBooking.Id);
+
+            if (deleteResult.IsSuccessful)
+            {
+                MessageBox.Show("A foglalás sikeresen törölve lett.", "Sikeres törlés",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                await RefreshAsync();
+                return;
+            }
+
+            MessageBox.Show("A foglalást nem lehet törölni, mert még nincs 'Törölve' vagy 'Visszahozva' állapotban.", "Hiba",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

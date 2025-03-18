@@ -112,30 +112,31 @@ namespace SkiRent.Desktop.ViewModels.EquipmentImages
         [RelayCommand]
         private async Task DeleteEquipmentImageAsync()
         {
-            if (SelectedEquipmentImage is not null)
+            if (SelectedEquipmentImage is null)
             {
-                var result = MessageBox.Show("Biztosan törölni szeretné ezt a képet?", "Törlés megerősítése",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result != MessageBoxResult.Yes)
-                {
-                    return;
-                }
-
-                var deleteResult = await _skiRentApi.EquipmentImages.DeleteAsync(SelectedEquipmentImage.Id);
-
-                if (deleteResult.IsSuccessful)
-                {
-                    MessageBox.Show("A kép sikeresen törölve lett.", "Sikeres törlés",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    await RefreshAsync();
-                }
-                else
-                {
-                    MessageBox.Show("A képet nem lehet törölni, mert még van hozzá kapcsolódó felszerelés.", "Hiba",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                return;
             }
+
+            var result = MessageBox.Show("Biztosan törölni szeretné ezt a képet?", "Törlés megerősítése",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var deleteResult = await _skiRentApi.EquipmentImages.DeleteAsync(SelectedEquipmentImage.Id);
+
+            if (deleteResult.IsSuccessful)
+            {
+                MessageBox.Show("A kép sikeresen törölve lett.", "Sikeres törlés",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                await RefreshAsync();
+                return;
+            }
+
+            MessageBox.Show("A képet nem lehet törölni, mert még van hozzá kapcsolódó felszerelés.", "Hiba",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private async Task<bool> UploadFileAsync(string filePath)

@@ -79,36 +79,37 @@ namespace SkiRent.Desktop.ViewModels.Users
         [RelayCommand]
         private async Task DeleteUserAsync()
         {
-            if (SelectedUser is not null)
+            if (SelectedUser is null)
             {
-                if (SelectedUser.Id == _currentUser.Id)
-                {
-                    MessageBox.Show("Nem törölheted saját magadat.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                var result = MessageBox.Show("Biztosan törölni szeretné ezt a felhasználót?", "Törlés megerősítése",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result != MessageBoxResult.Yes)
-                {
-                    return;
-                }
-
-                var deleteResult = await _skiRentApi.Users.DeleteAsync(SelectedUser.Id);
-
-                if (deleteResult.IsSuccessful)
-                {
-                    MessageBox.Show("A felhasználó sikeresen törölve lett.", "Sikeres törlés",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    await RefreshAsync();
-                }
-                else
-                {
-                    MessageBox.Show("A felhasználót nem lehet törölni, mert aktív foglalások vannak hozzá rendelve.", "Hiba",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                return;
             }
+
+            if (SelectedUser.Id == _currentUser.Id)
+            {
+                MessageBox.Show("Nem törölheted saját magadat.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Biztosan törölni szeretné ezt a felhasználót?", "Törlés megerősítése",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var deleteResult = await _skiRentApi.Users.DeleteAsync(SelectedUser.Id);
+
+            if (deleteResult.IsSuccessful)
+            {
+                MessageBox.Show("A felhasználó sikeresen törölve lett.", "Sikeres törlés",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                await RefreshAsync();
+                return;
+            }
+
+            MessageBox.Show("A felhasználót nem lehet törölni, mert aktív foglalások vannak hozzá rendelve.", "Hiba",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
