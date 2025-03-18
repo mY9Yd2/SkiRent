@@ -58,17 +58,40 @@ $isLoggedIn = isset($_SESSION['user_id']); // Ellenőrzi, hogy be van-e jelentke
         </div>
     </div>
 
+
+    <!-- Kosárhoz adás visszajelző modál -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text" id="cartModalLabel">Sikeres hozzáadás</h5>
+            </div>
+            <div class="modal-body text-dark">
+                Termék hozzáadva a kosárhoz!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">OK</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
 
+
+    <!-- PHP oldalon: A változó isLoggedIn értéke true vagy false attól függően, hogy be van-e jelentkezve a felhasználó ($_SESSION['user_id'] alapján). -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
-            if (!isLoggedIn) {
-                document.querySelectorAll(".quantity-info").forEach(el => el.style.display = "none");
+            const isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;     //  ezt konvertálja JavaScript boolean értékké.
+            if (!isLoggedIn) {                                              // Ha a user nincs bejelentkezve, akkor megkeresi az összes .quantity-info osztályú elemet az oldalon.
+                document.querySelectorAll(".quantity-info").forEach(el => el.style.display = "none");   // Ezeket elrejti.
             }
         });
     </script>
+    <!-- Célja: Az, hogy a készlet darabszámát mutató részeket csak a bejelentkezett felhasználó lássa.  -->
 
 </body>
 
