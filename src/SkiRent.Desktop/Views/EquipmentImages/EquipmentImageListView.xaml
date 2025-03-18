@@ -23,6 +23,9 @@
 
             <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
 
+            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentImageEditCommandCommand}"
+                    IsEnabled="{Binding SelectedEquipmentImage, Converter={StaticResource NullToBooleanConverter}}" />
+
             <Button Content="Új kép" Height="20" Width="80" Margin="10,0" Command="{Binding SelectFilesCommand}" />
 
             <Button Content="Törlés" Height="20" Width="80" Margin="10,0" Command="{Binding DeleteEquipmentImageCommand}"

@@ -10,11 +10,11 @@ using CommunityToolkit.Mvvm.Input;
 using FluentValidation;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Win32;
 
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
+using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -53,7 +53,7 @@ namespace SkiRent.Desktop.ViewModels.EquipmentImages
                         Id = image.Id,
                         DisplayName = image.DisplayName,
                         CreatedAt = image.CreatedAt,
-                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg")
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg?t={DateTimeOffset.UtcNow.Ticks}")
                     });
                 }
             }
@@ -96,6 +96,16 @@ namespace SkiRent.Desktop.ViewModels.EquipmentImages
                 }
 
                 await RefreshAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task ShowEquipmentImageEditCommand()
+        {
+            if (SelectedEquipmentImage is not null)
+            {
+                await Navigator.Instance.NavigateToAsync<EquipmentImageEditViewModel>(async vm =>
+                    await vm.InitializeAsync(SelectedEquipmentImage.Id, SelectedEquipmentImage.DisplayName, SelectedEquipmentImage.ImageUrl));
             }
         }
 

@@ -57,6 +57,28 @@ public class EquipmentImagesController : BaseController
         return Ok(result.Value);
     }
 
+    [HttpPut("{imageId:guid}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ActionResult<GetEquipmentImageResponse>> Update(
+        [FromServices] IValidator<UpdateEquipmentImageRequest> validator, [FromRoute] Guid imageId, UpdateEquipmentImageRequest request)
+    {
+        var validationResult = await ValidateRequestAsync(validator, request);
+
+        if (validationResult is not null)
+        {
+            return ValidationProblem(validationResult);
+        }
+
+        var result = await _equipmentImageService.UpdateAsync(imageId, request);
+
+        if (result.IsFailed)
+        {
+            return Problem(result.Errors[0]);
+        }
+
+        return Ok(result.Value);
+    }
+
     [HttpDelete("{imageId:guid}")]
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Delete([FromRoute] Guid imageId)

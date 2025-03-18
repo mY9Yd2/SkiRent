@@ -47,7 +47,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                         CategoryName = equipment.CategoryName,
                         PricePerDay = equipment.PricePerDay,
                         AvailableQuantity = equipment.AvailableQuantity,
-                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{imageId}.jpg")
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{imageId}.jpg?t={DateTimeOffset.UtcNow.Ticks}")
                     });
                 }
             }

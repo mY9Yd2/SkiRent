@@ -85,4 +85,8 @@
         <equipmentImages:EquipmentImageListView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type equipmentImagesVM:EquipmentImageEditViewModel}">
+        <equipmentImages:EquipmentImageEditView />
+    </DataTemplate>
+
 </ResourceDictionary>

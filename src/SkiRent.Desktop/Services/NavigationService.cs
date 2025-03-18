@@ -89,6 +89,7 @@ namespace SkiRent.Desktop.Services
                 UserEditViewModel => $"{baseTitle} - Felhasználó szerkesztése",
                 UserCreateViewModel => $"{baseTitle} - Felhasználó létrehozása",
                 EquipmentImageListViewModel => $"{baseTitle} - Felszerelésképek",
+                EquipmentImageEditViewModel => $"{baseTitle} - Felszereléskép szerkesztése",
                 _ => baseTitle
             };
         }

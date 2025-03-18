@@ -76,7 +76,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                 _currentImageId = result.Content.MainImageId;
                 if (result.Content.MainImageId is not null)
                 {
-                    MainImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{result.Content.MainImageId}.jpg");
+                    MainImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{result.Content.MainImageId}.jpg?t={DateTimeOffset.UtcNow.Ticks}");
                 }
 
                 EquipmentCategories.Clear();
@@ -232,7 +232,7 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                         Id = image.Id,
                         DisplayName = image.DisplayName,
                         CreatedAt = image.CreatedAt,
-                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg")
+                        ImageUrl = new Uri($"{_skiRentApi.Client.BaseAddress}images/{image.Id}.jpg?t={DateTimeOffset.UtcNow.Ticks}")
                     });
                 }
             }

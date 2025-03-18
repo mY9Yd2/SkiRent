@@ -27,11 +27,6 @@ public class EquipmentImageService : IEquipmentImageService
 
     public async Task<Result<CreatedEquipmentImageResponse>> CreateAsync(IFormFile formFile)
     {
-        var result = new CreatedEquipmentImageResponse
-        {
-            Id = Guid.Empty,
-            DisplayName = null
-        };
         string? createdFile = null;
 
         try
@@ -42,15 +37,15 @@ public class EquipmentImageService : IEquipmentImageService
                 DisplayName = _fileSystem.Path.GetFileNameWithoutExtension(formFile.FileName)
             };
 
-            var path = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Images", $"{image.Id}.jpg");
+            var imagePath = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Images", $"{image.Id}.jpg");
 
-            using var stream = _fileSystem.File.Create(path);
-            createdFile = path;
+            using var stream = _fileSystem.File.Create(imagePath);
+            createdFile = imagePath;
             await formFile.CopyToAsync(stream);
 
             await _unitOfWork.EquipmentImages.AddAsync(image);
 
-            result = result with
+            var result = new CreatedEquipmentImageResponse
             {
                 Id = image.Id,
                 DisplayName = image.DisplayName
@@ -84,6 +79,71 @@ public class EquipmentImageService : IEquipmentImageService
             });
 
         return Result.Ok(result);
+    }
+
+    public async Task<Result<GetEquipmentImageResponse>> UpdateAsync(Guid imageId, UpdateEquipmentImageRequest request)
+    {
+        var imagePath = _fileSystem.Path.Combine(_appSettings.DataDirectoryPath, "Images", $"{imageId}.jpg");
+
+        string? tempBackupFile = null;
+
+        try
+        {
+            var image = await _unitOfWork.EquipmentImages.GetByIdAsync(imageId);
+
+            if (image is null)
+            {
+                return Result.Fail("TODO");
+            }
+
+            if (request.Base64ImageData is not null)
+            {
+                byte[] newImage = Convert.FromBase64String(request.Base64ImageData);
+
+                if (_fileSystem.File.Exists(imagePath))
+                {
+                    tempBackupFile = $"{imagePath}.bak";
+                    _fileSystem.File.Copy(imagePath, tempBackupFile, overwrite: true);
+                }
+
+                using var stream = _fileSystem.File.Create(imagePath);
+                using var memoryStream = new MemoryStream(newImage);
+                await memoryStream.CopyToAsync(stream);
+            }
+
+            if (request.DisplayName is not null)
+            {
+                image.DisplayName = string.IsNullOrWhiteSpace(request.DisplayName)
+                    ? null
+                    : request.DisplayName;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            if (tempBackupFile is not null && _fileSystem.File.Exists(tempBackupFile))
+            {
+                _fileSystem.File.Delete(tempBackupFile);
+            }
+
+            var result = new GetEquipmentImageResponse
+            {
+                Id = image.Id,
+                DisplayName = image.DisplayName,
+                CreatedAt = image.CreatedAt,
+                UpdatedAt = image.UpdatedAt
+            };
+
+            return Result.Ok(result);
+        }
+        catch (Exception)
+        {
+            if (tempBackupFile is not null && _fileSystem.File.Exists(tempBackupFile))
+            {
+                _fileSystem.File.Copy(tempBackupFile, imagePath, overwrite: true);
+                _fileSystem.File.Delete(tempBackupFile);
+            }
+            throw;
+        }
     }
 
     public async Task<Result> DeleteAsync(Guid imageId)

@@ -95,6 +95,9 @@ namespace SkiRent.Shared.Clients
         [Get("/api/equipment-images")]
         public Task<IApiResponse<IEnumerable<GetAllEquipmentImageResponse>>> GetAllAsync();
 
+        [Put("/api/equipment-images/{imageId}")]
+        public Task<IApiResponse<GetEquipmentImageResponse>> UpdateAsync(Guid imageId, UpdateEquipmentImageRequest request);
+
         [Delete("/api/equipment-images/{imageId}")]
         public Task<IApiResponse> DeleteAsync(Guid imageId);
     }

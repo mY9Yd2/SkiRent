@@ -131,6 +131,9 @@ public partial class App : Application
         builder.Services.AddTransient<EquipmentImageListViewModel>();
         builder.Services.AddTransient<EquipmentImageListView>();
 
+        builder.Services.AddTransient<EquipmentImageEditViewModel>();
+        builder.Services.AddTransient<EquipmentImageEditView>();
+
         _app = builder.Build();
 
         Current.DispatcherUnhandledException += (sender, args) =>
