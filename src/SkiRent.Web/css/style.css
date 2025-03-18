@@ -23,6 +23,8 @@ body {
     background-color: white; /* Világos háttér a fő tartalomnak */
     padding: 20px; /* Belső térköz a doboz szélétől */
     border-radius: 10px; /* Lekerekített sarkok */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Árnyék */
+    border: 3px solid #ffc107; /* Sárga keret */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Finom árnyék */
     color: black; /* Szöveg színe fekete */
 }
@@ -89,6 +91,40 @@ body {
 }
 
 
+
+/* ==============================
+   Kosár (cart.php) stílus
+   ============================== */
+.cart-card table {
+    border: 2px solid #ffc107 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    border-collapse: collapse;  /* <<< EZ AZ FONTOS! */
+}
+
+.cart-card table thead {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.cart-card table thead th {
+    border: 1px solid #ffc107 !important;
+}
+
+.cart-card table tbody tr td {
+    border: 1px solid #ffc107 !important;
+}
+
+.cart-card table tbody tr:hover {
+    background-color: #fff3cd !important;
+}
+
+.cart-card table thead tr th {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+
 /* ==============================
    Profil (profile.php) stílus
    ============================== */
@@ -120,6 +156,8 @@ body {
     max-width: 500px;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Árnyék */
+    border: 3px solid #ffc107; /* Sárga keret */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -137,6 +175,16 @@ body {
         padding: 15px;
     }
 }
+
+
+/* =======================
+   Rental kártya formázása
+   ======================= */
+   .rental-card{
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Árnyék */
+    border: 3px solid #ffc107; /* Sárga keret */
+   }
+
 
 /* =======================
    Szövegek és Címek
@@ -225,3 +273,197 @@ body {
     text-decoration: underline; /* Aláhúzás hover esetén */
 }
 
+
+
+
+
+
+/* =============================
+    Kosárba helyezés ablak stílusa
+================================*/
+
+/* Kosár model stílusok */
+#cartModal .modal-content {
+    background-color: white; /* Világos háttér */
+    border-radius: 10px; /* Lekerekített sarkok */
+    border: 3px solid #ffc107; /* Arany szegély */
+}
+
+#cartModal .modal-header {
+    background-color: black; /* Fekete fejléc */
+    border-bottom: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+#cartModalLabel {
+    color: white;
+}
+
+
+
+#cartModal .modal-body {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+}
+
+#cartModal .modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+}
+
+#cartModal .btn-warning {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#cartModal .btn-warning:hover {
+    background-color: white;
+    color: black;
+}
+
+
+
+/* Kosár törlés gomb dizájn */
+.delete-item {
+    background-color: transparent;
+    border: none;
+    color: #dc3545; /* Piros szín */
+    font-size: 1.2rem;
+    transition: 0.2s ease-in-out;
+}
+
+.delete-item:hover {
+    color: #ff0000; /* Világosabb piros */
+    transform: scale(1.3); /* Kicsit nagyobb lesz hover-re */
+}
+
+
+
+/* =============================
+   Tétel törlése megerősítő modal stílus
+============================= */
+#confirmDeleteModal .modal-content {
+    background-color: white;
+    border-radius: 10px;
+    border: 3px solid #ffc107;
+}
+
+#confirmDeleteModal .modal-header {
+    background-color: black;
+    border-bottom: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+#confirmDeleteModal .modal-body {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+}
+
+#confirmDeleteModal .modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+}
+
+#confirmDeleteModal .btn-danger,
+#confirmDeleteModal .btn-secondary {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#confirmDeleteModal .btn-danger:hover {
+    background-color: white;
+    color: black;
+}
+
+/* =============================
+   Kosár teljes ürítés megerősítő modal stílus
+============================= */
+#confirmClearModal .modal-content {
+    background-color: white;
+    border-radius: 10px;
+    border: 3px solid #ffc107;
+}
+
+#confirmClearModal .modal-header {
+    background-color: black;
+    border-bottom: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+#confirmClearModal .modal-body {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px;
+}
+
+#confirmClearModal .modal-footer {
+    border-top: none;
+    display: flex;
+    justify-content: center;
+}
+
+#confirmClearModal .btn-danger,
+#confirmClearModal .btn-secondary {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#confirmClearModal .btn-danger:hover {
+    background-color: white;
+    color: black;
+}
+
+
+#clear-cart:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+
+/* Kifejezetten a mennyiség inputhoz */
+.quantity-input {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    color: #212529;
+    font-weight: 500;
+}
+
+.quantity-input:focus {
+    border-color: #ffc107;      /* Arany keret fókuszra */
+    box-shadow: 0 0 5px #ffc107;
+}
+
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+    opacity: 1; /* Engedi a számnövelő nyilakat */
+}
+
+.quantity-decrease, .quantity-increase {
+    padding: 2px 6px !important;    /* Kisebb padding */
+    border-radius: 4px !important; /* Finomabb lekerekítés */
+    line-height: 1;               /* Összenyomja a magasságot */
+    min-width: 28px;              /* Ne legyen túl széles se */
+}
