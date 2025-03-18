@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="bg-dark text-light">
+<body>
     <!-- Felső menü -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
         <div class="container">
@@ -59,18 +59,20 @@
     <script src="../js/script.js"></script>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (!sessionStorage.getItem("accessToken")) {
-                window.location.href = "login.php"; // Ha nincs token, visszairányítás
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Profile oldal betöltve.");
+        updateCartCount();
 
-            // Dinamikus adatbetöltés (később API-ból)
-            document.getElementById("user-name").textContent = "Teszt Felhasználó";
-            document.getElementById("user-email").textContent = "teszt@example.com";
+        const userEmailElement = document.getElementById("user-email");
+        
+        if (!userEmailElement) {
+            console.error("Hiba: A 'user-email' elem nem található az oldalon!");
+            return;
+        }
 
-            // Frissíti a kosár számlálóját betöltéskor
-            updateCartCount();
-        });
-    </script>
+        fetchUserProfile();
+    });
+</script>
+
 </body>
 </html>
