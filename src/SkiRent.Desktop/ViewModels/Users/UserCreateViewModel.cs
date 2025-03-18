@@ -9,6 +9,7 @@ using SkiRent.Desktop.Services;
 using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
+using SkiRent.Shared.Contracts.Common;
 using SkiRent.Shared.Contracts.Users;
 
 namespace SkiRent.Desktop.ViewModels.Users
@@ -23,6 +24,9 @@ namespace SkiRent.Desktop.ViewModels.Users
 
         [ObservableProperty]
         private string _password = string.Empty;
+
+        [ObservableProperty]
+        private bool _isAdmin = true;
 
         public UserCreateViewModel()
         { }
@@ -51,6 +55,21 @@ namespace SkiRent.Desktop.ViewModels.Users
             if (result.IsSuccessful)
             {
                 MessageBox.Show("A felhasználó sikeresen létrehozva.", "Sikeres létrehozás", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                if (IsAdmin)
+                {
+                    var updateResult = await _skiRentApi.Users.UpdateAsync(result.Content.Id, new()
+                    {
+                        Role = RoleTypes.Admin
+                    });
+
+                    if (!updateResult.IsSuccessful)
+                    {
+                        MessageBox.Show("A felhasználó létrejött, de az admin jogok beállítása sikertelen volt.",
+                            "Részleges siker", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+
                 await NavigateBackAsync();
                 return;
             }
