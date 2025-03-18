@@ -70,7 +70,6 @@ namespace SkiRent.Desktop.ViewModels.Bookings
             }
 
             MessageBox.Show("Hiba történt a mentés során.", "Sikertelen mentés", MessageBoxButton.OK, MessageBoxImage.Error);
-            await InitializeAsync(OriginalBooking.Id);
         }
 
         [RelayCommand]

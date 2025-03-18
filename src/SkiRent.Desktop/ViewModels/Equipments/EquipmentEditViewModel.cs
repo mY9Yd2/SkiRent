@@ -117,7 +117,6 @@ namespace SkiRent.Desktop.ViewModels.Equipments
             }
 
             MessageBox.Show("Hiba történt a mentés során.", "Sikertelen mentés", MessageBoxButton.OK, MessageBoxImage.Error);
-            await InitializeAsync(_originalEquipment.Id);
         }
 
         [RelayCommand]
