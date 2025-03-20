@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SkiRent.Desktop.Views.Invoices"
              xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.Invoices"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              d:DataContext="{d:DesignInstance vm:InvoiceListViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -21,10 +23,20 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10">
 
-            <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding RefreshCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="RotateSolid" />
+                    <TextBlock Text="Frissítés" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
-            <Button Content="Megtekintés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowPdfCommand}"
-                    IsEnabled="{Binding SelectedInvoice, Converter={StaticResource NullToBooleanConverter}}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding ShowPdfCommand}"
+                    IsEnabled="{Binding SelectedInvoice, Converter={StaticResource NullToBooleanConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="FilePdfSolid" />
+                    <TextBlock Text="Megtekintés" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
         </StackPanel>
 
@@ -37,7 +49,8 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   CanUserReorderColumns="False"
-                  HeadersVisibility="Column">
+                  HeadersVisibility="Column"
+                  dgx:DataGridFilter.IsAutoFilterEnabled="True">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />

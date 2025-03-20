@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SkiRent.Desktop.Views.Users"
              xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.Users"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              d:DataContext="{d:DesignInstance vm:UserListViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -63,7 +64,8 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   CanUserReorderColumns="False"
-                  HeadersVisibility="Column">
+                  HeadersVisibility="Column"
+                  dgx:DataGridFilter.IsAutoFilterEnabled="True">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto" />

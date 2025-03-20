@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SkiRent.Desktop.Views.Equipments"
              xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.Equipments"
+             xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
              d:DataContext="{d:DesignInstance vm:EquipmentCreateViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -82,7 +83,8 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       CanUserReorderColumns="False"
-                      HeadersVisibility="Column">
+                      HeadersVisibility="Column"
+                      dgx:DataGridFilter.IsAutoFilterEnabled="True">
 
                 <DataGrid.Columns>
 
