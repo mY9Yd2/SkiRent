@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SkiRent.Desktop.Views.EquipmentImages"
              xmlns:vm="clr-namespace:SkiRent.Desktop.ViewModels.EquipmentImages"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DataContext="{d:DesignInstance vm:EquipmentImageListViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -21,15 +22,35 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10">
 
-            <Button Content="Frissítés" Height="20" Width="80" Margin="10,0" Command="{Binding RefreshCommand}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding RefreshCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="RotateSolid" />
+                    <TextBlock Text="Frissítés" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
-            <Button Content="Szerkesztés" Height="20" Width="80" Margin="10,0" Command="{Binding ShowEquipmentImageEditCommandCommand}"
-                    IsEnabled="{Binding SelectedEquipmentImage, Converter={StaticResource NullToBooleanConverter}}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding ShowEquipmentImageEditCommandCommand}"
+                    IsEnabled="{Binding SelectedEquipmentImage, Converter={StaticResource NullToBooleanConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="PenToSquareSolid" />
+                    <TextBlock Text="Szerkesztés" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
-            <Button Content="Új kép" Height="20" Width="80" Margin="10,0" Command="{Binding SelectFilesCommand}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding SelectFilesCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="PlusSolid" />
+                    <TextBlock Text="Új kép" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
-            <Button Content="Törlés" Height="20" Width="80" Margin="10,0" Command="{Binding DeleteEquipmentImageCommand}"
-                    IsEnabled="{Binding SelectedEquipmentImage, Converter={StaticResource NullToBooleanConverter}}" />
+            <Button Height="36" Width="100" Margin="10,0" Command="{Binding DeleteEquipmentImageCommand}"
+                    IsEnabled="{Binding SelectedEquipmentImage, Converter={StaticResource NullToBooleanConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="TrashSolid" />
+                    <TextBlock Text="Törlés" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
 
         </StackPanel>
 

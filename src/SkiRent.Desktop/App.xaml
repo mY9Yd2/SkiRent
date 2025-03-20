@@ -9,7 +9,13 @@
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
+
                 <ResourceDictionary Source="/Resources/ViewModelDataTemplates.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Mauve.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
 
             <converters:DateFormatterConverter x:Key="DateFormatterConverter" />
