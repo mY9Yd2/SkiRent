@@ -16,7 +16,8 @@
 
     <Grid>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
+        <StackPanel Visibility="{Binding IsImageSelectorHidden, Converter={StaticResource BooleanToVisibilityConverter}}" d:Visibility="Visible"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
 
             <Button BorderThickness="0" Background="Transparent" Command="{Binding ToggleImageSelectionCommand}">
                 <Image Source="{Binding MainImageUrl}" Width="250" Height="250" />
