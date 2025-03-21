@@ -25,8 +25,6 @@ namespace SkiRent.IntegrationTests.Utils
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            base.ConfigureWebHost(builder);
-
             builder.ConfigureServices(services =>
             {
                 var dbContextDescriptor = services.SingleOrDefault(service =>
@@ -44,8 +42,13 @@ namespace SkiRent.IntegrationTests.Utils
                     options.UseInMemoryDatabase(databaseName);
                 });
 
+                var mockFileSystem = new MockFileSystem();
+                var tempPath = mockFileSystem.Path.GetFullPath(Path.GetTempPath());
+
+                mockFileSystem.AddEmptyFile(mockFileSystem.Path.Combine(tempPath, "Images", "placeholder.jpg"));
+
+                services.Replace(ServiceDescriptor.Singleton<IFileSystem>(mockFileSystem));
                 services.Replace(ServiceDescriptor.Scoped<IBookingService, DummyBookingService>());
-                services.Replace(ServiceDescriptor.Singleton<IFileSystem, MockFileSystem>());
             });
         }
 

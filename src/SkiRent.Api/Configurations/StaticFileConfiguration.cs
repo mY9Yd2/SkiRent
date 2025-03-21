@@ -54,7 +54,7 @@ public static class StaticFileConfiguration
             Origin = new PointF(width / 2f, height / 2f)
         };
 
-        image.Mutate(ctx => ctx.DrawText(textOptions, "No Image", Color.Black));
+        image.Mutate(ctx => ctx.DrawText(textOptions, "Nincs kép", Color.Black));
 
         return image;
     }

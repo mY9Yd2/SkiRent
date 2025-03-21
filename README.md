@@ -2,6 +2,16 @@
 
 Az adatbázishoz szükséges SQL-fájlok a [src/SkiRent.Database](./src/SkiRent.Database/) mappában találhatók.
 
+## Tesztek
+
+Egy probléma miatt az integrációs tesztek hibát jeleznek, ha az *Images* mappa nem létezik.
+
+A hiba megoldható az alkalmazás egyszeri futtatásával, vagy az alábbi PowerShell-paranccsal:
+
+```powershell
+mkdir "$env:TEMP\Images"
+```
+
 ## DbContext Scaffold (nem szükséges)
 
 Az alábbi parancsokkal az adatbázis séma alapján újragenerálhatók az Entity Framework Core modellek és a DbContext.
