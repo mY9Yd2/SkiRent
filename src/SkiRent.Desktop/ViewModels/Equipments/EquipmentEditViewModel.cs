@@ -27,6 +27,9 @@ namespace SkiRent.Desktop.ViewModels.Equipments
         private bool _isImageSelectorVisible = false;
 
         [ObservableProperty]
+        private bool _isImageSelectorHidden = true;
+
+        [ObservableProperty]
         private EquipmentImagesList? _selectedImage;
 
         [ObservableProperty]
@@ -237,6 +240,11 @@ namespace SkiRent.Desktop.ViewModels.Equipments
                     });
                 }
             }
+        }
+
+        partial void OnIsImageSelectorVisibleChanged(bool value)
+        {
+            IsImageSelectorHidden = !value;
         }
     }
 }
