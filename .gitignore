@@ -486,3 +486,8 @@ $RECYCLE.BIN/
 # Verify
 *.received.*
 *.received/
+
+# Drawio
+.$*.drawio.*
+*.bkp
+*.dtmp

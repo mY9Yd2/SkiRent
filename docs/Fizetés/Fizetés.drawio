@@ -1,0 +1,91 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
+  <diagram name="Page-1" id="WGsMOywxJ7WFJPrJECpX">
+    <mxGraphModel dx="1434" dy="694" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-2" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Personal_Computer_with_Server.svg;" parent="1" vertex="1">
+          <mxGeometry x="210" y="90" width="62.400000000000006" height="62.400000000000006" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-3" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" parent="1" vertex="1">
+          <mxGeometry x="550" y="104.2" width="42.599999999999994" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-4" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" parent="1" vertex="1">
+          <mxGeometry x="380" y="270" width="42.599999999999994" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-5" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="290" y="120" as="sourcePoint" />
+            <mxPoint x="530" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-6" value="1. Booking" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="380" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-7" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="170" as="sourcePoint" />
+            <mxPoint x="440" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-8" value="2. Payment details" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-45;" parent="1" vertex="1">
+          <mxGeometry x="400" y="200" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-9" value="3. Payment Id" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-45;" parent="1" vertex="1">
+          <mxGeometry x="460" y="230" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-10" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="460" y="280" as="sourcePoint" />
+            <mxPoint x="550" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-11" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="140" as="sourcePoint" />
+            <mxPoint x="290" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-12" value="4. Payment Url" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" parent="1" vertex="1">
+          <mxGeometry x="336.3" y="150" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-13" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="270" y="170" as="sourcePoint" />
+            <mxPoint x="370" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-14" value="5. Payment" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=45;" parent="1" vertex="1">
+          <mxGeometry x="272.4" y="190" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-16" value="6.&amp;nbsp;The payment was successful (callback)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=-45;" parent="1" vertex="1">
+          <mxGeometry x="500" y="260" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-17" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="310" as="sourcePoint" />
+            <mxPoint x="590" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-18" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="280" as="sourcePoint" />
+            <mxPoint x="250" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-19" value="7. Redirect back to the skirent website" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=45;" parent="1" vertex="1">
+          <mxGeometry x="219.99999999999997" y="230" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-20" value="SkiRent.FakePay" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="371.3" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-21" value="SkiRent.Api" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="570" y="60" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oGD4_F_hp6EiCznbP7ZZ-22" value="SkiRent.Web" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="212.4" y="60" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
