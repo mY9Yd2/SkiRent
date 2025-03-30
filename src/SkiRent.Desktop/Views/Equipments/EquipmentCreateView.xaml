@@ -14,68 +14,70 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid>
+    <ScrollViewer>
 
-        <StackPanel Visibility="{Binding IsImageSelectorHidden, Converter={StaticResource BooleanToVisibilityConverter}}" d:Visibility="Visible"
+        <Grid>
+
+            <StackPanel Visibility="{Binding IsImageSelectorHidden, Converter={StaticResource BooleanToVisibilityConverter}}" d:Visibility="Visible"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
 
-            <Button BorderThickness="0" Background="Transparent" Command="{Binding ToggleImageSelectionCommand}">
-                <Image Source="{Binding MainImageUrl}" Width="250" Height="250" />
-            </Button>
+                <Button BorderThickness="0" Background="Transparent" Command="{Binding ToggleImageSelectionCommand}">
+                    <Image Source="{Binding MainImageUrl}" Width="250" Height="250" />
+                </Button>
 
-            <Button Content="Kép törlése" Margin="0,10,0,0" Command="{Binding ClearMainImageCommand}" />
+                <Button Content="Kép törlése" Margin="0,10,0,0" Command="{Binding ClearMainImageCommand}" />
 
-            <Label Content="Név" />
-            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Label Content="Név" />
+                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap"
                      AcceptsReturn="False"
                      VerticalScrollBarVisibility="Auto"
                      Height="50" />
 
-            <Label Content="Leírás" />
-            <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <Label Content="Leírás" />
+                <TextBox Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"
                      VerticalScrollBarVisibility="Auto"
                      Height="100" />
 
-            <Label Content="Kategória" />
-            <ComboBox ItemsSource="{Binding EquipmentCategories}"
+                <Label Content="Kategória" />
+                <ComboBox ItemsSource="{Binding EquipmentCategories}"
                       SelectedItem="{Binding SelectedEquipmentCategory}"
                       DisplayMemberPath="Name" />
 
-            <Label Content="Ár/nap" />
-            <Label Content="{Binding PricePerDay, Converter={StaticResource CurrencyFormatterConverter}}" />
-            <TextBox Text="{Binding PricePerDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Ár/nap" />
+                <Label Content="{Binding PricePerDay, Converter={StaticResource CurrencyFormatterConverter}}" />
+                <TextBox Text="{Binding PricePerDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Label Content="Elérhető mennyiség" />
-            <TextBox Text="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="Elérhető mennyiség" />
+                <TextBox Text="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Button Content="Létrehozás" Margin="0,10,0,0" Command="{Binding CreateCommand}" />
+                <Button Content="Létrehozás" Margin="0,10,0,0" Command="{Binding CreateCommand}" />
 
-            <Button Content="Vissza" Margin="0,10,0,0" Command="{Binding BackCommand}" />
-
-        </StackPanel>
-
-        <Grid Visibility="{Binding IsImageSelectorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" d:Visibility="Hidden">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0" Content="Felszerelésképek" FontSize="18" />
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10">
-
-                <Button Content="Vissza" Height="20" Width="80" Margin="10,0" Command="{Binding ToggleImageSelectionCommand}" />
-
-                <Button Content="Kiválaszt" Height="20" Width="80" Margin="10,0" Command="{Binding SelectMainImageCommand}" />
+                <Button Content="Vissza" Margin="0,10,0,0" Command="{Binding BackCommand}" />
 
             </StackPanel>
 
-            <DataGrid Grid.Row="2"
+            <Grid Visibility="{Binding IsImageSelectorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" d:Visibility="Hidden">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Content="Felszerelésképek" FontSize="18" />
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10">
+
+                    <Button Content="Vissza" Height="20" Width="80" Margin="10,0" Command="{Binding ToggleImageSelectionCommand}" />
+
+                    <Button Content="Kiválaszt" Height="20" Width="80" Margin="10,0" Command="{Binding SelectMainImageCommand}" />
+
+                </StackPanel>
+
+                <DataGrid Grid.Row="2"
                       IsReadOnly="True"
                       SelectionMode="Single"
                       ItemsSource="{Binding AvailableImages}"
@@ -87,38 +89,40 @@
                       HeadersVisibility="Column"
                       dgx:DataGridFilter.IsAutoFilterEnabled="True">
 
-                <DataGrid.Columns>
+                    <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="Auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="Név" Binding="{Binding DisplayName}" Width="Auto">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                        <DataGridTextColumn Header="Név" Binding="{Binding DisplayName}" Width="Auto">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
 
-                    <DataGridTemplateColumn Header="Kép" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding ImageUrl}" Width="150" Height="150" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Kép" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding ImageUrl}" Width="150" Height="150" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                </DataGrid.Columns>
+                    </DataGrid.Columns>
 
-            </DataGrid>
+                </DataGrid>
+
+            </Grid>
 
         </Grid>
 
-    </Grid>
+    </ScrollViewer>
 
 </UserControl>

@@ -9,36 +9,40 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
+    <ScrollViewer>
 
-        <Label Content="Kezdés dátuma" />
-        <TextBox Text="{Binding OriginalBooking.StartDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
 
-        <Label Content="Befejezés dátuma" />
-        <TextBox Text="{Binding OriginalBooking.EndDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
+            <Label Content="Kezdés dátuma" />
+            <TextBox Text="{Binding OriginalBooking.StartDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
-        <Label Content="Összeg" />
-        <TextBox Text="{Binding OriginalBooking.TotalPrice, Mode=OneWay, Converter={StaticResource CurrencyFormatterConverter}}" IsReadOnly="True" />
+            <Label Content="Befejezés dátuma" />
+            <TextBox Text="{Binding OriginalBooking.EndDate, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
-        <Label Content="Fizetési azonosító" />
-        <TextBox Text="{Binding OriginalBooking.PaymentId, Mode=OneWay}" IsReadOnly="True" />
+            <Label Content="Összeg" />
+            <TextBox Text="{Binding OriginalBooking.TotalPrice, Mode=OneWay, Converter={StaticResource CurrencyFormatterConverter}}" IsReadOnly="True" />
 
-        <Label Content="Állapot" />
-        <ComboBox ItemsSource="{Binding BookingStatuses}"
+            <Label Content="Fizetési azonosító" />
+            <TextBox Text="{Binding OriginalBooking.PaymentId, Mode=OneWay}" IsReadOnly="True" />
+
+            <Label Content="Állapot" />
+            <ComboBox ItemsSource="{Binding BookingStatuses}"
                   SelectedItem="{Binding SelectedBookingStatus}" />
 
-        <Label Content="Létrehozva" />
-        <TextBox Text="{Binding OriginalBooking.CreatedAt, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
+            <Label Content="Létrehozva" />
+            <TextBox Text="{Binding OriginalBooking.CreatedAt, Mode=OneWay, Converter={StaticResource DateFormatterConverter}}" IsReadOnly="True" />
 
-        <Label Content="Bérlési idő (napokban)" />
-        <TextBox Text="{Binding OriginalBooking.RentalDays, Mode=OneWay}" IsReadOnly="True" />
+            <Label Content="Bérlési idő (napokban)" />
+            <TextBox Text="{Binding OriginalBooking.RentalDays, Mode=OneWay}" IsReadOnly="True" />
 
-        <Button Content="Tételek megtekintése" Margin="0,10,0,0" Command="{Binding ShowItemsCommand}" />
+            <Button Content="Tételek megtekintése" Margin="0,10,0,0" Command="{Binding ShowItemsCommand}" />
 
-        <Button Content="Mentés" Margin="0,10,0,0" Command="{Binding SaveCommand}" />
+            <Button Content="Mentés" Margin="0,10,0,0" Command="{Binding SaveCommand}" />
 
-        <Button Content="Vissza" Margin="0,10,0,0" Command="{Binding BackCommand}" />
+            <Button Content="Vissza" Margin="0,10,0,0" Command="{Binding BackCommand}" />
 
-    </StackPanel>
+        </StackPanel>
+
+    </ScrollViewer>
 
 </UserControl>
