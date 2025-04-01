@@ -1,6 +1,19 @@
 # SkiRent vizsgaremek projekt
 
-Az adatbázishoz szükséges SQL-fájlok a [src/SkiRent.Database](./src/SkiRent.Database/) mappában találhatók.
+Az adatbázishoz szükséges SQL-fájlok a [src/SkiRent.Database](./src/SkiRent.Database/) mappában találhatók.  
+A szoftver dokumentációja és a fejlesztés során készült diagramok, ábrák stb. amit felhasználtunk a fejlesztés és dokumentáció során megtalálható a [docs/](./docs/) mappában.
+
+## Alkalmazás futtatása, röviden
+
+Az alkalmazás 4 fő részből áll:
+
+- Api (backend)
+- Web (frontend)
+- FakePay (fizetéshez egy demo, példa)
+- Desktop
+
+A Visual Studionál ezért szükségeltetik a "Multiple startup projects" beállítása, hogy mindegyik szolgáltatás elinduljon.  
+A frontendet (SkiRent.Web) tartalmát vagy a mappát magát pedig a XAMPP-on belül a htdocs/ mappában kell elhelyezni.
 
 ## Tesztek
 
