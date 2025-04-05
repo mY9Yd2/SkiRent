@@ -11,8 +11,17 @@ using SkiRent.Api.Extensions;
 
 namespace SkiRent.Api.Controllers.Base;
 
+/// <summary>
+/// Provides common behavior and utilities for API controllers, including error mapping and request validation.
+/// </summary>
 public abstract class BaseController : ControllerBase
 {
+    /// <summary>
+    /// Converts a domain error into an appropriate <see cref="ObjectResult"/> based on its type.
+    /// </summary>
+    /// <param name="error">The domain error to convert.</param>
+    /// <returns>An <see cref="ObjectResult"/> representing the corresponding HTTP response.</returns>
+    /// <exception cref="UnhandledErrorException">Thrown when the error type is not explicitly handled.</exception>
     [NonAction]
     protected ObjectResult Problem(IError error)
     {
@@ -64,6 +73,16 @@ public abstract class BaseController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Validates the given request using the provided FluentValidation validator.
+    /// </summary>
+    /// <typeparam name="T">The type of the request to validate.</typeparam>
+    /// <param name="validator">The validator used to validate the request.</param>
+    /// <param name="request">The request object to validate.</param>
+    /// <returns>
+    /// A <see cref="ModelStateDictionary"/> containing validation errors if the request is invalid;
+    /// otherwise, <c>null</c> if the validation passes.
+    /// </returns>
     [NonAction]
     protected async Task<ModelStateDictionary?> ValidateRequestAsync<T>(IValidator<T> validator, T request)
     {

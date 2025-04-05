@@ -3,6 +3,9 @@ using SkiRent.Desktop.ViewModels.Base;
 
 namespace SkiRent.Desktop.Services
 {
+    /// <summary>
+    /// Defines the contract for a service that handles navigation between view models.
+    /// </summary>
     public interface INavigationService
     {
         public Task NavigateToAsync<TBaseViewModel>() where TBaseViewModel : BaseViewModel;
