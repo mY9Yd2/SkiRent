@@ -66,8 +66,7 @@ public class TestUpdateAsync
         var request = _fixture.Build<UpdateEquipmentRequest>()
             .With(request => request.CategoryId, categoryId)
             .Create();
-        var equipment = _fixture.Build<Equipment>()
-            .Create();
+        var equipment = _fixture.Create<Equipment>();
 
         _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId)
             .Returns(equipment);
