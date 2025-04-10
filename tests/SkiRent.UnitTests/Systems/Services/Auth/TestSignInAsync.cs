@@ -19,7 +19,7 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
         private IUnitOfWork _unitOfWork;
         private PasswordHasher<User> _passwordHasher;
         private AuthService _authService;
-        private IFixture _fixture;
+        private Fixture _fixture;
 
         [SetUp]
         public void Setup()
