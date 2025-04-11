@@ -15,13 +15,12 @@ namespace SkiRent.Api.Services.Users;
 public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly PasswordHasher<User> _passwordHasher;
+    private readonly IPasswordHasher<User> _passwordHasher;
 
-    public UserService(IUnitOfWork unitOfWork)
+    public UserService(IUnitOfWork unitOfWork, IPasswordHasher<User> passwordHasher)
     {
         _unitOfWork = unitOfWork;
-
-        _passwordHasher = new PasswordHasher<User>();
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<Result<CreatedUserResponse>> CreateAsync(CreateUserRequest request, RoleTypes role = RoleTypes.Customer)

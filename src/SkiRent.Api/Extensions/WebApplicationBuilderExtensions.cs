@@ -4,12 +4,14 @@ using System.Reflection;
 using FluentValidation;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 using QuestPDF.Infrastructure;
 
 using SkiRent.Api.Authorization.Handlers;
 using SkiRent.Api.Configurations;
 using SkiRent.Api.Data;
+using SkiRent.Api.Data.Models;
 using SkiRent.Api.Data.UnitOfWork;
 using SkiRent.Api.ExceptionHandlers;
 using SkiRent.Api.Services.Auth;
@@ -69,6 +71,7 @@ public static class WebApplicationBuilderExtensions
 
         services.AddTransient<IFileSystem, FileSystem>();
 
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
