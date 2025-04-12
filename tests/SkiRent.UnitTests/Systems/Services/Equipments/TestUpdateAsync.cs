@@ -60,7 +60,6 @@ public class TestUpdateAsync
     public async Task WhenEquipmentCategoryNotFound_ReturnsFailedResult()
     {
         // Arrange
-        var equipmentId = _fixture.Create<int>();
         var categoryId = _fixture.Create<int>();
 
         var request = _fixture.Build<UpdateEquipmentRequest>()
@@ -68,13 +67,13 @@ public class TestUpdateAsync
             .Create();
         var equipment = _fixture.Create<Equipment>();
 
-        _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId)
+        _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipment.Id)
             .Returns(equipment);
         _unitOfWork.EquipmentCategories.GetByIdAsync(request.CategoryIdAsNonNull)
             .Returns((EquipmentCategory?)null);
 
         // Act
-        var result = await _equipmentService.UpdateAsync(equipmentId, request);
+        var result = await _equipmentService.UpdateAsync(equipment.Id, request);
 
         // Assert
         Assert.That(result.IsFailed, Is.True);
@@ -86,8 +85,7 @@ public class TestUpdateAsync
     public async Task WhenEquipmentImageNotFound_ReturnsFailedResult()
     {
         // Arrange
-        var equipmentId = _fixture.Create<int>();
-        var imageId = Guid.NewGuid();
+        var imageId = _fixture.Create<Guid>();
 
         var request = _fixture.Build<UpdateEquipmentRequest>()
             .With(request => request.MainImageId, imageId)
@@ -97,17 +95,103 @@ public class TestUpdateAsync
             .With(equipment => equipment.MainImageId, Guid.NewGuid())
             .Create();
 
-        _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipmentId)
+        _unitOfWork.Equipments.GetEquipmentWithCategoryAsync(equipment.Id)
             .Returns(equipment);
         _unitOfWork.EquipmentImages.GetByIdAsync(imageId)
             .Returns((EquipmentImage?)null);
 
         // Act
-        var result = await _equipmentService.UpdateAsync(equipmentId, request);
+        var result = await _equipmentService.UpdateAsync(equipment.Id, request);
 
         // Assert
         Assert.That(result.IsFailed, Is.True);
         Assert.That(result.Errors[0], Is.InstanceOf<EquipmentImageNotFoundError>());
         Assert.That(result.Errors[0].Metadata.GetValueOrDefault("imageId"), Is.EqualTo(imageId));
+    }
+
+    [Test]
+    public async Task KeepsOriginalName_WhenNameNotProvided()
+    {
+        // Arrange
+        var originalName = _fixture.Create<string>();
+        var originalEquipment = _fixture.Build<Equipment>()
+            .With(equipment => equipment.Name, originalName)
+            .Create();
+
+        var request = _fixture.Build<UpdateEquipmentRequest>()
+            .With(request => request.Name, (string?)null)
+            .Without(request => request.CategoryId)
+            .Without(request => request.MainImageId)
+            .Create();
+
+        _unitOfWork.Equipments
+            .GetEquipmentWithCategoryAsync(originalEquipment.Id)
+            .Returns(originalEquipment);
+        _unitOfWork.SaveChangesAsync()
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _equipmentService.UpdateAsync(originalEquipment.Id, request);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        Assert.That(originalEquipment.Name, Is.EqualTo(originalName));
+    }
+
+    [Test]
+    public async Task SetsDescriptionToNull_WhenDescriptionIsEmptyString()
+    {
+        // Arrange
+        var originalEquipment = _fixture.Create<Equipment>();
+
+        var request = _fixture.Build<UpdateEquipmentRequest>()
+            .With(request => request.Description, new string(' ', 4))
+            .Without(request => request.CategoryId)
+            .Without(request => request.MainImageId)
+            .Create();
+
+        _unitOfWork.Equipments
+            .GetEquipmentWithCategoryAsync(originalEquipment.Id)
+            .Returns(originalEquipment);
+        _unitOfWork.SaveChangesAsync()
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _equipmentService.UpdateAsync(originalEquipment.Id, request);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        Assert.That(originalEquipment.Description, Is.Null);
+    }
+
+    [Test]
+    public async Task RemovesMainImage_WhenMainImageIdIsNull()
+    {
+        // Arrange
+        var image = _fixture.Create<EquipmentImage>();
+
+        var originalEquipment = _fixture.Build<Equipment>()
+            .With(equipment => equipment.MainImageId, image.Id)
+            .With(equipment => equipment.MainImage, image)
+            .Create();
+
+        var request = _fixture.Build<UpdateEquipmentRequest>()
+            .With(request => request.MainImageId, (Guid?)null)
+            .Without(request => request.CategoryId)
+            .Create();
+
+        _unitOfWork.Equipments
+            .GetEquipmentWithCategoryAsync(originalEquipment.Id)
+            .Returns(originalEquipment);
+        _unitOfWork.SaveChangesAsync()
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _equipmentService.UpdateAsync(originalEquipment.Id, request);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        Assert.That(originalEquipment.MainImage, Is.Null);
+        Assert.That(originalEquipment.MainImageId, Is.Null);
     }
 }

@@ -72,4 +72,38 @@ public class TestCreateAsync
         Assert.That(result.Errors[0], Is.InstanceOf<EquipmentImageNotFoundError>());
         Assert.That(result.Errors[0].Metadata.GetValueOrDefault("imageId"), Is.EqualTo(request.MainImageId));
     }
+
+    [Test]
+    public async Task WhenRequestIsValid_CreatesEquipmentAndSavesChanges()
+    {
+        // Arrange
+        var request = _fixture.Create<CreateEquipmentRequest>();
+
+        _unitOfWork.EquipmentCategories
+            .ExistsAsync(Arg.Any<Expression<Func<EquipmentCategory, bool>>>())
+            .Returns(true);
+        _unitOfWork.EquipmentImages
+            .ExistsAsync(Arg.Any<Expression<Func<EquipmentImage, bool>>>())
+            .Returns(true);
+
+        // Act
+        var result = await _equipmentService.CreateAsync(request);
+
+        // Assert
+        Assert.That(result.IsFailed, Is.False);
+        await _unitOfWork.Equipments.Received(1).AddAsync(
+            Arg.Is<Equipment>(equipment =>
+                equipment.Name == request.Name &&
+                equipment.Description == request.Description &&
+                equipment.CategoryId == request.CategoryId &&
+                equipment.PricePerDay == request.PricePerDay &&
+                equipment.AvailableQuantity == request.AvailableQuantity &&
+                equipment.MainImageId == request.MainImageId
+            ));
+        await _unitOfWork.Received(1).SaveChangesAsync();
+        await _unitOfWork.EquipmentImages.Received(1).ExistsAsync(
+            Arg.Is<Expression<Func<EquipmentImage, bool>>>(expression =>
+                expression.Compile().Invoke(new EquipmentImage { Id = (Guid)request.MainImageId! }))
+            );
+    }
 }

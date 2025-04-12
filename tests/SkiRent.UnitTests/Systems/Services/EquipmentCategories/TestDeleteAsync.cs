@@ -99,5 +99,9 @@ public class TestDeleteAsync
         Assert.That(result.IsFailed, Is.False);
         _unitOfWork.EquipmentCategories.Received(1).Delete(category);
         await _unitOfWork.Received(1).SaveChangesAsync();
+        await _unitOfWork.Equipments.Received(1).ExistsAsync(
+            Arg.Is<Expression<Func<Equipment, bool>>>(expression =>
+                expression.Compile().Invoke(new Equipment { CategoryId = category.Id }))
+            );
     }
 }
