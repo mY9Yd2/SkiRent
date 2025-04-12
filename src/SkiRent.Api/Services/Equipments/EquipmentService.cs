@@ -20,13 +20,13 @@ public class EquipmentService : IEquipmentService
     {
         if (!await _unitOfWork.EquipmentCategories.ExistsAsync(category => category.Id == request.CategoryId))
         {
-            return Result.Fail(new EquipmentCategoryNotFound(request.CategoryId));
+            return Result.Fail(new EquipmentCategoryNotFoundError(request.CategoryId));
         }
 
         if (request.MainImageId is not null
             && !await _unitOfWork.EquipmentImages.ExistsAsync(image => image.Id == request.MainImageId))
         {
-            return Result.Fail(new EquipmentImageNotFound((Guid)request.MainImageId));
+            return Result.Fail(new EquipmentImageNotFoundError((Guid)request.MainImageId));
         }
 
         var equipment = new Equipment
@@ -126,7 +126,7 @@ public class EquipmentService : IEquipmentService
             var category = await _unitOfWork.EquipmentCategories.GetByIdAsync(request.CategoryIdAsNonNull);
             if (category is null)
             {
-                return Result.Fail(new EquipmentCategoryNotFound((int)request.CategoryId));
+                return Result.Fail(new EquipmentCategoryNotFoundError((int)request.CategoryId));
             }
             equipment.Category = category;
         }
@@ -143,7 +143,7 @@ public class EquipmentService : IEquipmentService
                 var image = await _unitOfWork.EquipmentImages.GetByIdAsync(request.MainImageIdAsNonNull);
                 if (image is null)
                 {
-                    return Result.Fail(new EquipmentImageNotFound((Guid)request.MainImageId));
+                    return Result.Fail(new EquipmentImageNotFoundError((Guid)request.MainImageId));
                 }
                 equipment.MainImage = image;
                 equipment.MainImageId = image.Id;

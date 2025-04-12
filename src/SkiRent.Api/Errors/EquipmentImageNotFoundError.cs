@@ -2,9 +2,9 @@
 
 namespace SkiRent.Api.Errors;
 
-public class EquipmentImageNotFound : Error
+public class EquipmentImageNotFoundError : Error
 {
-    public EquipmentImageNotFound(Guid imageId)
+    public EquipmentImageNotFoundError(Guid imageId)
         : base($"Equipment Image with id '{imageId}' not found.")
     {
         Metadata.Add(nameof(imageId), imageId);

@@ -59,7 +59,7 @@ public class EquipmentCategoryService : IEquipmentCategoryService
 
         if (category is null)
         {
-            return Result.Fail(new EquipmentCategoryNotFound(categoryId));
+            return Result.Fail(new EquipmentCategoryNotFoundError(categoryId));
         }
 
         if (request.Name is not null)
@@ -88,7 +88,7 @@ public class EquipmentCategoryService : IEquipmentCategoryService
 
         if (category is null)
         {
-            return Result.Fail(new EquipmentCategoryNotFound(categoryId));
+            return Result.Fail(new EquipmentCategoryNotFoundError(categoryId));
         }
 
         var hasEquipment = await _unitOfWork.Equipments.ExistsAsync(equipment => equipment.CategoryId == categoryId);

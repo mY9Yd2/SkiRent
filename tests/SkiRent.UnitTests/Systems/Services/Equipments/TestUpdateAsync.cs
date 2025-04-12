@@ -78,7 +78,7 @@ public class TestUpdateAsync
 
         // Assert
         Assert.That(result.IsFailed, Is.True);
-        Assert.That(result.Errors[0], Is.InstanceOf<EquipmentCategoryNotFound>());
+        Assert.That(result.Errors[0], Is.InstanceOf<EquipmentCategoryNotFoundError>());
         Assert.That(result.Errors[0].Metadata.GetValueOrDefault("categoryId"), Is.EqualTo(categoryId));
     }
 
@@ -107,7 +107,7 @@ public class TestUpdateAsync
 
         // Assert
         Assert.That(result.IsFailed, Is.True);
-        Assert.That(result.Errors[0], Is.InstanceOf<EquipmentImageNotFound>());
+        Assert.That(result.Errors[0], Is.InstanceOf<EquipmentImageNotFoundError>());
         Assert.That(result.Errors[0].Metadata.GetValueOrDefault("imageId"), Is.EqualTo(imageId));
     }
 }

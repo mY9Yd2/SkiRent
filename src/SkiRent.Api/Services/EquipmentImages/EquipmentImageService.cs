@@ -152,7 +152,7 @@ public class EquipmentImageService : IEquipmentImageService
 
         if (image is null)
         {
-            return Result.Fail(new EquipmentImageNotFound(imageId));
+            return Result.Fail(new EquipmentImageNotFoundError(imageId));
         }
 
         var hasEquipment = await _unitOfWork.Equipments.ExistsAsync(equipment => equipment.MainImageId == imageId);
