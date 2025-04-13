@@ -25,6 +25,7 @@ public class TestGetAllAsync
     private IOptions<PaymentGatewayOptions> _paymentGatewayOptions;
     private IHttpClientFactory _clientFactory;
     private IFusionCache _cache;
+    private TimeProvider _timeProvider;
 
     [SetUp]
     public void Setup()
@@ -42,6 +43,7 @@ public class TestGetAllAsync
         _paymentGatewayOptions = Substitute.For<IOptions<PaymentGatewayOptions>>();
         _clientFactory = Substitute.For<IHttpClientFactory>();
         _cache = Substitute.For<IFusionCache>();
+        _timeProvider = Substitute.For<TimeProvider>();
 
         _appSettings.Value.Returns(new AppSettings
         {
@@ -61,7 +63,8 @@ public class TestGetAllAsync
             _appSettings,
             _paymentGatewayOptions,
             _clientFactory,
-            _cache
+            _cache,
+            _timeProvider
         );
     }
 

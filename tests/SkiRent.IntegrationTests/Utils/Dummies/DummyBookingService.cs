@@ -17,8 +17,9 @@ namespace SkiRent.IntegrationTests.Utils.Dummies
             IOptions<AppSettings> appSettings,
             IOptions<PaymentGatewayOptions> paymentGatewayOptions,
             IHttpClientFactory clientFactory,
-            [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache)
-                : base(unitOfWork, appSettings, paymentGatewayOptions, clientFactory, cache)
+            [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache,
+            TimeProvider timeProvider)
+                : base(unitOfWork, appSettings, paymentGatewayOptions, clientFactory, cache, timeProvider)
         { }
 
         protected override Task<Guid> CreatePaymentAsync(IEnumerable<PaymentItem> paymentItems, decimal totalPrice, Uri successUrl, Uri cancelUrl)

@@ -26,19 +26,22 @@ public class BookingService : IBookingService
     private readonly IFusionCache _cache;
     private readonly AppSettings _appSettings;
     private readonly PaymentGatewayOptions _paymentGatewayOptions;
+    private readonly TimeProvider _timeProvider;
 
     public BookingService(
         IUnitOfWork unitOfWork,
         IOptions<AppSettings> appSettings,
         IOptions<PaymentGatewayOptions> paymentGatewayOptions,
         IHttpClientFactory clientFactory,
-        [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache)
+        [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache,
+        TimeProvider timeProvider)
     {
         _unitOfWork = unitOfWork;
         _clientFactory = clientFactory;
         _cache = cache;
         _appSettings = appSettings.Value;
         _paymentGatewayOptions = paymentGatewayOptions.Value;
+        _timeProvider = timeProvider;
     }
 
     public async Task<Result<CreatedBookingResponse>> CreateAsync(int userId, CreateBookingRequest request)
@@ -291,11 +294,11 @@ public class BookingService : IBookingService
         return await response.Content.ReadFromJsonAsync<Guid>();
     }
 
-    private static bool IsOverdue(DateOnly endDate, string status)
+    private bool IsOverdue(DateOnly endDate, string status)
     {
         var bookingStatus = Enum.Parse<BookingStatusTypes>(status);
 
-        return endDate < DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime)
+        return endDate < DateOnly.FromDateTime(_timeProvider.GetUtcNow().UtcDateTime)
             && bookingStatus == BookingStatusTypes.Paid;
     }
 
