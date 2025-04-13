@@ -101,7 +101,7 @@ public class UsersController : BaseController
     {
         var nameIdentifier = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!int.TryParse(nameIdentifier, out int currentUserId)
-            && userId == currentUserId)
+            || userId == currentUserId)
         {
             return Forbid();
         }
