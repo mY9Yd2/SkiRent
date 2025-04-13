@@ -25,17 +25,20 @@ public class PaymentService : IPaymentService
     private readonly IFusionCache _cache;
     private readonly AppSettings _appSettings;
     private readonly IFileSystem _fileSystem;
+    private readonly TimeProvider _timeProvider;
 
     public PaymentService(
         IUnitOfWork unitOfWork,
         [FromKeyedServices("SkiRent.Api.Cache")] IFusionCache cache,
         IOptions<AppSettings> appSettings,
-        IFileSystem fileSystem)
+        IFileSystem fileSystem,
+        TimeProvider timeProvider)
     {
         _unitOfWork = unitOfWork;
         _cache = cache;
         _appSettings = appSettings.Value;
         _fileSystem = fileSystem;
+        _timeProvider = timeProvider;
     }
 
     public async Task<Result> ProcessPaymentCallbackAsync(PaymentResult paymentResult)
@@ -70,7 +73,8 @@ public class PaymentService : IPaymentService
 
         if (paymentResult.IsSuccessful)
         {
-            await CreateInvoiceAsync(paymentResult.PaymentId, paymentResult.PaidAt);
+            var paidAtConverted = ConvertToCET(paymentResult.PaidAt ?? _timeProvider.GetUtcNow());
+            await CreateInvoiceAsync(paymentResult.PaymentId, paidAtConverted);
 
             var invoice = new Invoice
             {
@@ -86,7 +90,13 @@ public class PaymentService : IPaymentService
         return Result.Ok();
     }
 
-    private async Task CreateInvoiceAsync(Guid paymentId, DateTimeOffset? paidAt)
+    private static DateTimeOffset ConvertToCET(DateTimeOffset paidAt)
+    {
+        var cetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+        return TimeZoneInfo.ConvertTime(paidAt, cetTimeZone);
+    }
+
+    private async Task CreateInvoiceAsync(Guid paymentId, DateTimeOffset paidAt)
     {
         var invoiceRequest = await _cache.GetOrDefaultAsync<CreateInvoiceRequest>(paymentId.ToString());
 
@@ -95,10 +105,7 @@ public class PaymentService : IPaymentService
             throw new CreateInvoiceRequestNotFoundException($"Invoice with payment id '{paymentId}' not found.");
         }
 
-        TimeZoneInfo cetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-        var paidAtConverted = TimeZoneInfo.ConvertTime(paidAt ?? TimeProvider.System.GetUtcNow(), cetTimeZone);
-
-        var document = GenerateInvoiceDocument(invoiceRequest, paidAtConverted);
+        var document = GenerateInvoiceDocument(invoiceRequest, paidAt);
         await SaveInvoiceToFileAsync(invoiceRequest.PaymentId, document);
 
         await _cache.RemoveAsync(paymentId.ToString());

@@ -142,4 +142,52 @@ public class TestUpdateAsync
         Assert.That(result.Errors[0], Is.InstanceOf<UnauthorizedModificationError>());
         Assert.That(result.Errors[0].Metadata.GetValueOrDefault("resource"), Is.EqualTo(nameof(request.Role)));
     }
+
+    [Test]
+    public async Task WhenUserExists_DeletesUserAndSavesChanges()
+    {
+        // Arrange
+        var user = _fixture.Create<User>();
+
+        _unitOfWork.Users
+            .GetByIdAsync(user.Id)
+            .Returns(user);
+        _unitOfWork.Users
+            .ExistsAsync(Arg.Any<Expression<Func<User, bool>>>())
+            .Returns(false);
+
+        _unitOfWork.Bookings.ExistsAsync(
+            Arg.Any<Expression<Func<Booking, bool>>>())
+            .Returns(call =>
+            {
+                var expression = call.Arg<Expression<Func<Booking, bool>>>();
+                var predicate = expression.Compile();
+
+                // Simulate bookings with different combinations
+                var bookings = new[]
+                {
+                    new Booking { UserId = user.Id, Status = BookingStatus.Cancelled },
+                    new Booking { UserId = user.Id, Status = BookingStatus.Returned },
+                    new Booking { UserId = _fixture.Create<int>(), Status = BookingStatus.Paid }
+                };
+
+                return bookings.Any(predicate);
+            });
+
+        // Act
+        var result = await _userService.DeleteAsync(user.Id);
+
+        // Assert
+        Assert.That(result.IsSuccess, Is.True);
+        _unitOfWork.Users.Received(1).Delete(user);
+        await _unitOfWork.Received(1).SaveChangesAsync();
+        await _unitOfWork.Bookings.Received(1).ExistsAsync(
+            Arg.Is<Expression<Func<Booking, bool>>>(expression =>
+                expression.Compile().Invoke(new Booking
+                {
+                    UserId = user.Id,
+                    Status = BookingStatus.Paid
+                }))
+            );
+    }
 }
