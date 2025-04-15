@@ -22,6 +22,8 @@ builder.Services.AddFusionCache("FakePay.Cache")
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton(TimeProvider.System);
+
 builder.Services.AddScoped<PaymentService>();
 
 var app = builder.Build();

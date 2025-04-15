@@ -20,17 +20,20 @@ public class PaymentService
     private readonly ClientOptions _clientOptions;
     private readonly IFusionCache _cache;
     private readonly IHttpClientFactory _clientFactory;
+    private readonly TimeProvider _timeProvider;
 
     public PaymentService(
         ILogger<PaymentService> logger,
         IOptions<ClientOptions> clientOptions,
         [FromKeyedServices("FakePay.Cache")] IFusionCache cache,
-        IHttpClientFactory clientFactory)
+        IHttpClientFactory clientFactory,
+        TimeProvider timeProvider)
     {
         _logger = logger;
         _clientOptions = clientOptions.Value;
         _cache = cache;
         _clientFactory = clientFactory;
+        _timeProvider = timeProvider;
     }
 
     public async Task<Guid> CreateAsync(CreatePaymentRequest request)
@@ -87,7 +90,7 @@ public class PaymentService
             PaymentId = paymentId,
             IsSuccessful = !isCancelled,
             Message = isCancelled ? "Cancelled" : "Success",
-            PaidAt = isCancelled ? null : TimeProvider.System.GetUtcNow()
+            PaidAt = isCancelled ? null : _timeProvider.GetUtcNow()
         };
 
         await SendPaymentCallbackAsync(payment.CallbackUrl, paymentResult);

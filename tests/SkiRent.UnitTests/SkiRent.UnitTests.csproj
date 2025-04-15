@@ -42,7 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SkiRent.Api\SkiRent.Api.csproj" />
-    <!--<ProjectReference Include="..\..\src\SkiRent.Desktop\SkiRent.Desktop.csproj" />-->
+    <ProjectReference Include="..\..\src\SkiRent.Desktop\SkiRent.Desktop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

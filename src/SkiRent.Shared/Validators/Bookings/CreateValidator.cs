@@ -7,7 +7,7 @@ namespace SkiRent.Shared.Validators.Bookings
 {
     public class CreateBookingRequestValidator : AbstractValidator<CreateBookingRequest>
     {
-        public CreateBookingRequestValidator()
+        public CreateBookingRequestValidator(TimeProvider timeProvider)
         {
             RuleFor(request => request.PersonalDetails).SetValidator(new PersonalDetailsValidator());
 
@@ -22,12 +22,12 @@ namespace SkiRent.Shared.Validators.Bookings
 
             RuleFor(request => request.StartDate)
                 .LessThanOrEqualTo(request => request.EndDate)
-                .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
+                .GreaterThanOrEqualTo(DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime));
 
             RuleFor(request => request.EndDate)
-                .LessThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime.AddMonths(3)))
+                .LessThanOrEqualTo(DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime.AddMonths(3)))
                 .GreaterThanOrEqualTo(request => request.StartDate)
-                .GreaterThanOrEqualTo(DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().UtcDateTime));
+                .GreaterThanOrEqualTo(DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime));
 
             RuleFor(request => request.SuccessUrl).SetValidator(new UrlValidator());
 

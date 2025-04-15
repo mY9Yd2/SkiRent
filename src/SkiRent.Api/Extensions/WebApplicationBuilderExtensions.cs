@@ -65,6 +65,8 @@ public static class WebApplicationBuilderExtensions
 
         services.AddDbContext<SkiRentContext>();
 
+        services.AddSingleton(TimeProvider.System);
+
         services.AddSingleton<IAuthorizationHandler, PaymentGatewayOnlyHandler>();
         services.AddSingleton<IAuthorizationHandler, SelfOrAdminAccessHandler>();
         services.AddSingleton<IAuthorizationHandler, CustomerOrAdminAccessHandler>();
