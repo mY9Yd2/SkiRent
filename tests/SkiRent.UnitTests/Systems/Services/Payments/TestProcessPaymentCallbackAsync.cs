@@ -137,7 +137,7 @@ public class TestProcessPaymentCallbackAsync
         var result = await _paymentService.ProcessPaymentCallbackAsync(paymentResult);
 
         // Assert
-        await _unitOfWork.Received(2).SaveChangesAsync();
+        await _unitOfWork.Received(1).SaveChangesAsync();
         await _unitOfWork.Invoices.Received(1).AddAsync(
             Arg.Is<Invoice>(invoice =>
                 invoice.Id == paymentResult.PaymentId &&

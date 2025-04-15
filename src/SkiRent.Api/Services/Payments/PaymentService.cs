@@ -50,44 +50,52 @@ public class PaymentService : IPaymentService
             throw new PaymentNotFoundException($"No booking found for Payment ID: {paymentResult.PaymentId}");
         }
 
-        booking.Status = paymentResult.IsSuccessful
-            ? BookingStatus.Paid
-            : BookingStatus.Cancelled;
-
-        if (!paymentResult.IsSuccessful)
+        if (paymentResult.IsSuccessful)
         {
-            foreach (var item in booking.BookingItems)
-            {
-                var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
-
-                if (equipment is null)
-                {
-                    throw new BookingRollbackException($"Equipment with id '{item.EquipmentId}' not found.");
-                }
-
-                equipment.AvailableQuantity += item.Quantity;
-            }
+            await HandleSuccessfulPaymentAsync(paymentResult, booking);
+        }
+        else
+        {
+            await RollbackBookingItemsAsync(booking);
         }
 
         await _unitOfWork.SaveChangesAsync();
 
-        if (paymentResult.IsSuccessful)
-        {
-            var paidAtConverted = ConvertToCET(paymentResult.PaidAt ?? _timeProvider.GetUtcNow());
-            await CreateInvoiceAsync(paymentResult.PaymentId, paidAtConverted);
-
-            var invoice = new Invoice
-            {
-                Id = paymentResult.PaymentId,
-                UserId = booking.UserId,
-                BookingId = booking.Id,
-            };
-
-            await _unitOfWork.Invoices.AddAsync(invoice);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
         return Result.Ok();
+    }
+
+    private async Task HandleSuccessfulPaymentAsync(PaymentResult paymentResult, Booking booking)
+    {
+        booking.Status = BookingStatus.Paid;
+
+        var paidAtConverted = ConvertToCET(paymentResult.PaidAt ?? _timeProvider.GetUtcNow());
+        await CreateInvoiceAsync(paymentResult.PaymentId, paidAtConverted);
+
+        var invoice = new Invoice
+        {
+            Id = paymentResult.PaymentId,
+            UserId = booking.UserId,
+            BookingId = booking.Id,
+        };
+
+        await _unitOfWork.Invoices.AddAsync(invoice);
+    }
+
+    private async Task RollbackBookingItemsAsync(Booking booking)
+    {
+        booking.Status = BookingStatus.Cancelled;
+
+        foreach (var item in booking.BookingItems)
+        {
+            var equipment = await _unitOfWork.Equipments.GetByIdAsync(item.EquipmentId);
+
+            if (equipment is null)
+            {
+                throw new BookingRollbackException($"Equipment with id '{item.EquipmentId}' not found.");
+            }
+
+            equipment.AvailableQuantity += item.Quantity;
+        }
     }
 
     private static DateTimeOffset ConvertToCET(DateTimeOffset paidAt)
