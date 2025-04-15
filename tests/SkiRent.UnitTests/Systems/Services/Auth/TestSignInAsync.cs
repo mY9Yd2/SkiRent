@@ -17,7 +17,7 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
     public class TestSignInAsync
     {
         private IUnitOfWork _unitOfWork;
-        private PasswordHasher<User> _passwordHasher;
+        private IPasswordHasher<User> _passwordHasher;
         private AuthService _authService;
         private Fixture _fixture;
 
@@ -33,8 +33,9 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
             _unitOfWork = Substitute.For<IUnitOfWork>();
-            _passwordHasher = new PasswordHasher<User>();
-            _authService = new AuthService(_unitOfWork);
+            _passwordHasher = Substitute.For<IPasswordHasher<User>>();
+
+            _authService = new AuthService(_unitOfWork, _passwordHasher);
         }
 
         [TearDown]
@@ -47,18 +48,16 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
         public async Task WhenUserExistsAndPasswordIsValid_ReturnsClaimsPrincipal()
         {
             // Arrange
-            var email = _fixture.Create<string>();
-            var password = _fixture.Create<string>();
-            var user = _fixture.Build<User>()
-                .With(user => user.Id)
-                .With(user => user.Email, email)
-                .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
-                .Without(user => user.Bookings)
-                .Without(user => user.Invoices)
+            var user = _fixture.Create<User>();
+            var request = _fixture.Build<SignInRequest>()
+                .With(request => request.Email, user.Email)
                 .Create();
-            var request = new SignInRequest { Email = email, Password = password };
 
-            _unitOfWork.Users.GetByEmailAsync(Arg.Any<string>()).Returns(user);
+            _unitOfWork.Users.GetByEmailAsync(request.Email)
+                .Returns(user);
+            _passwordHasher
+                .VerifyHashedPassword(user, user.PasswordHash, request.Password)
+                .Returns(PasswordVerificationResult.Success);
 
             // Act
             var result = await _authService.SignInAsync(request);
@@ -76,7 +75,7 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
             Assert.Multiple(() =>
             {
                 Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier), Is.EqualTo(user.Id.ToString()));
-                Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.Email), Is.EqualTo(email));
+                Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.Email), Is.EqualTo(user.Email));
                 Assert.That(claimsPrincipal.FindFirstValue(ClaimTypes.Role), Is.EqualTo(user.UserRole));
             });
         }
@@ -85,11 +84,10 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
         public async Task WhenUserDoesNotExist_ReturnsUserNotFoundError()
         {
             // Arrange
-            var email = _fixture.Create<string>();
-            var password = _fixture.Create<string>();
-            var request = new SignInRequest { Email = email, Password = password };
+            var request = _fixture.Create<SignInRequest>();
 
-            _unitOfWork.Users.GetByEmailAsync(Arg.Any<string>()).Returns((User?)null);
+            _unitOfWork.Users.GetByEmailAsync(request.Email)
+                .Returns((User?)null);
 
             // Act
             var result = await _authService.SignInAsync(request);
@@ -106,18 +104,16 @@ namespace SkiRent.UnitTests.Systems.Services.Auth
         public async Task WhenPasswordIsIncorrect_ReturnsPasswordVerificationFailedError()
         {
             // Arrange
-            var email = _fixture.Create<string>();
-            var password = _fixture.Create<string>();
-            var incorrectPassword = _fixture.Create<string>();
-            var user = _fixture.Build<User>()
-                .With(user => user.Email, email)
-                .With(user => user.PasswordHash, _passwordHasher.HashPassword(null!, password))
-                .Without(user => user.Bookings)
-                .Without(user => user.Invoices)
+            var user = _fixture.Create<User>();
+            var request = _fixture.Build<SignInRequest>()
+                .With(request => request.Email, user.Email)
                 .Create();
-            var request = new SignInRequest { Email = email, Password = incorrectPassword };
 
-            _unitOfWork.Users.GetByEmailAsync(Arg.Any<string>()).Returns(user);
+            _unitOfWork.Users.GetByEmailAsync(request.Email)
+                .Returns(user);
+            _passwordHasher
+                .VerifyHashedPassword(user, user.PasswordHash, request.Password)
+                .Returns(PasswordVerificationResult.Failed);
 
             // Act
             var result = await _authService.SignInAsync(request);

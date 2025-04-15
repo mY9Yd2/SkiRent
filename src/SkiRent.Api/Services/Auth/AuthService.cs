@@ -15,15 +15,14 @@ namespace SkiRent.Api.Services.Auth;
 public class AuthService : IAuthService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly PasswordHasher<User> _passwordHasher;
+    private readonly IPasswordHasher<User> _passwordHasher;
 
     public string AuthenticationScheme { get; set; }
 
-    public AuthService(IUnitOfWork unitOfWork)
+    public AuthService(IUnitOfWork unitOfWork, IPasswordHasher<User> passwordHasher)
     {
         _unitOfWork = unitOfWork;
-
-        _passwordHasher = new PasswordHasher<User>();
+        _passwordHasher = passwordHasher;
 
         AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     }

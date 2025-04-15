@@ -17,7 +17,8 @@ public class TestCreatePrincipal
     public void Setup()
     {
         _unitOfWork = Substitute.For<IUnitOfWork>();
-        _authService = new AuthService(_unitOfWork);
+
+        _authService = new AuthService(_unitOfWork, null!);
     }
 
     [TearDown]
