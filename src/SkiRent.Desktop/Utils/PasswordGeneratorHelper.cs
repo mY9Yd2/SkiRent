@@ -22,7 +22,6 @@ namespace SkiRent.Desktop.Utils
             password[1] = Lowercase[GetRandomNumber(rng, Lowercase.Length)];
             password[2] = Digits[GetRandomNumber(rng, Digits.Length)];
 
-
             for (int i = 3; i < length; i++)
             {
                 password[i] = AllChars[GetRandomNumber(rng, AllChars.Length)];
@@ -34,7 +33,7 @@ namespace SkiRent.Desktop.Utils
 
             if (!validator.Validate(shuffledPassword).IsValid)
             {
-                return GeneratePassword();
+                return GeneratePassword(minLength, maxLength);
             }
 
             return shuffledPassword;
