@@ -15,6 +15,16 @@ using SkiRent.Desktop.ViewModels.Users;
 namespace SkiRent.Desktop.Services
 {
     /// <summary>
+    /// Defines the contract for a service that handles navigation between view models.
+    /// </summary>
+    public interface INavigationService
+    {
+        public Task NavigateToAsync<TBaseViewModel>() where TBaseViewModel : BaseViewModel;
+        public Task NavigateToAsync<TBaseViewModel>(Func<TBaseViewModel, Task> initialize) where TBaseViewModel : BaseViewModel;
+        public void SwitchTo<TBaseViewModel>() where TBaseViewModel : BaseViewModel, IViewUpdater;
+    }
+
+    /// <summary>
     /// Provides navigation functionality between different view models in the application.
     /// </summary>
     public class NavigationService : INavigationService

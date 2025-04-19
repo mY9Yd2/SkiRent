@@ -7,6 +7,7 @@ using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Main;
 using SkiRent.Shared.Clients;
@@ -16,6 +17,7 @@ namespace SkiRent.Desktop.ViewModels.Admin
     public partial class AdminMainViewModel : BaseViewModel, IViewUpdater
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IUserService _userService = null!;
 
         [ObservableProperty]
         private CurrentUser _currentUser = null!;
@@ -29,14 +31,14 @@ namespace SkiRent.Desktop.ViewModels.Admin
         public AdminMainViewModel()
         { }
 
-        public AdminMainViewModel(ISkiRentApi skiRentApi, AdminMenuViewModel adminMenuViewModel)
+        public AdminMainViewModel(ISkiRentApi skiRentApi, AdminMenuViewModel adminMenuViewModel, IUserService userService)
         {
             _skiRentApi = skiRentApi;
             _adminMenuViewModel = adminMenuViewModel;
+            _userService = userService;
 
-            var user = Application.Current.Properties[nameof(CurrentUser)]
+            CurrentUser = userService.CurrentUser
                 ?? throw new CurrentUserNotFoundException("Current user not found in application properties.");
-            CurrentUser = (CurrentUser)user;
         }
 
         public void UpdateCurrentView(BaseViewModel viewModel)
@@ -61,7 +63,7 @@ namespace SkiRent.Desktop.ViewModels.Admin
 
             if (signOutResult.IsSuccessful)
             {
-                Application.Current.Properties[nameof(CurrentUser)] = null;
+                _userService.CurrentUser = null;
                 Navigator.Instance.SwitchTo<MainWindowViewModel>();
                 await Navigator.Instance.NavigateToAsync<MainViewModel>();
             }

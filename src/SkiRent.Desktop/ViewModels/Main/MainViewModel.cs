@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Equipments;
@@ -16,6 +17,7 @@ namespace SkiRent.Desktop.ViewModels.Main
     public partial class MainViewModel : BaseViewModel
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IUserService _userService = null!;
 
         [ObservableProperty]
         private string _email = string.Empty;
@@ -26,9 +28,10 @@ namespace SkiRent.Desktop.ViewModels.Main
         public MainViewModel()
         { }
 
-        public MainViewModel(ISkiRentApi skiRentApi)
+        public MainViewModel(ISkiRentApi skiRentApi, IUserService userService)
         {
             _skiRentApi = skiRentApi;
+            _userService = userService;
         }
 
         [RelayCommand]
@@ -58,7 +61,7 @@ namespace SkiRent.Desktop.ViewModels.Main
                     return;
                 }
 
-                Application.Current.Properties[nameof(CurrentUser)] = new CurrentUser
+                _userService.CurrentUser = new CurrentUser
                 {
                     Id = result.Content.Id,
                     Email = result.Content.Email,

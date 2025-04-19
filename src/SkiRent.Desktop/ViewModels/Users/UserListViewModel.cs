@@ -8,6 +8,7 @@ using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Exceptions;
 using SkiRent.Desktop.Models;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -16,6 +17,7 @@ namespace SkiRent.Desktop.ViewModels.Users
     public partial class UserListViewModel : BaseViewModel, IInitializeAsync
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IMessageBoxService _messageBox = null!;
         private readonly CurrentUser _currentUser = null!;
 
         [ObservableProperty]
@@ -26,13 +28,13 @@ namespace SkiRent.Desktop.ViewModels.Users
         public UserListViewModel()
         { }
 
-        public UserListViewModel(ISkiRentApi skiRentApi)
+        public UserListViewModel(ISkiRentApi skiRentApi, IUserService userService, IMessageBoxService messageBox)
         {
             _skiRentApi = skiRentApi;
+            _messageBox = messageBox;
 
-            var user = Application.Current.Properties[nameof(CurrentUser)]
+            _currentUser = userService.CurrentUser
                 ?? throw new CurrentUserNotFoundException("Current user not found in application properties.");
-            _currentUser = (CurrentUser)user;
         }
 
         public async Task InitializeAsync()
@@ -86,11 +88,11 @@ namespace SkiRent.Desktop.ViewModels.Users
 
             if (SelectedUser.Id == _currentUser.Id)
             {
-                MessageBox.Show("Nem törölheted saját magadat.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                _messageBox.Show("Nem törölheted saját magadat.", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            var result = MessageBox.Show("Biztosan törölni szeretné ezt a felhasználót?", "Törlés megerősítése",
+            var result = _messageBox.Show("Biztosan törölni szeretné ezt a felhasználót?", "Törlés megerősítése",
                 MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result != MessageBoxResult.Yes)
@@ -102,13 +104,13 @@ namespace SkiRent.Desktop.ViewModels.Users
 
             if (deleteResult.IsSuccessful)
             {
-                MessageBox.Show("A felhasználó sikeresen törölve lett.", "Sikeres törlés",
+                _messageBox.Show("A felhasználó sikeresen törölve lett.", "Sikeres törlés",
                     MessageBoxButton.OK, MessageBoxImage.Information);
                 await RefreshAsync();
                 return;
             }
 
-            MessageBox.Show("A felhasználót nem lehet törölni, mert aktív foglalások vannak hozzá rendelve.", "Hiba",
+            _messageBox.Show("A felhasználót nem lehet törölni, mert aktív foglalások vannak hozzá rendelve.", "Hiba",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

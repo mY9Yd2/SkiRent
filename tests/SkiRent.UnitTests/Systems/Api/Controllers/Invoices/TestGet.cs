@@ -24,7 +24,7 @@ public class TestGet
     private InvoicesController _controller;
 
     [SetUp]
-    public void SetUp()
+    public void Setup()
     {
         _fixture = new Fixture();
 

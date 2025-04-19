@@ -17,6 +17,7 @@ using SixLabors.ImageSharp.Memory;
 
 using SkiRent.Desktop.Configurations;
 using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Admin;
 using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;
@@ -79,6 +80,9 @@ public partial class App : Application
         builder.Services.AddSingleton<MainWindow>();
 
         builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<IUserService, UserService>();
+
+        builder.Services.AddScoped<IMessageBoxService, MessageBoxService>();
 
         builder.Services.AddTransient<MainViewModel>();
         builder.Services.AddTransient<MainView>();

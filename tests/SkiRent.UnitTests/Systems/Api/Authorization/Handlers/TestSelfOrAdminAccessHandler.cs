@@ -22,7 +22,7 @@ public class TestSelfOrAdminAccessHandler
     private SelfOrAdminAccessRequirement _requirement;
 
     [SetUp]
-    public void SetUp()
+    public void Setup()
     {
         _fixture = new Fixture();
         _handler = new SelfOrAdminAccessHandler();

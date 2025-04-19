@@ -23,7 +23,7 @@ public class TestDelete
     private UsersController _controller;
 
     [SetUp]
-    public void SetUp()
+    public void Setup()
     {
         _fixture = new Fixture();
 

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 
-using SkiRent.Desktop.Services;
+using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Desktop.ViewModels.Bookings;
 using SkiRent.Desktop.ViewModels.EquipmentCategories;

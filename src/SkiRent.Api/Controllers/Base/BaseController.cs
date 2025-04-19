@@ -54,6 +54,7 @@ public abstract class BaseController : ControllerBase
                         title: "Not Found",
                         detail: error.Message,
                         statusCode: StatusCodes.Status404NotFound);
+            case UserHasActiveBookingsError:
             case EquipmentImageInUseError:
             case BookingDeletionNotAllowedError:
             case EquipmentCategoryNotEmptyError:

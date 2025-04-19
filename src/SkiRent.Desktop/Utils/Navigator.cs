@@ -1,4 +1,6 @@
-﻿namespace SkiRent.Desktop.Services
+﻿using SkiRent.Desktop.Services;
+
+namespace SkiRent.Desktop.Utils
 {
     /// <summary>
     /// Provides global access to the application's navigation service.

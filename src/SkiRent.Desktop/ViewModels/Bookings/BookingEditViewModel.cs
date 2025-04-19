@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using FluentValidation;
 
 using SkiRent.Desktop.Contracts;
-using SkiRent.Desktop.Services;
 using SkiRent.Desktop.Utils;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;

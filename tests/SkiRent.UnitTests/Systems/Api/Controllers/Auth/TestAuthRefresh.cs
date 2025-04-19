@@ -31,7 +31,7 @@ public class TestAuthRefresh
     private ISecureDataFormat<AuthenticationTicket> _protector;
 
     [SetUp]
-    public void SetUp()
+    public void Setup()
     {
         _fixture = new Fixture();
 
