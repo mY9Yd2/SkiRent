@@ -1,6 +1,6 @@
 ﻿namespace SkiRent.Shared.Contracts.Invoices
 {
-    public record GetAllInvoicesResponse
+    public record GetAllInvoiceResponse
     {
         public required Guid Id { get; init; }
 

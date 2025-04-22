@@ -138,6 +138,6 @@ namespace SkiRent.Shared.Clients
         public Task<IApiResponse<HttpContent>> GetAsync(Guid invoiceId);
 
         [Get("/api/invoices")]
-        public Task<IApiResponse<IEnumerable<GetAllInvoicesResponse>>> GetAllAsync();
+        public Task<IApiResponse<IEnumerable<GetAllInvoiceResponse>>> GetAllAsync();
     }
 }

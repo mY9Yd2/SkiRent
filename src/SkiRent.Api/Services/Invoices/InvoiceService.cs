@@ -45,12 +45,12 @@ public class InvoiceService : IInvoiceService
         return Result.Ok(result);
     }
 
-    public async Task<Result<IEnumerable<GetAllInvoicesResponse>>> GetAllAsync()
+    public async Task<Result<IEnumerable<GetAllInvoiceResponse>>> GetAllAsync()
     {
         var invoices = await _unitOfWork.Invoices.GetAllInvoiceWithUserAsync();
 
         var result = invoices.Select(invoice =>
-            new GetAllInvoicesResponse
+            new GetAllInvoiceResponse
             {
                 Id = invoice.Id,
                 UserId = invoice.UserId,

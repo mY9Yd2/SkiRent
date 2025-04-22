@@ -128,7 +128,7 @@ public class TestGetAll
         var invoice = await _unitOfWork.Invoices.GetByIdAsync(paymentDetails.PaymentId);
         Assert.That(invoice, Is.Not.Null);
 
-        var expectedResponse = new List<GetAllInvoicesResponse>
+        var expectedResponse = new List<GetAllInvoiceResponse>
         {
             new()
             {

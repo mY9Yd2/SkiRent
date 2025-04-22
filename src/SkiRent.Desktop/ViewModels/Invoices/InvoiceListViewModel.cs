@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
+using System.Diagnostics;
+using System.IO.Abstractions;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using PdfSharp.Quality;
-
 using SkiRent.Desktop.Contracts;
 using SkiRent.Desktop.Models;
+using SkiRent.Desktop.Services;
 using SkiRent.Desktop.ViewModels.Base;
 using SkiRent.Shared.Clients;
 
@@ -16,6 +16,8 @@ namespace SkiRent.Desktop.ViewModels.Invoices
     public partial class InvoiceListViewModel : BaseViewModel, IInitializeAsync
     {
         private readonly ISkiRentApi _skiRentApi = null!;
+        private readonly IFileSystem _fileSystem = null!;
+        private readonly IProcessService _processService = null!;
 
         [ObservableProperty]
         private InvoiceList _selectedInvoice = null!;
@@ -25,9 +27,11 @@ namespace SkiRent.Desktop.ViewModels.Invoices
         public InvoiceListViewModel()
         { }
 
-        public InvoiceListViewModel(ISkiRentApi skiRentApi)
+        public InvoiceListViewModel(ISkiRentApi skiRentApi, IFileSystem fileSystem, IProcessService processService)
         {
             _skiRentApi = skiRentApi;
+            _fileSystem = fileSystem;
+            _processService = processService;
         }
 
         public async Task InitializeAsync()
@@ -69,15 +73,18 @@ namespace SkiRent.Desktop.ViewModels.Invoices
 
                 var contentBytes = await result.Content.ReadAsByteArrayAsync();
 
-                var tempPath = Path.GetFullPath(Path.GetTempPath());
-                var path = Path.Combine(tempPath, "SkiRent");
+                var tempPath = _fileSystem.Path.GetFullPath(_fileSystem.Path.GetTempPath());
+                var path = _fileSystem.Path.Combine(tempPath, "SkiRent");
 
-                var directory = Directory.CreateDirectory(path);
-                var filePath = Path.Combine(directory.FullName, invoiceFileName);
+                var directory = _fileSystem.Directory.CreateDirectory(path);
+                var filePath = _fileSystem.Path.Combine(directory.FullName, invoiceFileName);
 
-                await File.WriteAllBytesAsync(filePath, contentBytes);
+                await _fileSystem.File.WriteAllBytesAsync(filePath, contentBytes);
 
-                PdfFileUtility.ShowDocument(filePath);
+                _processService.Start(new ProcessStartInfo(filePath)
+                {
+                    UseShellExecute = true
+                });
             }
         }
     }

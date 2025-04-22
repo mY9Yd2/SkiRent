@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO.Abstractions;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows;
@@ -83,6 +84,10 @@ public partial class App : Application
         builder.Services.AddSingleton<IUserService, UserService>();
 
         builder.Services.AddScoped<IMessageBoxService, MessageBoxService>();
+
+        builder.Services.AddTransient<IFileSystem, FileSystem>();
+
+        builder.Services.AddTransient<IProcessService, ProcessService>();
 
         builder.Services.AddTransient<MainViewModel>();
         builder.Services.AddTransient<MainView>();

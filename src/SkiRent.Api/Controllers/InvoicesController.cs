@@ -44,7 +44,7 @@ public class InvoicesController : BaseController
 
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ActionResult<IEnumerable<GetAllInvoicesResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<GetAllInvoiceResponse>>> GetAll()
     {
         var result = await _invoiceService.GetAllAsync();
 
