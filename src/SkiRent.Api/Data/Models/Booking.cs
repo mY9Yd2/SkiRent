@@ -44,4 +44,29 @@ public partial class Booking
     [ForeignKey("UserId")]
     [InverseProperty("Bookings")]
     public virtual User User { get; set; } = null!;
+
+
+    [Column(TypeName = "varchar(255)")]
+    public string? FullName { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
+    public string? PhoneNumber { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
+    public string? MobilePhoneNumber { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
+    public string? AddressCountry { get; set; }
+
+    [Column(TypeName = "varchar(20)")]
+    public string? AddressPostalCode { get; set; }
+
+    [Column(TypeName = "varchar(100)")]
+    public string? AddressCity { get; set; }
+
+    [Column(TypeName = "varchar(255)")]
+    public string? AddressStreet { get; set; }
+
+
 }
+

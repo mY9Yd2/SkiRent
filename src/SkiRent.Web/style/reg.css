@@ -1,0 +1,94 @@
+/* reg.css */
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-width: 280px;
+}
+
+/* Parallax háttér */
+.parallax {
+  background-image: url("../assets/pictures/SkiRentRegKep.png");
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Regisztrációs kártya */
+.register-card {
+  background-color: rgba(54, 49, 49, 0.85); /* Áttetsző háttér */
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+}
+
+#register-title {
+  color: #f8f9fa;
+}
+
+/* Label színek */
+#fullName-label,
+#email-label,
+#password-label,
+#confirmPassword-label,
+#login-link-container small {
+  color: #e0e0e0;
+}
+
+/* Link színezés */
+#login-link-container small a {
+  color: #ffc107;
+  text-decoration: underline;
+}
+
+#login-link-container small a:hover {
+  color: #ffca2c;
+}
+
+/* Reszponzivitás javítása */
+@media (max-width: 576px) {
+  .register-card {
+    width: 90%;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  #register-title {
+    font-size: 1.5rem;
+  }
+
+  #fullName,
+  #email,
+  #password,
+  #confirmPassword {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  #register-submit {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+
+  #back-home-button {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 350px) {
+  #brand-logo {
+    font-size: 1.5rem;
+  }
+}

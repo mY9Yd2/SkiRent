@@ -1,0 +1,146 @@
+/* Reset alap */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar stílus */
+.navbar {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Hero (Üdvözlő) szekció */
+.hero-section {
+  background-image: url("../assets/pictures/SkiRentMainpageKep.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 70vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-section .overlay {
+  background-color: rgba(0, 0, 0, 0.4); /* Sötét áttetsző réteg a háttéren */
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.hero-content .btn {
+  font-weight: 600;
+  padding: 12px 30px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-content .btn:hover {
+  background-color: #dfb435; /* kicsit sötétebb sárga hoverre */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* 2. szekció - How It Works */
+.how-it-works {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  margin: 40px 20px;
+  padding: 30px 20px 30px 20px; /* top right bottom left */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid #ffc107; /* sárga keret! */
+}
+
+.how-it-works h2 {
+  font-weight: bold;
+}
+
+.how-it-works h4 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.how-it-works p {
+  color: #6c757d;
+}
+
+/* Új: oszlopok szép belső paddinggel */
+.how-it-works .col-md-4 {
+  padding: 20px;
+}
+
+/* Új: ikonok nagyobbak és élénkebb színűek */
+.how-it-works-icon {
+  font-size: 3.5rem;
+  color: #ffca2c;
+  margin-bottom: 1rem;
+}
+
+/* Vélemények szekció */
+.testimonials-section {
+  background-color: #343a40; /* Sötét háttér */
+  color: #f8f9fa; /* Fehér szöveg */
+}
+
+.testimonials-section h2 {
+  font-weight: bold;
+}
+
+.testimonial {
+  background-color: #495057; /* Világosabb sötét kártya */
+  border: none;
+  border-radius: 10px;
+  color: #f8f9fa;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.testimonial p {
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.testimonial h5 {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.stars i {
+  font-size: 1.2rem;
+}

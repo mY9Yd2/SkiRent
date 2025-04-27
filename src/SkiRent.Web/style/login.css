@@ -1,0 +1,158 @@
+/* login.css */
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-width: 280px; /* Minimum szélesség mobilbarát viselkedéshez */
+}
+
+.parallax {
+  /* Parallax háttér */
+  background-image: url("../assets/pictures/skiRentLoginKep.png");
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.login-container button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.login-card {
+  background-color: rgba(54, 49, 49, 0.85); /* Áttetsző háttér */
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#brand-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffc107;
+}
+
+#login-title {
+  color: #f8f9fa;
+  font-size: 1.8rem;
+}
+
+#email-label,
+#password-label,
+#register-link-container small {
+  color: #e0e0e0;
+}
+
+#register-link-container small a {
+  color: #ffc107;
+  text-decoration: underline;
+}
+
+#register-link-container small a:hover {
+  color: #ffca2c;
+}
+
+/* RESPONSIVE JAVÍTÁSOK */
+
+/* 576px alatti mobil/tablet nézet */
+@media (max-width: 576px) {
+  .login-card {
+    width: 90%;
+    max-width: 320px;
+    padding: 1.5rem;
+  }
+
+  #brand-logo {
+    font-size: 1.8rem;
+  }
+
+  #login-title {
+    font-size: 1.5rem;
+  }
+
+  #email,
+  #password {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+
+  #login-submit {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+
+  #back-home-button {
+    margin-top: 1rem;
+  }
+}
+
+/* Extra kis mobilokhoz (pl. iPhone SE, 350px alatt) */
+@media (max-width: 350px) {
+  .login-card {
+    width: 95%;
+    max-width: 300px;
+    padding: 1rem;
+  }
+
+  #brand-logo {
+    font-size: 1.5rem;
+  }
+
+  #login-title {
+    font-size: 1.2rem;
+  }
+}
+
+#login-alert {
+  margin-bottom: 1rem;
+  margin-top: -1rem;
+}

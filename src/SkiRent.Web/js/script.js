@@ -1,554 +1,555 @@
-const API_BASE_URL = "http://localhost:5101/api"; // API alap URL
+//Dinamikus menü kezelése.
+document.addEventListener("DOMContentLoaded", () => {
+  const navbarMenu = document.getElementById("navbar-menu");
+  if (!navbarMenu) return;
 
-document.addEventListener("DOMContentLoaded", function () {
-    const loginForm = document.getElementById("login-form");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+  const currentPage = window.location.pathname.split("/").pop();
 
-    if (emailInput) {  // Csak akkor dolgozza fel, ha létezik az oldalon
-        emailInput.addEventListener("input", function () {
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (emailPattern.test(emailInput.value.trim())) {
-                emailInput.style.border = "1px solid #ced4da";
-            } else {
-                emailInput.style.border = "2px solid red";
+  function getNavItem(label, href, extraClass = "", id = "") {
+    return `
+            <li class="nav-item">
+                <a class="nav-link ${extraClass}" href="${href}" ${
+      id ? `id="${id}"` : ""
+    }>${label}</a>
+            </li>`;
+  }
+
+  fetch("http://localhost:5101/api/auth/me", {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error("Not logged in");
+      return response.json();
+    })
+    .then((user) => {
+      console.log("Bejelentkezve:", user.email);
+      window.loggedInUserEmail = user.email; // globális változóként mentem el, hogy fel tudjam használni a foglalásoknál
+
+      navbarMenu.innerHTML = `
+            ${getNavItem(
+              "Eszközök",
+              "products.php",
+              currentPage === "products.php" ? "active text-warning" : ""
+            )}
+            ${getNavItem(
+              "Profilom",
+              "profile.php",
+              currentPage === "profile.php" ? "active text-warning" : ""
+            )}
+            ${getNavItem(
+              "Foglalásaim",
+              "rentals.php",
+              currentPage === "rentals.php" ? "active text-warning" : ""
+            )}
+            <li class="nav-item">
+                <a class="nav-link ${
+                  currentPage === "cart.php" ? "active text-warning" : ""
+                } position-relative" href="cart.php">
+                    🛒
+                    <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill d-none">0</span>
+                </a>
+            </li>
+            ${getNavItem("Kijelentkezés", "#", "text-danger", "logout-link")}
+        `;
+
+      // Korábban ellenőrzés céljára szolgált:
+      //console.log("Menü HTML:", navbarMenu.innerHTML);
+
+      // Itt jön a timeoutos logout eseményfigyelő
+      setTimeout(() => {
+        const logoutLink = document.getElementById("logout-link");
+        if (logoutLink) {
+          logoutLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            fetch("http://localhost:5101/api/auth/sign-out", {
+              method: "POST",
+              credentials: "include",
+            })
+              .then(() => {
+                console.log("Kijelentkezett");
+                sessionStorage.clear();
+                window.location.href =
+                  window.location.origin + "/SkiRentWeb_2.0/index.php";
+              })
+              .catch((err) => {
+                console.error("Kijelentkezés hiba:", err);
+              });
+          });
+        }
+      }, 0); // Ez biztosítja, hogy az elem ténylegesen létrejöjjön DOM-ban
+
+      updateCartCount();
+    })
+    .catch(() => {
+      console.log("Nem bejelentkezett állapot");
+
+      // index.php-n NEM jelenik meg a "vissza a kezdőoldalra"
+      const path = window.location.pathname;
+      const currentPage = path.split("/").pop();
+      const isInPages = path.includes("/pages/");
+      const showHome = !(currentPage === "index.php" || currentPage === "");
+
+      navbarMenu.innerHTML = `
+            ${getNavItem(
+              "Eszközök",
+              isInPages ? "products.php" : "pages/products.php"
+            )}
+            ${
+              showHome
+                ? getNavItem(
+                    "Vissza a kezdőoldalra",
+                    isInPages ? "../index.php" : "index.php"
+                  )
+                : ""
             }
-        });
-    }
+            ${getNavItem(
+              "Bejelentkezés",
+              isInPages ? "login.php" : "pages/login.php"
+            )}
+            ${getNavItem(
+              "Regisztráció",
+              isInPages ? "reg.php" : "pages/reg.php"
+            )}
+        `;
+    });
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-
-            if (!validateLoginForm()) {
-                return;
-            }
-
-            if (emailInput && passwordInput) {
-                const email = emailInput.value.trim();
-                const password = passwordInput.value.trim();
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/auth/sign-in?useTokens=true`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        credentials: "include",
-                        body: JSON.stringify({ email, password })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error("Hibás bejelentkezési adatok vagy hiba az API-val!");
-                    }
-
-                    let data;
-                    try {
-                        data = await response.json();
-                    } catch (error) {
-                        console.warn("Hibás JSON válasz:", error);
-                        data = null;
-                    }
-
-                    if (!data || !data.accessToken) {
-                        throw new Error("Bejelentkezés sikeres, de nincs visszakapott token!");
-                    }
-
-                    sessionStorage.setItem("accessToken", data.accessToken);
-                    sessionStorage.setItem("refreshToken", data.refreshToken);
-                    window.location.href = "mainpage.php";
-
-                } catch (error) {
-                    console.error("Hiba történt:", error);
-                    alert(error.message);
-                }
-            }
-        });
-    }
-
-    // Csak a products.php oldalon hívom meg a termékek betöltését
-    if (document.getElementById("product-list")) {
-        fetchProducts();
-    }
-
-    // Csak a profile.php oldalon hívom meg a felhasználói adatok betöltését
-    if (document.getElementById("user-email")) {
-        fetchUserProfile();
-    }
+  updateCartCount();
 });
 
+//Termékek kezelése. - dinamikusan.
+document.addEventListener("DOMContentLoaded", () => {
+  const productList = document.getElementById("product-list");
 
+  if (!productList) return;
 
+  let isLoggedIn = false;
 
-// ** FELHASZNÁLÓI ADATOK LEKÉRÉSE A PROFILHOZ **
-async function fetchUserProfile() {
-    console.log("fetchUserProfile() meghívódott!");
+  fetch("http://localhost:5101/api/auth/me", {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Not logged in");
+      isLoggedIn = true;
+    })
+    .catch(() => {
+      isLoggedIn = false;
+    })
+    .finally(() => {
+      fetch("http://localhost:5101/api/equipments")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("BACKEND VÁLASZ:", data);
+          productList.innerHTML = "";
 
-    const accessToken = sessionStorage.getItem("accessToken");
+          data.forEach((item) => {
+            const col = document.createElement("div");
+            let imageUrl;
 
-    if (!accessToken) {
-        console.error("Nincs token elmentve a sessionStorage-ben!");
-        return;
-    }
+            // Statikus képek hozzárendelése a terméknév alapján
+            const staticImages = {
+              "Nordica GP TJ 31 - 32 -es gyerek síbakancs":
+                "../assets/pictures/nordica.png",
+              "TecnoPro T50.3 31-32 -es gyerek síbakancs":
+                "../assets/pictures/TecnoProT50.png",
+              "Roces Idea Up 36 - 40 -es méretű síbakancs, állítható":
+                "../assets/pictures/roces.png",
+              "Lange Starlet 60 37 - 38 -as síbakancs":
+                "../assets/pictures/lange.png",
+              "Síbot pályára, Boost 100 safety, fekete":
+                "../assets/pictures/sibotSafety100.png",
+              "Síbot, pályára - Boost 500 Safety":
+                "../assets/pictures/boost500.png",
+              "Gyerek síbot, állítható, levehető csuklópánttal - Safety 500":
+                "../assets/pictures/Safety500.png",
+              "Fizan Action Pro síbot": "../assets/pictures/Fizan1.png",
+              "Salomon X Drive Focus Rocker 130cm carving síléc":
+                "../assets/pictures/SalomonXDrive.png",
+              "Atomic Race 8 140cm carving síléc":
+                "../assets/pictures/AtomicRace8.png",
+              "Elan ExarPro 140cm carving síléc":
+                "../assets/pictures/ElanExarPro.png",
+              "Atomic Redster RX Rocker 156cm carving síléc Grip Walk":
+                "../assets/pictures/boost500.png",
+              "Férfi snowboard allmountain/freeride - All Road 500":
+                "../assets/pictures/AllRoad.png",
+              "Női freestyle és all mountain snowboard Endzone 500":
+                "../assets/pictures/Endzone500.png",
+              "Női all mountain és freestyle snowboard - Dreamscape SNB100":
+                "../assets/pictures/SNB100.png",
+              "Férfi snowboard all mountain és freestyle síeléshez - Endzone 900 PRO":
+                "../assets/pictures/Endzone.png",
+            };
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/auth/me`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Accept": "application/json"
+            // Ha van ismert név, azt használom
+            if (staticImages[item.name]) {
+              imageUrl = staticImages[item.name];
+            } else {
+              imageUrl = "../assets/pictures/SkiRent_sieloLogo.png"; // alapértelmezett kép
             }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Hiba történt az API lekérdezésekor: ${response.status}`);
-        }
-
-        const userData = await response.json();
-        console.log("API válasz:", userData);
-
-        // **Ellenőrzi, hogy léteznek-e az elemek**
-        const userNameElement = document.getElementById("user-name");
-        const userEmailElement = document.getElementById("user-email");
-        const displayNameElement = document.getElementById("display-name");
-        const displayEmailElement = document.getElementById("display-email");
-
-        if (userNameElement) {
-            userNameElement.textContent = userData.email.split("@")[0]; // Pl. "admin@example.com" -> "admin"
-            console.log("Név frissítve (user-name):", userNameElement.textContent);
-        } else {
-            console.error("Hiba: A 'user-name' elem nem található az oldalon!");
-        }
-
-        if (userEmailElement) {
-            userEmailElement.textContent = userData.email || "Nincs e-mail cím";
-            console.log("E-mail frissítve (user-email):", userEmailElement.textContent);
-        } else {
-            console.error("Hiba: A 'user-email' elem nem található az oldalon!");
-        }
-
-        if (displayNameElement) {
-            displayNameElement.textContent = userData.email.split("@")[0]; // Pl. "admin@example.com" -> "admin"
-            console.log("Név frissítve (display-name):", displayNameElement.textContent);
-        } else {
-            console.error("Hiba: A 'display-name' elem nem található az oldalon!");
-        }
-
-        if (displayEmailElement) {
-            displayEmailElement.textContent = userData.email || "Nincs e-mail cím";
-            console.log("E-mail frissítve (display-email):", displayEmailElement.textContent);
-        } else {
-            console.error("Hiba: A 'display-email' elem nem található az oldalon!");
-        }
-
-    } catch (error) {
-        console.error("Hiba:", error);
-    }
-}
-
-// Függvény az üres mezők ellenőrzésére
-function validateLoginForm() {
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-
-    let isValid = true;
-
-    if (emailInput && emailInput.value.trim() === "") {
-        emailInput.style.border = "2px solid red";
-        isValid = false;
-    } else if (emailInput) {
-        emailInput.style.border = "1px solid #ced4da";
-    }
-
-    if (passwordInput && passwordInput.value.trim() === "") {
-        passwordInput.style.border = "2px solid red";
-        isValid = false;
-    } else if (passwordInput) {
-        passwordInput.style.border = "1px solid #ced4da";
-    }
-
-    if (!isValid) {
-        alert("Az email cím és jelszó megadása kötelező!");
-    }
-
-    return isValid;
-}
-
-
-// Termékek lekérdezése API-ról
-async function fetchProducts() {
-    console.log("API-lekérdezés indult...");
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/equipments`);
-        console.log("API válasz státusz:", response.status);
-
-        if (!response.ok) {
-            throw new Error(`Hiba történt a termékek lekérése közben! Státusz: ${response.status}`);
-        }
-
-        const products = await response.json();
-        console.log("Termékek adatai:", products);
-
-        // Termékek megjelenítése
-        displayProducts(products);
-
-    } catch (error) {
-        console.error("Hiba történt:", error);
-    }
-}
-
-
-// ** TERMÉKEK MEGJELENÍTÉSE A KÉPERNYŐN **
-function displayProducts(products) {
-    console.log("displayProducts() meghívódott!");
-
-    const productList = document.getElementById("product-list");
-    productList.innerHTML = ""; // Törli az előző tartalmat
-
-    // Ellenőrzi, hogy a felhasználó be van-e jelentkezve
-    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";
-    console.log("Be van jelentkezve? ", isLoggedIn);
-
-    products.forEach(product => {
-        const productCard = `
-            <div class="col-md-4">
-                <div class="card text-dark bg-light mb-3 shadow" data-product-id="${product.id}">
-                    <div class="card-body">
-                        <h5 class="card-title text-warning">${product.name}</h5>
-                        <p class="card-text">${product.description ? product.description : "Nincs leírás"}</p>
-                        <p class="card-text"><strong>Ár: ${product.pricePerDay} Ft/nap</strong></p>
-                        ${isLoggedIn ? `
-                            <p class="card-text"><small>Elérhető: ${product.availableQuantity} db</small></p>
-                            <div class="mb-2">
-                                <label for="quantity-${product.id}" class="form-label">Mennyiség:</label>
-                                <input type="number" min="1" max="${product.availableQuantity}" value="1" 
-                                    class="form-control quantity-input" id="quantity-${product.id}" style="width: 80px;">
-                            </div>
-                        ` : ""}
-                        <a href="#" class="btn btn-warning add-to-cart-button" 
-                           style="display: ${isLoggedIn ? 'inline-block' : 'none'};">Kosárba</a>
+            col.className = "col-12 col-md-4 mb-4";
+            col.innerHTML = `
+                    <div class="card h-100 bg-light shadow-sm p-2 d-flex flex-column" data-id="${
+                      item.id
+                    }">
+                        <img src="${imageUrl}" class="card-img-top custom-img" alt="${
+              item.name
+            }">
+                        <div class="card-body d-flex flex-column">
+                        <div class="card-content mb-3">
+                            <h5 class="card-title text-warning">${
+                              item.name
+                            }</h5>
+                            <p class="card-text description">${
+                              item.description || "Nincs leírás."
+                            }</p>
+                            <p class="card-text price fw-bold">Ár: ${
+                              item.pricePerDay
+                            } Ft/nap</p>
+                            ${
+                              isLoggedIn
+                                ? `
+                                <p class="card-text stock text-success">
+                                <strong>Készleten: <span class="stock-quantity">${item.availableQuantity} db</span></strong>
+                                </p>
+                                <div class="form-group d-flex align-items-center mb-3">
+                                <label for="quantity-${item.id}" class="card-label me-2">Mennyiség:</label>
+                                <input type="number" class="form-control form-control-sm quantity-input" 
+                                    id="quantity-${item.id}" min="1" max="${item.availableQuantity}" value="1" style="width: 70px;">
+                                </div>
+                                `
+                                : ""
+                            }
+                        </div>
+                        ${
+                          isLoggedIn
+                            ? `<button class="btn btn-warning w-100 add-to-cart-button">Kosárba</button>`
+                            : ""
+                        }
+                        </div>
                     </div>
+                    `;
+
+            productList.appendChild(col);
+          });
+
+          // Mennyiség gombok eseménykezelői
+          document.querySelectorAll(".quantity-increase").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const input = btn.previousElementSibling;
+              const max = parseInt(input.max);
+              if (parseInt(input.value) < max)
+                input.value = parseInt(input.value) + 1;
+            });
+          });
+
+          document.querySelectorAll(".quantity-decrease").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const input = btn.nextElementSibling;
+              if (parseInt(input.value) > 1)
+                input.value = parseInt(input.value) - 1;
+            });
+          });
+        })
+        .catch((err) => {
+          console.error("Termék betöltés hiba:", err);
+          productList.innerHTML = `<p class="text-danger">Nem sikerült betölteni a termékeket.</p>`;
+        });
+    });
+});
+
+/*==============================
+    KOSÁR - kezelése
+    ============================*/
+
+// Segéd függvény kosár frissítéshez
+function updateCartCount() {
+  const cartCount = document.getElementById("cart-count");
+  const savedCount = parseInt(sessionStorage.getItem("cartCount")) || 0;
+  if (cartCount) {
+    if (savedCount > 0) {
+      cartCount.textContent = savedCount;
+      cartCount.classList.remove("d-none");
+    } else {
+      cartCount.classList.add("d-none");
+    }
+  }
+}
+
+// Kosárba gomb kattintás kezelése
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("add-to-cart-button")) {
+    const card = e.target.closest(".card");
+    const input = card.querySelector(".quantity-input");
+    const quantity = parseInt(input.value) || 1;
+
+    // Először kiszedi az adatokat a kártyából
+    const itemId = parseInt(card.getAttribute("data-id"));
+    const itemName = card.querySelector(".card-title").textContent;
+    const itemPrice = parseInt(
+      card.querySelector(".card-text.fw-bold").textContent.replace(/\D/g, "")
+    );
+
+    // Kosár darabszám frissítése
+    const cartCount = document.getElementById("cart-count");
+    let currentCount = parseInt(sessionStorage.getItem("cartCount")) || 0;
+    currentCount += quantity;
+    sessionStorage.setItem("cartCount", currentCount);
+
+    // Kosár tartalom mentése (cartItems)
+    let cartItems = JSON.parse(sessionStorage.getItem("cartItems") || "[]");
+
+    // Megnézi, van-e már ilyen termék
+    const existingItem = cartItems.find((item) => item.id === itemId);
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      cartItems.push({
+        id: itemId,
+        name: itemName,
+        pricePerDay: itemPrice,
+        quantity: quantity,
+      });
+    }
+
+    sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+    // Frissítés megjelenítése
+    cartCount.textContent = currentCount;
+    cartCount.classList.remove("d-none");
+
+    // Felugró sikeres hozzáadás értesítés
+    const alert = document.createElement("div");
+    alert.className =
+      "alert alert-success alert-dismissible fade show position-fixed";
+    alert.style.top = "20px";
+    alert.style.right = "20px";
+    alert.style.zIndex = "1050";
+    alert.innerHTML = `
+            <strong>✅ Kosár frissítve!</strong> ${quantity} db termék hozzáadva.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Bezárás">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+
+    document.body.appendChild(alert);
+
+    //  Automatikus eltűnés 3 másodperc után
+    setTimeout(() => {
+      alert.classList.remove("show");
+      alert.classList.add("hide");
+      alert.addEventListener("transitionend", () => alert.remove());
+    }, 3000);
+  }
+});
+
+// Kosár tartalom megjelenítése cart.php oldalon
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. DÁTUM validálás & mentés
+  const startDateInput = document.getElementById("start-date");
+  const endDateInput = document.getElementById("end-date");
+  const checkoutBtn = document.getElementById("checkout-btn");
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const errorMsg = document.createElement("div");
+  errorMsg.id = "date-error";
+  errorMsg.className = "text-danger mt-2";
+  errorMsg.style.display = "none";
+  errorMsg.textContent =
+    "Bérlés záró dátumának későbbinek kell lennie, mint a kezdő dátum!";
+  endDateInput?.parentNode?.appendChild(errorMsg);
+
+  function validateDates() {
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    if (!startDateInput.value || !endDateInput.value) {
+      checkoutBtn.disabled = true;
+      startDateInput.classList.remove("is-invalid");
+      endDateInput.classList.remove("is-invalid");
+      errorMsg.style.display = "none";
+      return;
+    }
+
+    if (startDate < today) {
+      checkoutBtn.disabled = true;
+      startDateInput.classList.add("is-invalid");
+      endDateInput.classList.remove("is-invalid");
+      errorMsg.textContent = "A kezdő dátum nem lehet korábbi, mint a mai nap!";
+      errorMsg.style.display = "block";
+      return;
+    }
+
+    if (endDate <= startDate) {
+      checkoutBtn.disabled = true;
+      startDateInput.classList.add("is-invalid");
+      endDateInput.classList.add("is-invalid");
+      errorMsg.textContent =
+        "Bérlés záró dátumának későbbinek kell lennie, mint a kezdő dátum!";
+      errorMsg.style.display = "block";
+      return;
+    }
+
+    checkoutBtn.disabled = false;
+    startDateInput.classList.remove("is-invalid");
+    endDateInput.classList.remove("is-invalid");
+    errorMsg.style.display = "none";
+  }
+
+  if (startDateInput && endDateInput && checkoutBtn) {
+    startDateInput.addEventListener("input", validateDates);
+    endDateInput.addEventListener("input", validateDates);
+
+    checkoutBtn.addEventListener("click", () => {
+      sessionStorage.setItem("startDate", startDateInput.value);
+      sessionStorage.setItem("endDate", endDateInput.value);
+      window.location.href = "checkout.php";
+    });
+  }
+
+  // 2. KOSÁR tartalom megjelenítés
+  const cartTableBody = document.querySelector("#cart-table tbody");
+  if (!cartTableBody) return;
+
+  const cartItems = JSON.parse(sessionStorage.getItem("cartItems") || "[]");
+  const groupedItems = {};
+
+  cartItems.forEach((item) => {
+    if (groupedItems[item.id]) {
+      groupedItems[item.id].quantity += item.quantity;
+    } else {
+      groupedItems[item.id] = { ...item };
+    }
+  });
+
+  const rows = Object.values(groupedItems);
+
+  if (rows.length === 0) {
+    cartTableBody.innerHTML =
+      "<tr><td colspan='6' class='text-center'>A kosár üres.</td></tr>";
+    return;
+  }
+
+  rows.forEach((item, index) => {
+    const totalPrice = item.quantity * item.pricePerDay;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>${item.pricePerDay} Ft</td>
+            <td>${totalPrice} Ft</td>
+            <td><button class="btn btn-sm btn-danger remove-item" data-id="${
+              item.id
+            }">Törlés</button></td>
+        `;
+    cartTableBody.appendChild(row);
+  });
+
+  // Összesített végösszeg kiszámítása
+  const grandTotal = rows.reduce(
+    (sum, item) => sum + item.quantity * item.pricePerDay,
+    0
+  );
+
+  // Új sor a végösszegnek
+  const totalRow = document.createElement("tr");
+  totalRow.innerHTML = `
+    <td colspan="4" class="text-right font-weight-bold">Végösszeg:</td>
+    <td colspan="2" class="font-weight-bold text-success">${grandTotal.toLocaleString()} Ft</td>
+`;
+  cartTableBody.appendChild(totalRow);
+  // 3. TÖRLÉS kezelése
+  document.querySelectorAll(".remove-item").forEach((button) => {
+    button.addEventListener("click", () => {
+      handleItemDeletion(button);
+    });
+  });
+});
+
+// Kosár - tétel törlése gomb és modal ablak viselkedése.
+function handleItemDeletion(button) {
+  const id = parseInt(button.getAttribute("data-id"));
+
+  const confirmModal = document.createElement("div");
+  confirmModal.className = "modal fade";
+  confirmModal.tabIndex = -1;
+  confirmModal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Megerősítés</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Bezárás">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Biztosan törli a tételt és a hozzá tartozó mennyiséget a kosárból?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nem</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete">Igen</button>
                 </div>
             </div>
+        </div>
+    `;
+
+  document.body.appendChild(confirmModal);
+  const modalInstance = new bootstrap.Modal(confirmModal);
+  modalInstance.show();
+
+  const confirmBtn = confirmModal.querySelector("#confirm-delete");
+  confirmBtn.addEventListener("click", () => {
+    let cartItems = JSON.parse(sessionStorage.getItem("cartItems") || "[]");
+    const updatedItems = cartItems.filter((item) => item.id !== id);
+    sessionStorage.setItem("cartItems", JSON.stringify(updatedItems));
+
+    // Kosár darabszám frissítés
+    const totalQuantity = updatedItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+    sessionStorage.setItem("cartCount", totalQuantity);
+
+    // DOM-frissítés
+    button.closest("tr").remove();
+    const tableBody = document.querySelector("#cart-table tbody");
+    if (tableBody.children.length === 0) {
+      tableBody.innerHTML =
+        "<tr><td colspan='6' class='text-center'>A kosár üres.</td></tr>";
+    }
+
+    // Értesítő
+    const alert = document.createElement("div");
+    alert.className =
+      "alert alert-info alert-dismissible fade show position-fixed";
+    alert.style.top = "20px";
+    alert.style.right = "20px";
+    alert.style.zIndex = "1050";
+    alert.innerHTML = `
+            <strong>ℹ️ A kosár tartalma frissült!</strong>
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Bezárás">
+                <span aria-hidden="true">&times;</span>
+            </button>
         `;
-        productList.insertAdjacentHTML("beforeend", productCard);
+    document.body.appendChild(alert);
+    setTimeout(() => {
+      alert.classList.remove("show");
+      alert.classList.add("hide");
+      alert.addEventListener("transitionend", () => alert.remove());
+    }, 2000);
+
+    modalInstance.hide();
+    confirmModal.addEventListener("hidden.bs.modal", () => {
+      confirmModal.remove();
     });
+  });
+
+  confirmModal.addEventListener("hidden.bs.modal", () => {
+    confirmModal.remove();
+  });
 }
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const isLoggedIn = sessionStorage.getItem("accessToken") !== null && sessionStorage.getItem("accessToken") !== "";
-
-    console.log("Be van jelentkezve? ", isLoggedIn);
-
-    // Az aktuális oldal neve
-    const currentPage = window.location.pathname.split("/").pop().split("?")[0];
-
-    // Navigációs menü dinamikus frissítése
-    const navbar = document.querySelector("#navbarNav .navbar-nav");
-    if (navbar) {
-        navbar.innerHTML = `
-            <li class="nav-item"><a class="nav-link menu-item ${currentPage === "products.php" ? "text-warning active" : "text-light"}" href="products.php">Eszközök</a></li>
-            ${isLoggedIn ? `
-                <li class="nav-item"><a class="nav-link menu-item ${currentPage === "profile.php" ? "text-warning active" : "text-light"}" href="profile.php">Profilom</a></li>
-                <li class="nav-item"><a class="nav-link menu-item ${currentPage === "rentals.php" ? "text-warning active" : "text-light"}" href="rentals.php">Foglalásaim</a></li>
-                <!-- KOSÁR ICON -->
-                <li class="nav-item">
-                    <a class="nav-link text-light menu-item position-relative" href="cart.php">
-                        <i class="fas fa-shopping-cart"></i> <!-- Kosár ikon -->
-                        <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill d-none">0</span>
-                    </a>
-                </li>
-
-                <li class="nav-item"><a class="nav-link text-danger menu-item" href="logout.php">Kijelentkezés</a></li>
-            ` : `
-                <li class="nav-item"><a class="nav-link text-light menu-item" href="../index.php">Vissza a kezdőoldalra</a></li>
-                <li class="nav-item"><a class="nav-link text-light menu-item" href="login.php">Bejelentkezés</a></li>
-            `}
-        `;
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    const logoutButton = document.querySelector(".nav-link.text-danger"); // Kijelentkezés gomb kiválasztása
-
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            sessionStorage.clear(); // SessionStorage ürítése
-        });
-    }
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const currentPage = window.location.pathname.split("/").pop().split("?")[0];
-    const menuItems = document.querySelectorAll(".nav-link.menu-item");
-
-    menuItems.forEach(item => {
-        const itemHref = item.getAttribute("href").split("?")[0];
-        if (itemHref === currentPage) {
-            item.classList.add("active-page"); // Új osztály hozzáadása
-        } else {
-            item.classList.remove("active-page");
-        }
-    });
-});
-
-
-
-// Kosár tartalmának frissítése sessionStorage-ben
-function updateCartCount() {
-    let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]"); 
-    let totalQuantity = 0;
-
-    cartItems.forEach(item => {
-        totalQuantity += item.quantity || 1; // Ha régi adat, akkor legalább 1-gyel számol
-    });
-
-    console.log("Frissített kosár mennyiség:", totalQuantity); 
-
-    const cartCountBadge = document.getElementById("cart-count");
-    if (!cartCountBadge) {
-        console.warn("Kosár ikon nem található az oldalon.");
-        return;
-    }
-
-    if (totalQuantity > 0) {
-        cartCountBadge.textContent = totalQuantity;
-        cartCountBadge.classList.remove("d-none");
-    } else {
-        cartCountBadge.classList.add("d-none");
-    }
-
-    toggleClearCartButton();
-}
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    updateCartCount(); // Kosár frissítése betöltéskor
-
-    const productList = document.getElementById("product-list");
-    if (!productList) {
-        console.warn("Nincs product-list az oldalon, kihagyom a termékkezelést.");
-        return; // Ha nincs product-list, akkor ne folytassa ezt a részt
-    }
-
-    productList.addEventListener("click", function (event) {
-        if (event.target.classList.contains("add-to-cart-button")) {
-            event.preventDefault();
-    
-            console.log("Kosárba gombra kattintottak!");
-    
-            const productCard = event.target.closest(".card");
-            if (!productCard) {
-                console.error("Nem található a termék kártyája!");
-                return;
-            }
-    
-            const productName = productCard.querySelector(".card-title")?.textContent.trim();
-            const productPrice = productCard.querySelector(".card-text strong")?.textContent.trim();
-            const quantityInput = productCard.querySelector(".quantity-input");
-            let quantity = parseInt(quantityInput?.value) || 1; // Ha üres vagy hibás, alapból 1
-            const selectedQuantity = parseInt(quantityInput?.value) || 1;
-    
-            if (!productName || !productPrice || quantity <= 0) {
-                console.error("Hibás termékadatok vagy mennyiség!");
-                return;
-            }
-    
-            let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]");
-    
-            // Megnézi van-e már ilyen termék a kosárban
-            const existingItem = cartItems.find(item => item.name === productName);
-
-            if (existingItem) {
-                existingItem.quantity += selectedQuantity; // Hozzáadja a megadott mennyiséget
-            } else {
-                cartItems.push({ name: productName, price: productPrice, quantity: selectedQuantity }); // Új tétel mennyiséggel
-            }
-            sessionStorage.setItem("cart", JSON.stringify(cartItems));
-    
-            updateCartCount();
-    
-            console.log(`${selectedQuantity} db '${productName}' hozzáadva a kosárhoz.`);
-    
-            // Reseteli a mennyiséget 1-re
-            if (quantityInput) quantityInput.value = 1;
-    
-            const cartModalElement = document.getElementById("cartModal");
-            if (cartModalElement) {
-                const cartModal = new bootstrap.Modal(cartModalElement);
-                cartModal.show();
-            }
-        }
-    });
-});
-
-
-
-
-// Kosár tartalmának betöltése
-function loadCart() {
-    let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]");
-    const cartTableBody = document.getElementById("cart-items");
-    const cartTotal = document.getElementById("cart-total");
-
-    if (!cartTableBody || !cartTotal) {
-        console.warn("A kosár táblázata vagy az összegzés nem található!");
-        return;
-    }
-
-    cartTableBody.innerHTML = ""; // Kosár tartalmának törlése frissítés előtt
-    let total = 0;
-
-    if (cartItems.length === 0) {
-        cartTableBody.innerHTML = `<tr><td colspan="3" class="text-muted">A kosár üres.</td></tr>`;
-    } else {
-        cartItems.forEach((item, index) => {
-            total += (parseInt(item.price.replace(/\D/g, "")) || 0) * item.quantity;
-        
-            let row = `
-                <tr>
-                    <td>${item.name}</td>
-                    <td>${item.price}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning quantity-decrease">-</button>
-                        <span class="item-quantity">${item.quantity}</span>
-                        <button class="btn btn-sm btn-warning quantity-increase">+</button>
-                    </td>
-                    <td><button class="btn btn-sm delete-item">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-            cartTableBody.insertAdjacentHTML("beforeend", row);
-        });
-
-        // Eltávolítás gombok eseménykezelői
-        document.querySelectorAll(".remove-item").forEach(button => {
-            button.addEventListener("click", function () {
-                let index = this.getAttribute("data-index");
-                cartItems.splice(index, 1);
-                sessionStorage.setItem("cart", JSON.stringify(cartItems));
-                loadCart();
-            });
-        });
-    }
-
-    cartTotal.textContent = total.toLocaleString() + " Ft";
-
-    toggleClearCartButton(); 
-}
-
-
-function toggleClearCartButton() {
-    const clearCartButton = document.getElementById("clear-cart");
-    const cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]");
-
-    if (clearCartButton) {
-        clearCartButton.disabled = cartItems.length === 0;
-    }
-}
-
-loadCart();
-updateCartCount();
-
-
-
-// ============================================
-// Kosár tétel törlés megerősítése modalból
-// ============================================
-let deleteIndexToConfirm = null; // Ideiglenesen tárolja, melyik indexet akarjuk törölni
-
-document.addEventListener("DOMContentLoaded", function () {
-    const cartTableBody = document.getElementById("cart-items");
-    const confirmDeleteModalElement = document.getElementById("confirmDeleteModal");
-
-    if (cartTableBody && confirmDeleteModalElement) {
-        const confirmDeleteModal = new bootstrap.Modal(confirmDeleteModalElement);
-        const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
-
-        cartTableBody.addEventListener("click", function (event) {
-            if (event.target.closest(".delete-item")) {
-                deleteIndexToConfirm = Array.from(cartTableBody.querySelectorAll(".delete-item")).indexOf(event.target.closest(".delete-item"));
-                confirmDeleteModal.show();
-            }
-        });
-
-        confirmDeleteBtn.addEventListener("click", function () {
-            if (deleteIndexToConfirm !== null) {
-                let cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]");
-                if (deleteIndexToConfirm >= 0 && deleteIndexToConfirm < cartItems.length) {
-                    cartItems.splice(deleteIndexToConfirm, 1);
-                    sessionStorage.setItem("cart", JSON.stringify(cartItems));
-                    loadCart();
-                    updateCartCount();
-                    console.log("Tétel sikeresen eltávolítva.");
-                }
-                deleteIndexToConfirm = null;
-                confirmDeleteModal.hide();
-            }
-        });
-    }
-});
-
-
-//Kosár teljes ürítésének megerősítés:
-document.addEventListener("DOMContentLoaded", function () {
-    const clearCartButton = document.getElementById("clear-cart");
-    const confirmClearModalElement = document.getElementById("confirmClearModal");
-
-    if (clearCartButton && confirmClearModalElement) {
-        const confirmClearModal = new bootstrap.Modal(confirmClearModalElement);
-        const confirmClearBtn = document.getElementById("confirm-clear-btn");
-
-        clearCartButton.addEventListener("click", function () {
-            confirmClearModal.show(); // Megerősítő modal megnyitása
-        });
-
-        confirmClearBtn.addEventListener("click", function () {
-            sessionStorage.removeItem("cart");
-            loadCart();
-            updateCartCount();
-            confirmClearModal.hide();
-            console.log("Kosár sikeresen ürítve.");
-        });
-    }
-});
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const cartTableBody = document.getElementById("cart-items");
-
-    if (!cartTableBody) return; // Ha nincs kosár az oldalon, ne fusson le
-
-    cartTableBody.addEventListener("click", function (event) {
-        const cartItems = JSON.parse(sessionStorage.getItem("cart") || "[]");
-
-        // Növelés
-        if (event.target.classList.contains("quantity-increase")) {
-            const rowIndex = Array.from(cartTableBody.querySelectorAll("tr")).indexOf(event.target.closest("tr"));
-            cartItems[rowIndex].quantity++;
-            sessionStorage.setItem("cart", JSON.stringify(cartItems));
-            loadCart();
-            updateCartCount();
-        }
-
-        // Csökkentés
-        if (event.target.classList.contains("quantity-decrease")) {
-            const rowIndex = Array.from(cartTableBody.querySelectorAll("tr")).indexOf(event.target.closest("tr"));
-            if (cartItems[rowIndex].quantity > 1) {
-                cartItems[rowIndex].quantity--;
-                sessionStorage.setItem("cart", JSON.stringify(cartItems));
-                loadCart();
-                updateCartCount();
-            }
-        }
-    });
-});

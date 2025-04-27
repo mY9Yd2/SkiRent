@@ -4,64 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foglalásaim - SkiRent</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Egyéni stílus -->
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/rentals.css">
 </head>
-
 <body>
-    <!-- Felső menü -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-        <div class="container">
-            <a class="navbar-brand text-warning fw-bold fs-3" href="mainpage.php" id="brand-logo">SkiRent</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link menu-item" href="products.php">Eszközök</a></li>
-                    <li class="nav-item"><a class="nav-link menu-item" href="profile.php">Profilom</a></li>
-                    <li class="nav-item"><a class="nav-link menu-item text-warning active" href="rentals.php">Foglalásaim</a></li>
 
-                    <!-- Kosár ikon beillesztése -->
-                    <li class="nav-item">
-                        <a class="nav-link text-light menu-item position-relative" href="cart.php">
-                            <i class="fas fa-shopping-cart"></i> <!-- Kosár ikon -->
-                            <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill d-none">0</span>
-                        </a>
-                    </li>
+   <!-- Navigációs sáv -->
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4" id="navbar">
+        <a class="navbar-brand fw-bold text-warning" href="#">SkiRent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Menü váltása">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <li class="nav-item"><a class="nav-link text-danger menu-item" href="logout.php" id="logout-link">Kijelentkezés</a></li>
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <ul class="navbar-nav" id="navbar-menu">
+                <!-- Dinamikus menüpontok JS-ből töltődnek be -->
+            </ul>
         </div>
     </nav>
 
-    <!-- Tartalom -->
-    <div class="container mt-5 text-left bg-light text-dark p-4 rounded shadow rental-card">
-        <h1 class="fw-bold text-warning">Foglalásaim</h1>
-        <p>Itt láthatod a korábbi és aktuális bérléseidet.</p>
-        
-        <!-- Foglalási adatok (Később API-ból tölthető be) -->
-        <div class="mt-4">
-            <h3>Jelenlegi foglalásaid</h3>
-            <p><strong>Betöltés...</strong></p>
+   <!-- Parallax szekció -->
+    <div class="rentals-hero-section">
+        <div class="container mt-5" id="rentals-content">
+            <h2 class="text-center text-warning mb-4">Foglalásaim</h2>
+            <p class="text-center">Itt találod a korábbi és aktuális foglalásaidat.</p>
+
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card shadow p-3">
+                        <div id="booking-list">
+                            <table class="table table-bordered text-center">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Sorszám</th>
+                                        <th>Kelt.</th>
+                                        <th>Intervallum</th>
+                                        <th>Műveletek</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="booking-table-body">
+                                    <!-- Ide töltődnek a foglalások -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS és egyéni script -->
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (!sessionStorage.getItem("accessToken")) {
-                window.location.href = "login.php"; // Ha nincs token, visszairányítás
-            }
 
-            // Kosár számláló frissítése az oldal betöltésekor
-            updateCartCount();
-        });
-    </script>
+    <!-- Foglalás részletei modal -->
+    <div class="modal fade" id="bookingDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookingDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header bg-info text-white">
+            <h5 class="modal-title" id="bookingDetailsModalLabel">Foglalás részletei</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Foglalás azonosító:</strong> <span id="detail-booking-id"></span></p>
+            <p><strong>Létrehozva:</strong> <span id="detail-booking-date"></span></p>
+            <p><strong>Bérlés időtartama:</strong> <span id="detail-interval"></span></p>
+            <p><strong>Státusz:</strong> <span id="detail-status"></span></p>
+            <p><strong>Végösszeg:</strong> <span id="detail-price"></span> Ft</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Számla megtekintése modal -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invoiceModalLabel">Számla részletei</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+            </div>
+            <div class="modal-body" id="invoice-content">
+                <!-- Itt jelenik meg a számlaadat dinamikusan -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                <button class="btn btn-primary" onclick="window.print()">Nyomtatás</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Bootstrap JS + jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Saját JS -->
+    <script src="../js/script.js"></script>
+    <!-- Saját JS - Login JS -->
+    <script src="../js/login.js"></script>
+    <!-- Saját JS - rentals JS -->
+    <script src="../js/rentals.js"></script>
+
 </body>
+
 </html>
+

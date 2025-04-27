@@ -1,66 +1,130 @@
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (!sessionStorage.getItem("accessToken")) {
-            window.location.href = "login.php";             // Ha nincs token, vissza a bejelentkezéshez
-        }
-    });
-</script>
-
-
 <!DOCTYPE html>
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkiRent - Főoldal</title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Egyéni CSS -->
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/mainpage.css">
 </head>
 
 <body>
-    <!-- Felső menü -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-    <div class="container">
-        <a class="navbar-brand text-warning fw-bold fs-3" href="mainpage.php" id="brand-logo">SkiRent</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-4">
+        <a class="navbar-brand fw-bold text-warning" href="#">SkiRent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Menü">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link text-light menu-item" href="products.php" id="equipment-link">Eszközök</a></li>                
-                <li class="nav-item"><a class="nav-link text-light menu-item" href="login.php?redirect=profile.php" id="profile-link">Profilom</a></li>
-                <li class="nav-item"><a class="nav-link text-light menu-item" href="pages/login.php?redirect=rentals.php" id="rentals-link">Foglalásaim</a></li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger menu-item" href="logout.php" id="logout-link">Kijelentkezés</a>
-                </li>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <ul class="navbar-nav" id="navbar-menu">
+                <!-- Dinamikus menüpontok JS-ből -->
             </ul>
         </div>
-    </div>
-</nav>
+    </nav>
 
-    <!-- ÚJ REGISZTRÁCIÓS LINK -->
-    <div class="container mt-5 text-left" id="index-container">
-        <h1 id="welcome-message" class="fw-bold">Üdvözlünk a SkiRent weboldalon!</h1>
-            <p id="description-text" class="fs-4">Bérelj sífelszerelést gyorsan és egyszerűen.</p>
-    </div>
+    <!-- Hero szekció -->
+    <section class="hero-section">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Üdvözlünk a SkiRent világában!</h1>
+            <p>Fedezd fel a legjobb sífelszereléseket, és indulj a kalandra!</p>
+            <a href="products.php" class="btn btn-warning btn-lg mt-4">Eszközök böngészése</a>
+        </div>
+    </section>
 
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="../js/auth-handler.js"></script> <!-- Új fájl az autentikációhoz -->
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const logoutButton = document.getElementById("logout-link");
+    <!-- Így működik szekció -->
+    <section class="how-it-works py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 text-dark">Így működik</h2>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <i class="bi bi-search how-it-works-icon mb-3"></i>
+                    <h4 class="text-warning">1. Böngészd</h4>
+                    <p>Válaszd ki a számodra megfelelő sífelszerelést kínálatunkból egyszerűen.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <i class="bi bi-cart-check how-it-works-icon mb-3"></i>
+                    <h4 class="text-warning">2. Bérelj</h4>
+                    <p>Foglalj online gyorsan és kényelmesen, pár kattintással.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <i class="bi bi-emoji-sunglasses how-it-works-icon mb-3"></i>
+                    <h4 class="text-warning">3. Élvezd!</h4>
+                    <p>Vedd át felszerelésed, és élvezd a felejthetetlen havas kalandot!</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            if (logoutButton) {
-                logoutButton.addEventListener("click", function (event) {
-                    event.preventDefault(); // Ne rögtön navigáljon el
-                    sessionStorage.clear(); // JavaScript session törlése
-                    window.location.href = "logout.php"; // Most már ténylegesen kijelentkezik
-                });
-            }
-        });
-    </script>
 
+
+    <!-- Vélemények szekció -->
+    <section class="testimonials-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 text-light">Vásárlóink véleményei</h2>
+            <div class="row">
+                <!-- 1. vélemény -->
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial card p-4 h-100">
+                        <h5 class="text-warning">Kovács Anna</h5>
+                        <div class="stars mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star text-warning"></i>
+                        </div>
+                        <p>"Gyors, egyszerű bérlés, kiváló minőségű felszerelések! Csak ajánlani tudom."</p>
+                    </div>
+                </div>
+                <!-- 2. vélemény -->
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial card p-4 h-100">
+                        <h5 class="text-warning">Nagy Péter</h5>
+                        <div class="stars mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                        </div>
+                        <p>"Nagyon profi csapat, segítőkészek voltak mindenben. A foglalás is pofonegyszerű."</p>
+                    </div>
+                </div>
+                <!-- 3. vélemény -->
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial card p-4 h-100">
+                        <h5 class="text-warning">Tóth Eszter</h5>
+                        <div class="stars mb-2">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
+                            <i class="bi bi-star text-warning"></i>
+                        </div>
+                        <p>"Nagyon elégedett voltam, bár a választék lehetne kicsit bővebb. De amit béreltem, az kifogástalan volt."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+
+    <!-- Saját JS -->
+    <script src="../js/script.js"></script>
 
 </body>
 </html>

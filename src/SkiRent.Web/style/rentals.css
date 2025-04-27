@@ -1,0 +1,58 @@
+/* Navbar stílus - ugyanaz mint a többi oldalon */
+#navbar {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+
+/* SkiRent logó nagyobb méret */
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Parallax háttér Rentals oldalon */
+.rentals-hero-section {
+  background-image: url("../assets/pictures/SkiRentRentalsKep.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding-top: 140px; /* hely a navbar után */
+  padding-bottom: 60px;
+}
+
+/* Rentals hero szövegek formázása */
+#rentals-content h2 {
+  font-size: 2.5rem; /* nagyobb méretű Foglalásaim felirat */
+}
+
+#rentals-content p {
+  color: #ffffff;
+  font-size: 1.2rem; /* kicsit nagyobb és fehér színű alcím */
+}
+
+/* A táblázatot tartalmazó kártya áttetszőbbé tétele */
+#booking-list .card,
+#rentals-content .card {
+  background-color: rgba(255, 255, 255, 0.75); /* világosabb áttetsző háttér */
+  backdrop-filter: blur(6px);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.invoice-link {
+  color: #28a745 !important; /* Bootstrap "success" zöld */
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.invoice-link:hover {
+  text-decoration: underline;
+  color: #218838 !important; /* egy kicsit sötétebb zöld hoverre */
+}

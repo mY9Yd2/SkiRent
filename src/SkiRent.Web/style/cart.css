@@ -1,0 +1,28 @@
+/* Táblázat cellák középre igazítása */
+#cart-table td,
+#cart-table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ========================
+Reszponzív táblázat biztosítása
+======================== */
+@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  #cart-table th,
+  #cart-table td {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+}
+
+/* ========================
+Minimum szélesség beállítása
+======================== */
+body {
+  min-width: 210px;
+}

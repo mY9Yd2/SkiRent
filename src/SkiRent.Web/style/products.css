@@ -1,0 +1,189 @@
+html,
+body {
+  min-width: 250px;
+  overflow-x: auto;
+}
+
+/* ========================
+Navbar stílus - ugyanaz mint a mainpage.php-n
+======================== */
+#navbar {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ========================
+Háttér - Parallax hero szekció
+======================== */
+.product-hero-section {
+  background-image: url("../assets/pictures/SkiRentProdutKep.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 100px 0 60px 0; /* felső margó a navbar miatt */
+  position: relative;
+}
+
+/* ========================
+Általános beállítások
+======================== */
+.container {
+  margin-top: 0; /* Hero szekció miatt */
+}
+
+/* Jelentkezz felirat fehérre */
+.container p.text-muted {
+  color: #ffffff !important;
+}
+
+/* ========================
+Kártyák a termékekhez
+======================== */
+/* Kártya alap */
+.card.bg-light {
+  background-color: rgba(255, 255, 255, 0.52) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Kártya képek */
+.card .card-img-top.custom-img {
+  max-height: 150px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+/* Kártya szöveges rész és gomb pozicionálás */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body .add-to-cart-button {
+  margin-top: 10px;
+}
+
+/* Mennyiség input */
+.quantity-input {
+  text-align: center;
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+/* Form group a mennyiség körül */
+.card .form-group {
+  margin-bottom: 0.75rem;
+}
+
+/* ========================
+Speciális színezések
+======================== */
+/* Készleten felirat + darabszám */
+.card-text.text-success,
+.stock-quantity {
+  color: #218838 !important; /* Sötétebb zöld */
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Név (Megnevezés) */
+.card-content h5.card-title {
+  min-height: 56px; /* fix hely a címnek */
+  margin-bottom: 0.5rem;
+}
+/* Leírás */
+.card-content p.card-text.description {
+  flex-grow: 1; /* kitölti a fennmaradó helyet */
+  margin-bottom: 1rem;
+}
+/* Ár */
+.card-content p.card-text.price {
+  margin-bottom: 0.25rem;
+}
+
+/* Készleten */
+.card-content p.card-text.stock {
+  margin-top: 0;
+}
+
+/* ========================
+Reszponzív javítások mobil nézetre
+======================== */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .card.bg-light {
+    margin-bottom: 1rem;
+  }
+
+  .card .card-img-top.custom-img {
+    max-height: 120px;
+  }
+
+  .card-content h5.card-title {
+    font-size: 1.2rem;
+    min-height: auto;
+  }
+
+  .card-content p.card-text.description {
+    font-size: 0.9rem;
+  }
+
+  .card-content p.card-text.price,
+  .card-content p.card-text.stock {
+    font-size: 0.9rem;
+  }
+
+  .quantity-input {
+    width: 60px;
+    font-size: 0.9rem;
+  }
+
+  .card-body .add-to-cart-button {
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+  }
+
+  /* ÚJ! A terméklista row viselkedését állítja */
+  #product-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* A termékkártyák mobilon teljes szélességűek */
+  #product-list > div {
+    width: 100%;
+  }
+}
+
+/* ========================
+Hover effekt a termékképre
+======================== */
+.card .card-img-top.custom-img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}

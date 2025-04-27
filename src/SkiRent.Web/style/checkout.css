@@ -1,0 +1,36 @@
+/* ========================
+Minimális szélesség
+======================== */
+body {
+  min-width: 270px;
+}
+
+/* ========================
+Checkout oldal reszponzivitás
+======================== */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    width: 100% !important;
+  }
+
+  #checkout-form input {
+    margin-bottom: 1rem;
+  }
+
+  .text-center button[type="submit"] {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.8rem;
+  }
+}
+
+/* Kis képernyőre padding */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 15px;
+  }
+}

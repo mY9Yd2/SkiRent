@@ -1,0 +1,39 @@
+/* =========================================
+Foglalásaim - rentals.php és modal+nyomtatás
+=========================================== */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  #invoiceModal,
+  #invoiceModal * {
+    visibility: visible !important;
+  }
+
+  #invoiceModal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .modal-dialog,
+  .modal-content {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .modal-header,
+  .modal-footer {
+    display: none !important;
+  }
+
+  #invoice-content {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2rem;
+  }
+}

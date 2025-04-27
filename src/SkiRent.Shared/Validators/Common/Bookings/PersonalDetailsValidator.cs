@@ -16,19 +16,19 @@ namespace SkiRent.Shared.Validators.Common.Bookings
                 .NotEmpty()
                 .Length(2, 60);
 
-            RuleFor(details => details)
-                .Must(details => details.PhoneNumber is not null || details.MobilePhoneNumber is not null)
-                .WithMessage("At least one phone number (Phone or Mobile) must be provided.");
+            //RuleFor(details => details)
+            //    .Must(details => details.PhoneNumber is not null || details.MobilePhoneNumber is not null)
+            //    .WithMessage("At least one phone number (Phone or Mobile) must be provided.");
 
-            RuleFor(details => details.PhoneNumber)
-                .Must(IsValidPhoneNumber)
-                .When(details => details.PhoneNumber is not null)
-                .WithMessage("Invalid phone number format.");
+            //RuleFor(details => details.PhoneNumber)
+            //    .Must(IsValidPhoneNumber)
+            //    .When(details => details.PhoneNumber is not null)
+            //    .WithMessage("Invalid phone number format.");
 
-            RuleFor(details => details.MobilePhoneNumber)
-                .Must(IsValidPhoneNumber)
-                .When(details => details.MobilePhoneNumber is not null)
-                .WithMessage("Invalid mobile phone number format.");
+            //RuleFor(details => details.MobilePhoneNumber)
+            //    .Must(IsValidPhoneNumber)
+            //    .When(details => details.MobilePhoneNumber is not null)
+            //    .WithMessage("Invalid mobile phone number format.");
 
             RuleFor(details => details.Address).SetValidator(new AddressValidator());
         }
