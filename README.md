@@ -11,7 +11,27 @@ Két csapattaggal indult el a fejlesztés és tervezés, az alábbi módon felos
 - Backend: Kovács József Miklós
 - Desktop: Kovács József Miklós
 
-Alkalmanként történtek módosítások a saját területeinken kívül is, ha azt a csapattag szükségesnek ítélte.
+Ritkán történtek módosítások a saját területeinken kívül is, ha azt a csapattag szükségesnek ítélte.
+
+## Mappákról röviden
+
+src/ mappa tartalma:
+
+- SkiRent.Api: Backend REST API
+- SkiRent.Database: Az adatbázishoz tartozó SQL fájlok
+- SkiRent.Desktop: Az asztali alkalmazás
+- SkiRent.FakePay: Egy demo fizetési felület. Stripe, Simplepay, Barion stb. helyett
+- SkiRent.Shared: Class library. DTOk, validátorok stb., amelyek több projekt között megosztásra került
+- SkiRent.Web: Az alkalmazás frontend része
+
+tests/ mappa tartalma:
+
+Integrációs és unit teszteket tartalmaz a backend és a desktophoz.  
+Emellett, az egyik tanárunk által adott tesztelési jegyzőkönyv mintát felhasználva és a követelményeknek eleget téve, néhány manuális tesztjegyzőkönyv is megtalálható benne.
+
+docs/ mappa tartalma:
+
+Minden egyéb dolog, ami a KKK megkövetelt: diagram, wireframe, dokumentáció, telepítő, képek amik a dokumentumokban felhasználásra került stb.
 
 ## Adatbázisfájlok és dokumentációk elérhetősége
 
