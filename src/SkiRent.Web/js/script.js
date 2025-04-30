@@ -65,12 +65,18 @@ document.addEventListener("DOMContentLoaded", () => {
             fetch("http://localhost:5101/api/auth/sign-out", {
               method: "POST",
               credentials: "include",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                empty: ""
+              })
             })
               .then(() => {
                 console.log("Kijelentkezett");
                 sessionStorage.clear();
                 window.location.href =
-                  window.location.origin + "/SkiRentWeb_2.0/index.php";
+                  window.location.origin + "/SkiRent.Web/index.php";
               })
               .catch((err) => {
                 console.error("Kijelentkezés hiba:", err);
@@ -215,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 </p>
                                 <div class="form-group d-flex align-items-center mb-3">
                                 <label for="quantity-${item.id}" class="card-label me-2">Mennyiség:</label>
-                                <input type="number" class="form-control form-control-sm quantity-input" 
+                                <input type="number" class="form-control form-control-sm quantity-input"
                                     id="quantity-${item.id}" min="1" max="${item.availableQuantity}" value="1" style="width: 70px;">
                                 </div>
                                 `

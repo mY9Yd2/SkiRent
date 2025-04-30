@@ -2,7 +2,6 @@
 
 using FluentValidation;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -81,12 +80,16 @@ public class AuthController : BaseController
     }
 
     [HttpPost("sign-out")]
-    public async Task<IActionResult> SignOutUser()
+    [Authorize]
+    public IActionResult AuthSignOut([FromBody] object empty)
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Ok(new { message = "Sikeres kijelentkezés." });
-    }
+        if (empty is not null)
+        {
+            return SignOut();
+        }
 
+        return Unauthorized();
+    }
 
     [HttpGet("me")]
     [Authorize]

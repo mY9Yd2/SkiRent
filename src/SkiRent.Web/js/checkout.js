@@ -105,8 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (raw.length >= 5) formatted += raw.slice(2, 4) + " ";
     if (raw.length >= 8) formatted += raw.slice(4, 7) + " ";
-    if (raw.length >= 11) formatted += raw.slice(7, 10);
-    else if (raw.length > 7) formatted += raw.slice(7);
+    if (raw.length > 7) formatted += raw.slice(7);
 
     phoneInput.value = formatted.trim();
   });
@@ -162,8 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
       })),
       StartDate: startInput.value,
       EndDate: endInput.value,
-      SuccessUrl: "http://localhost/SkiRentWeb_2.0/pages/success.php",
-      CancelUrl: "http://localhost/SkiRentWeb_2.0/pages/cancel.php",
+      SuccessUrl: window.location.origin + "/SkiRent.Web/pages/success.php",
+      CancelUrl: window.location.origin + "/SkiRent.Web/pages/cancel.php",
     };
 
     sessionStorage.setItem(

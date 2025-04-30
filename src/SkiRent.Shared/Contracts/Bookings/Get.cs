@@ -28,8 +28,6 @@ namespace SkiRent.Shared.Contracts.Bookings
 
         public required bool IsOverdue { get; init; }
 
-        //új
-        public PersonalDetails? PersonalDetails { get; init; }
-
+        public required PersonalDetails PersonalDetails { get; init; }
     }
 }

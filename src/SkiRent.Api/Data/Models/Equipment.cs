@@ -23,13 +23,13 @@ public partial class Equipment
     [Column(TypeName = "int(11)")]
     public int CategoryId { get; set; }
 
+    public Guid? MainImageId { get; set; }
+
     [Precision(10, 2)]
     public decimal PricePerDay { get; set; }
 
     [Column(TypeName = "int(11)")]
     public int AvailableQuantity { get; set; }
-
-    public Guid? MainImageId { get; set; }
 
     [ForeignKey("CategoryId")]
     [InverseProperty("Equipment")]

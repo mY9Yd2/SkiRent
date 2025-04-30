@@ -95,7 +95,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
-                <button class="btn btn-primary" onclick="window.print()">Nyomtatás</button>
+                <button id="download-button" class="btn btn-primary">Számla letöltése</button>
             </div>
             </div>
         </div>
@@ -119,4 +119,3 @@
 </body>
 
 </html>
-

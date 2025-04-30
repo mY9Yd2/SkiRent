@@ -48,7 +48,7 @@ Az alkalmazás 4 fő részből áll:
 - Desktop
 
 A Visual Studionál ezért szükségeltetik a "Multiple startup projects" beállítása, hogy mindegyik szolgáltatás elinduljon.  
-A frontendet (SkiRent.Web) tartalmát vagy a mappát magát pedig a XAMPP-on belül a htdocs/ mappában kell elhelyezni.
+A frontendet (SkiRent.Web) mappástól a XAMPP-on belül a htdocs/ mappában kell elhelyezni.
 
 ## Tesztek
 

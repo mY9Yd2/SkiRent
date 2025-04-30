@@ -138,6 +138,18 @@ function renderInvoiceModal(booking) {
         } db</p>
     `;
 
+  const downloadButton = document.getElementById("download-button");
+  if (booking.status !== "Cancelled" && booking.status !== "Pending") {
+    downloadButton.addEventListener('click', () => {
+      const link = document.createElement("a");
+      link.href = `http://localhost:5101/api/invoices/${booking.paymentId}`;
+      link.click();
+    });
+    downloadButton.hidden = false;
+  } else {
+    downloadButton.hidden = true;
+  }
+
   document.getElementById("invoice-content").innerHTML = html;
   const modal = new bootstrap.Modal(document.getElementById("invoiceModal"));
   modal.show();

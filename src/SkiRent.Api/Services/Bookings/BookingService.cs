@@ -101,8 +101,6 @@ public class BookingService : IBookingService
             PaymentId = paymentId,
             Status = BookingStatus.Pending,
             BookingItems = bookingItems,
-
-            // Új mezők
             FullName = request.PersonalDetails.FullName,
             PhoneNumber = request.PersonalDetails.PhoneNumber,
             MobilePhoneNumber = request.PersonalDetails.MobilePhoneNumber,
@@ -162,7 +160,7 @@ public class BookingService : IBookingService
             EndDate = booking.EndDate,
             TotalPrice = booking.TotalPrice,
             PaymentId = booking.PaymentId,
-            Status = Enum.TryParse<BookingStatusTypes>(booking.Status, out var parsedStatus) ? parsedStatus : BookingStatusTypes.Pending,
+            Status = Enum.Parse<BookingStatusTypes>(booking.Status),
             CreatedAt = booking.CreatedAt,
             UpdatedAt = booking.UpdatedAt,
             Items = booking.BookingItems.Select(item => new BookingItemSummary
@@ -174,7 +172,19 @@ public class BookingService : IBookingService
             }),
             RentalDays = days,
             IsOverdue = IsOverdue(booking.EndDate, booking.Status),
-            PersonalDetails = MapPersonalDetails(booking)   // Új metódus hívás
+            PersonalDetails = new PersonalDetails
+            {
+                FullName = booking.FullName,
+                PhoneNumber = booking.PhoneNumber,
+                MobilePhoneNumber = booking.MobilePhoneNumber,
+                Address = new Address
+                {
+                    Country = booking.AddressCountry,
+                    PostalCode = booking.AddressPostalCode,
+                    City = booking.AddressCity,
+                    StreetAddress = booking.AddressStreet
+                }
+            }
         };
 
         return Result.Ok(result);
@@ -194,7 +204,7 @@ public class BookingService : IBookingService
                 EndDate = booking.EndDate,
                 TotalPrice = booking.TotalPrice,
                 PaymentId = booking.PaymentId,
-                Status = Enum.TryParse<BookingStatusTypes>(booking.Status, out var parsedStatus) ? parsedStatus : BookingStatusTypes.Pending,
+                Status = Enum.Parse<BookingStatusTypes>(booking.Status),
                 CreatedAt = booking.CreatedAt,
                 UpdatedAt = booking.UpdatedAt,
                 IsOverdue = IsOverdue(booking.EndDate, booking.Status)
@@ -246,7 +256,7 @@ public class BookingService : IBookingService
             EndDate = booking.EndDate,
             TotalPrice = booking.TotalPrice,
             PaymentId = booking.PaymentId,
-            Status = Enum.TryParse<BookingStatusTypes>(booking.Status, out var parsedStatus) ? parsedStatus : BookingStatusTypes.Pending,
+            Status = Enum.Parse<BookingStatusTypes>(booking.Status),
             CreatedAt = booking.CreatedAt,
             UpdatedAt = booking.UpdatedAt,
             Items = booking.BookingItems.Select(item => new BookingItemSummary
@@ -258,10 +268,19 @@ public class BookingService : IBookingService
             }),
             RentalDays = days,
             IsOverdue = IsOverdue(booking.EndDate, booking.Status),
-
-            PersonalDetails = MapPersonalDetails(booking)   //új metódus hívás.
-
-
+            PersonalDetails = new PersonalDetails
+            {
+                FullName = booking.FullName,
+                PhoneNumber = booking.PhoneNumber,
+                MobilePhoneNumber = booking.MobilePhoneNumber,
+                Address = new Address
+                {
+                    Country = booking.AddressCountry,
+                    PostalCode = booking.AddressPostalCode,
+                    City = booking.AddressCity,
+                    StreetAddress = booking.AddressStreet
+                }
+            }
         };
 
         return Result.Ok(result);
@@ -310,7 +329,7 @@ public class BookingService : IBookingService
 
     private bool IsOverdue(DateOnly endDate, string status)
     {
-        var bookingStatus = Enum.TryParse<BookingStatusTypes>(status, out var parsedStatus) ? parsedStatus : BookingStatusTypes.Pending;
+        var bookingStatus = Enum.Parse<BookingStatusTypes>(status);
 
         return endDate < DateOnly.FromDateTime(_timeProvider.GetUtcNow().UtcDateTime)
             && bookingStatus == BookingStatusTypes.Paid;
@@ -332,21 +351,4 @@ public class BookingService : IBookingService
             _ => false
         };
     }
-
-
-    //Új metódus:
-    private static PersonalDetails MapPersonalDetails(Booking booking) => new()
-    {
-        FullName = booking.FullName ?? "",
-        PhoneNumber = booking.PhoneNumber ?? "",
-        MobilePhoneNumber = booking.MobilePhoneNumber ?? "",
-        Address = new Address
-        {
-            Country = booking.AddressCountry ?? "",
-            PostalCode = booking.AddressPostalCode ?? "",
-            City = booking.AddressCity ?? "",
-            StreetAddress = booking.AddressStreet ?? ""
-        }
-    };
-
 }

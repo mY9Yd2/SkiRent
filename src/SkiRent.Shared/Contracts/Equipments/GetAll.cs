@@ -18,8 +18,6 @@
 
         public required Guid? MainImageId { get; init; }
 
-        public string MainImageUrl { get; init; } = string.Empty;
-
         public bool IsAvailable => AvailableQuantity > 0;
     }
 }

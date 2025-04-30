@@ -146,7 +146,20 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
                     TotalPrice = item.Quantity * item.PriceAtBooking * days
                 }),
                 RentalDays = days,
-                IsOverdue = false
+                IsOverdue = false,
+                PersonalDetails = new PersonalDetails
+                {
+                    FullName = booking.FullName,
+                    PhoneNumber = booking.PhoneNumber,
+                    MobilePhoneNumber = booking.MobilePhoneNumber,
+                    Address = new Address
+                    {
+                        Country = booking.AddressCountry,
+                        PostalCode = booking.AddressPostalCode,
+                        City = booking.AddressCity,
+                        StreetAddress = booking.AddressStreet
+                    }
+                }
             };
 
             var request = new UpdateBookingRequest
@@ -175,6 +188,7 @@ namespace SkiRent.IntegrationTests.Systems.Controllers.Bookings
                 Assert.That(content.CreatedAt, Is.EqualTo(expectedResponse.CreatedAt));
                 Assert.That(content.Items, Is.EqualTo(expectedResponse.Items));
                 Assert.That(content.RentalDays, Is.EqualTo(expectedResponse.RentalDays));
+                Assert.That(content.PersonalDetails, Is.EqualTo(expectedResponse.PersonalDetails));
             });
         }
     }

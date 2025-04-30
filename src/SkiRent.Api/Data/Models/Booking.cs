@@ -35,6 +35,27 @@ public partial class Booking
     [Column(TypeName = "timestamp")]
     public DateTimeOffset UpdatedAt { get; set; }
 
+    [StringLength(70)]
+    public string FullName { get; set; } = null!;
+
+    [StringLength(20)]
+    public string? PhoneNumber { get; set; }
+
+    [StringLength(20)]
+    public string? MobilePhoneNumber { get; set; }
+
+    [StringLength(50)]
+    public string AddressCountry { get; set; } = null!;
+
+    [StringLength(10)]
+    public string AddressPostalCode { get; set; } = null!;
+
+    [StringLength(50)]
+    public string AddressCity { get; set; } = null!;
+
+    [StringLength(60)]
+    public string AddressStreet { get; set; } = null!;
+
     [InverseProperty("Booking")]
     public virtual ICollection<BookingItem> BookingItems { get; set; } = new List<BookingItem>();
 
@@ -44,29 +65,4 @@ public partial class Booking
     [ForeignKey("UserId")]
     [InverseProperty("Bookings")]
     public virtual User User { get; set; } = null!;
-
-
-    [Column(TypeName = "varchar(255)")]
-    public string? FullName { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? PhoneNumber { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? MobilePhoneNumber { get; set; }
-
-    [Column(TypeName = "varchar(100)")]
-    public string? AddressCountry { get; set; }
-
-    [Column(TypeName = "varchar(20)")]
-    public string? AddressPostalCode { get; set; }
-
-    [Column(TypeName = "varchar(100)")]
-    public string? AddressCity { get; set; }
-
-    [Column(TypeName = "varchar(255)")]
-    public string? AddressStreet { get; set; }
-
-
 }
-

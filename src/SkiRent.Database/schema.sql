@@ -16,17 +16,6 @@ CREATE TABLE `EquipmentCategories` (
     `Name` VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE `Equipments` (
-    `Id` INT AUTO_INCREMENT PRIMARY KEY,
-    `Name` VARCHAR(100) NOT NULL,
-    `Description` TEXT,
-    `CategoryId` INT NOT NULL,
-    `PricePerDay` DECIMAL(10, 2) NOT NULL,
-    `AvailableQuantity` INT NOT NULL,
-    FOREIGN KEY (`CategoryId`) REFERENCES `EquipmentCategories` (`Id`)
-    ON DELETE RESTRICT
-);
-
 CREATE TABLE `EquipmentImages` (
     `Id` CHAR(36) PRIMARY KEY,
     `DisplayName` VARCHAR(255) NULL,
@@ -34,10 +23,19 @@ CREATE TABLE `EquipmentImages` (
     `UpdatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP()
 );
 
-ALTER TABLE `Equipments`
-ADD COLUMN `MainImageId` CHAR(36) NULL,
-ADD FOREIGN KEY (`MainImageId`) REFERENCES `EquipmentImages` (`Id`)
-ON DELETE RESTRICT;
+CREATE TABLE `Equipments` (
+    `Id` INT AUTO_INCREMENT PRIMARY KEY,
+    `Name` VARCHAR(100) NOT NULL,
+    `Description` TEXT,
+    `CategoryId` INT NOT NULL,
+    `MainImageId` CHAR(36) NULL,
+    `PricePerDay` DECIMAL(10, 2) NOT NULL,
+    `AvailableQuantity` INT NOT NULL,
+    FOREIGN KEY (`CategoryId`) REFERENCES `EquipmentCategories` (`Id`)
+    ON DELETE RESTRICT,
+    FOREIGN KEY (`MainImageId`) REFERENCES `EquipmentImages` (`Id`)
+    ON DELETE RESTRICT
+);
 
 CREATE TABLE `Bookings` (
     `Id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,6 +49,13 @@ CREATE TABLE `Bookings` (
     ) NOT NULL DEFAULT 'Pending',
     `CreatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
     `UpdatedAt` TIMESTAMP NOT NULL DEFAULT UTC_TIMESTAMP(),
+    `FullName` VARCHAR(70) NOT NULL,
+    `PhoneNumber` VARCHAR(20) NULL,
+    `MobilePhoneNumber` VARCHAR(20) NULL,
+    `AddressCountry` VARCHAR(50) NOT NULL,
+    `AddressPostalCode` VARCHAR(10) NOT NULL,
+    `AddressCity` VARCHAR(50) NOT NULL,
+    `AddressStreet` VARCHAR(60) NOT NULL,
     FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`)
     ON DELETE RESTRICT
 );
