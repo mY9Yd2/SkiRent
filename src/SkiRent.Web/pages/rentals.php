@@ -6,7 +6,7 @@
     <title>Foglalásaim - SkiRent</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Egyéni stílus -->
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="../style/rentals.css">
@@ -16,7 +16,7 @@
    <!-- Navigációs sáv -->
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4" id="navbar">
         <a class="navbar-brand fw-bold text-warning" href="#">SkiRent</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Menü váltása">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -105,8 +105,8 @@
 
 
     <!-- Bootstrap JS + jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/jquery.slim.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
 
     <!-- Saját JS -->

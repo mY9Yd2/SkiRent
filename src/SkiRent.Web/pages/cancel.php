@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Foglalás megszakítva</title>
   <link rel="stylesheet" href="../style/style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 
 <body class="bg-light">
@@ -15,7 +15,7 @@
     <p>Sajnáljuk, a fizetés megszakadt vagy sikertelen volt.</p>
     <a href="../pages/cart.php" class="btn btn-warning mt-4">Vissza a kosárhoz</a>
   </div>
-  
+
 
     <!-- Saját JS -->
     <script src="../js/script.js"></script>

@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkiRent</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- Saját stílusok (style.css) -->
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/index.css">
     <!-- Fontawesome (ha szükséges ikonos menü) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/all.min.css">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <!-- Felső menü -->
     <nav class="navbar navbar-expand-lg navbar-dark px-4" id="navbar">
         <a class="navbar-brand fw-bold text-warning" href="#">SkiRent</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -101,11 +101,9 @@
         </div>
     </div>
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <!-- Popper.js Bootstrap 4-hez -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="js/jquery.slim.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
     <!-- Saját JS -->
     <script src="js/script.js"></script>
@@ -116,4 +114,3 @@
 </body>
 
 </html>
-

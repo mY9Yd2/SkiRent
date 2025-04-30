@@ -6,7 +6,7 @@
     <title>SkiRent - Főoldal</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
     <!-- Egyéni CSS -->
     <link rel="stylesheet" href="../style/style.css">
@@ -18,7 +18,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark px-4">
         <a class="navbar-brand fw-bold text-warning" href="#">SkiRent</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
             aria-controls="navbarContent" aria-expanded="false" aria-label="Menü">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -119,9 +119,9 @@
 
 
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.slim.min.js"></script>
+    <link rel="stylesheet" href="../font/bootstrap-icons.min.css">
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
     <!-- Saját JS -->
     <script src="../js/script.js"></script>

@@ -6,7 +6,7 @@
     <title>Kosár - SkiRent</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="../style/cart.css">
 </head>
@@ -45,16 +45,16 @@
             <a href="products.php" class="btn btn-outline-primary mt-3">Vásárlás folytatása</a>
         </div>
 
-        
+
         <!-- Foglalási dátumok és gomb -->
         <div class="container mt-5">
             <h4 class="mb-3">Foglalási időszak kiválasztása</h4>
-            <div class="form-row">
-                <div class="form-group col-md-6">
+            <div class="row">
+                <div class="mb-3 col-md-6">
                     <label for="start-date">Kezdő dátum</label>
                     <input type="date" class="form-control" id="start-date">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="mb-3 col-md-6">
                     <label for="end-date">Záró dátum</label>
                     <input type="date" class="form-control" id="end-date">
                 </div>
@@ -66,9 +66,8 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.slim.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/script.js"></script>
 </body>
 </html>
-

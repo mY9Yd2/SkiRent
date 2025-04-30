@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés - SkiRent</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../font/bootstrap-icons.min.css">
     <!-- Egyéni CSS -->
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet" href="../style/login.css">
@@ -21,7 +21,7 @@
             <div class="card p-4 shadow-lg login-card" id="login-card">
             <!-- SkiRent márkanév -->
             <h1 class="text-warning fw-bold mb-4 text-center" id="brand-logo">SkiRent</h1>
-            
+
                 <h3 class="text-center mb-3" id="login-title">Bejelentkezés</h3>
 
                 <div id="alert-placeholder" class="w-100"></div>
@@ -54,9 +54,8 @@
     </div>
 
     <!-- Bootstrap JS + jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.slim.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 
     <!-- Saját JS - Main JS -->
     <script src="../js/script.js"></script>
@@ -76,7 +75,7 @@
                 <!-- Ide jön az üzenet dinamikusan -->
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">OK</button>
             </div>
             </div>
         </div>
@@ -84,4 +83,3 @@
 
 </body>
 </html>
-

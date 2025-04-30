@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <p class="card-text stock text-success">
                                 <strong>Készleten: <span class="stock-quantity">${item.availableQuantity} db</span></strong>
                                 </p>
-                                <div class="form-group d-flex align-items-center mb-3">
+                                <div class="mb-3 d-flex align-items-center mb-3">
                                 <label for="quantity-${item.id}" class="card-label me-2">Mennyiség:</label>
                                 <input type="number" class="form-control form-control-sm quantity-input"
                                     id="quantity-${item.id}" min="1" max="${item.availableQuantity}" value="1" style="width: 70px;">
@@ -334,9 +334,7 @@ document.addEventListener("click", function (e) {
     alert.style.zIndex = "1050";
     alert.innerHTML = `
             <strong>✅ Kosár frissítve!</strong> ${quantity} db termék hozzáadva.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Bezárás">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
         `;
 
     document.body.appendChild(alert);
@@ -465,8 +463,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Új sor a végösszegnek
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
-    <td colspan="4" class="text-right font-weight-bold">Végösszeg:</td>
-    <td colspan="2" class="font-weight-bold text-success">${grandTotal.toLocaleString()} Ft</td>
+    <td colspan="4" class="text-end fw-bold">Végösszeg:</td>
+    <td colspan="2" class="fw-bold text-success">${grandTotal.toLocaleString()} Ft</td>
 `;
   cartTableBody.appendChild(totalRow);
   // 3. TÖRLÉS kezelése
@@ -489,15 +487,13 @@ function handleItemDeletion(button) {
             <div class="modal-content">
                 <div class="modal-header bg-warning">
                     <h5 class="modal-title">Megerősítés</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Bezárás">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
                 </div>
                 <div class="modal-body">
                     <p>Biztosan törli a tételt és a hozzá tartozó mennyiséget a kosárból?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nem</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nem</button>
                     <button type="button" class="btn btn-danger" id="confirm-delete">Igen</button>
                 </div>
             </div>
@@ -538,9 +534,7 @@ function handleItemDeletion(button) {
     alert.style.zIndex = "1050";
     alert.innerHTML = `
             <strong>ℹ️ A kosár tartalma frissült!</strong>
-            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Bezárás">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
         `;
     document.body.appendChild(alert);
     setTimeout(() => {
