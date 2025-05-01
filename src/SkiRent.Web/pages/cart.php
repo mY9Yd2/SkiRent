@@ -24,8 +24,8 @@
         <!-- Táblázat a kosár elemeinek -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover" id="cart-table">
-                <thead class="thead-dark">
-                    <tr>
+                <thead>
+                    <tr class="table-dark">
                         <th>#</th>
                         <th>Termék</th>
                         <th>Mennyiség</th>

@@ -37,10 +37,10 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card shadow p-3">
-                        <div id="booking-list">
+                        <div id="booking-list" class="table-responsive">
                             <table class="table table-bordered text-center">
-                                <thead class="thead-dark">
-                                    <tr>
+                                <thead>
+                                    <tr class="table-dark">
                                         <th>Sorszám</th>
                                         <th>Kelt.</th>
                                         <th>Intervallum</th>
