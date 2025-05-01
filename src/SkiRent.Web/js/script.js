@@ -153,44 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const col = document.createElement("div");
             let imageUrl;
 
-            // Statikus képek hozzárendelése a terméknév alapján
-            const staticImages = {
-              "Nordica GP TJ 31 - 32 -es gyerek síbakancs":
-                "../assets/pictures/nordica.jpg",
-              "TecnoPro T50.3 31-32 -es gyerek síbakancs":
-                "../assets/pictures/TecnoProT50.jpg",
-              "Roces Idea Up 36 - 40 -es méretű síbakancs, állítható":
-                "../assets/pictures/roces.jpg",
-              "Lange Starlet 60 37 - 38 -as síbakancs":
-                "../assets/pictures/lange.jpg",
-              "Síbot pályára, Boost 100 safety, fekete":
-                "../assets/pictures/sibotSafety100.jpg",
-              "Síbot, pályára - Boost 500 Safety":
-                "../assets/pictures/boost500.jpg",
-              "Gyerek síbot, állítható, levehető csuklópánttal - Safety 500":
-                "../assets/pictures/Safety500.jpg",
-              "Fizan Action Pro síbot": "../assets/pictures/Fizan1.jpg",
-              "Salomon X Drive Focus Rocker 130cm carving síléc":
-                "../assets/pictures/SalomonXDrive.jpg",
-              "Atomic Race 8 140cm carving síléc":
-                "../assets/pictures/AtomicRace8.jpg",
-              "Elan ExarPro 140cm carving síléc":
-                "../assets/pictures/ElanExarPro.jpg",
-              "Atomic Redster RX Rocker 156cm carving síléc Grip Walk":
-                "../assets/pictures/boost500.jpg",
-              "Férfi snowboard allmountain/freeride - All Road 500":
-                "../assets/pictures/AllRoad.jpg",
-              "Női freestyle és all mountain snowboard Endzone 500":
-                "../assets/pictures/Endzone500.jpg",
-              "Női all mountain és freestyle snowboard - Dreamscape SNB100":
-                "../assets/pictures/SNB100.jpg",
-              "Férfi snowboard all mountain és freestyle síeléshez - Endzone 900 PRO":
-                "../assets/pictures/Endzone.jpg",
-            };
-
-            // Ha van ismert név, azt használom
-            if (staticImages[item.name]) {
-              imageUrl = staticImages[item.name];
+            if (item.mainImageId) {
+              imageUrl = `http://localhost:5101/images/${item.mainImageId}.jpg`;
             } else {
               imageUrl = "../assets/pictures/SkiRent_sieloLogo.jpg"; // alapértelmezett kép
             }

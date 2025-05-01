@@ -50,6 +50,9 @@ Az alkalmazás 4 fő részből áll:
 A Visual Studionál ezért szükségeltetik a "Multiple startup projects" beállítása, hogy mindegyik szolgáltatás elinduljon.  
 A frontendet (SkiRent.Web) mappástól a XAMPP-on belül a htdocs/ mappában kell elhelyezni.
 
+A termék képeket a [src/SkiRent.Web/assets/pictures/Images](./src/SkiRent.Web/assets/pictures/Images/) mappában található. Ezeket az *Images* mappába kell elhelyezni.
+Ha az API-nál nincs beállítva hova tegye a fájlokat (DataDirectoryPath), akkor alapértelmezetten a TEMP mappában fog létrehozni egy *Images* mappát.
+
 ## Tesztek
 
 Egy probléma miatt az integrációs tesztek hibát jeleznek, ha az *Images* mappa nem létezik.
