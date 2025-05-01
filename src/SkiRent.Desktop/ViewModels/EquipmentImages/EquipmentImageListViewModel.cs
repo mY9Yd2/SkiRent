@@ -94,6 +94,10 @@ namespace SkiRent.Desktop.ViewModels.EquipmentImages
                     var errorMessage = "A következő fájlok feltöltése sikertelen:\n- " + string.Join("\n- ", failedFiles);
                     MessageBox.Show(errorMessage, "Feltöltés sikertelen", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                else
+                {
+                    MessageBox.Show("A kép(ek) sikeresen feltöltve.", "Feltöltés sikeres", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
 
                 await RefreshAsync();
             }
