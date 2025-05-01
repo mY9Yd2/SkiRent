@@ -99,7 +99,7 @@ function renderInvoiceModal(booking) {
   const personalDetails = booking.personalDetails ?? {};
   const html = `
         <div style="display: flex; align-items: center; justify-content: space-between;">
-            <img src="../assets/pictures/SkiRent_sieloLogo.png" alt="SkiRent logó" style="height: 60px;">
+            <img src="../assets/pictures/SkiRent_sieloLogo.jpg" alt="SkiRent logó" style="height: 60px;">
             <h2 style="text-align: right; flex-grow: 1;">Számla</h2>
         </div>
 

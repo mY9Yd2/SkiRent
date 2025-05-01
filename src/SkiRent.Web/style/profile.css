@@ -17,7 +17,7 @@
 
 /* Parallax háttér a profil oldalhoz */
 .profile-hero-section {
-  background-image: url("../assets/pictures/SkiRentProfileKep.png");
+  background-image: url("../assets/pictures/SkiRentProfileKep.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

@@ -10,7 +10,7 @@ html {
 
 /* Parallax háttér */
 .parallax {
-  background-image: url("../assets/pictures/SkiRentRegKep.png");
+  background-image: url("../assets/pictures/SkiRentRegKep.jpg");
   height: 100%;
   background-attachment: fixed;
   background-position: center;

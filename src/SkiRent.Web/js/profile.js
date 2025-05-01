@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       profileContainer.innerHTML = `
             <div class="card shadow mx-auto">
                 <div class="card-body text-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profilkép" width="120" class="mb-4 rounded-circle shadow-sm">
+                    <img src="../assets/pictures/profile.jpg" alt="Profilkép" width="120" class="mb-4 rounded-circle shadow-sm">
                     <h4 class="card-title mb-3">${user.email}</h4>
                     <p class="text-muted mb-1">Felhasználói azonosító: <strong>${user.id}</strong></p>
                     <p class="text-muted mb-3">Szerepkör: <span class="badge bg-info text-dark">${user.role}</span></p>
