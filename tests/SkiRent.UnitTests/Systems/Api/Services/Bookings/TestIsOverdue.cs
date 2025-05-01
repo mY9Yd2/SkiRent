@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Globalization;
+using System.Reflection;
+
+using Microsoft.Extensions.Options;
 
 using NSubstitute;
 
@@ -53,60 +56,68 @@ public class TestIsOverdue
         return (bool)method.Invoke(_bookingService, [endDate, status])!;
     }
 
-    [Test]
-    public void WhenBookingIsPaidAndEndDateIsInPast_ReturnsTrue()
+    [Test, Combinatorial]
+    public void ReturnsTrue_OnlyWhenEndDateIsPast_AndStatusIsPaid(
+        [Values("2025-04-30", "2025-04-10")] string endDateString,
+        [Values] BookingStatusTypes status)
     {
         // Arrange
-        var utcNow = DateTimeOffset.UtcNow;
+        var endDate = DateOnly.Parse(endDateString, new CultureInfo("hu-HU"));
+        var utcNow = new DateTimeOffset(2025, 5, 1, 0, 0, 0, TimeSpan.Zero);
 
         _timeProvider.GetUtcNow()
             .Returns(utcNow);
 
-        var endDate = new DateOnly(utcNow.Year, utcNow.Month, utcNow.Day - 1);
-        var status = BookingStatusTypes.Paid.ToString();
+        var expected = status == BookingStatusTypes.Paid;
 
         // Act
-        var result = InvokeIsOverdue(endDate, status);
+        var result = InvokeIsOverdue(endDate, status.ToString());
 
         // Assert
-        Assert.That(result, Is.True);
+        Assert.That(result, Is.EqualTo(expected));
     }
 
-    [Test]
-    public void WhenBookingIsNotPaid_ReturnsFalse()
+    [Test, Combinatorial]
+    public void ReturnsFalse_WhenEndDateIsTodayOrFuture_AndStatusIsPaid(
+        [Values("2025-05-01", "2025-05-10")] string endDateString,
+        [Values(BookingStatusTypes.Paid)] BookingStatusTypes status)
     {
         // Arrange
-        var utcNow = DateTimeOffset.UtcNow;
+        var endDate = DateOnly.Parse(endDateString, new CultureInfo("hu-HU"));
+        var utcNow = new DateTimeOffset(2025, 5, 1, 0, 0, 0, TimeSpan.Zero);
 
         _timeProvider.GetUtcNow()
             .Returns(utcNow);
 
-        var endDate = new DateOnly(utcNow.Year, utcNow.Month, utcNow.Day - 1);
-        var status = BookingStatusTypes.Pending.ToString();
-
         // Act
-        var result = InvokeIsOverdue(endDate, status);
+        var result = InvokeIsOverdue(endDate, status.ToString());
 
         // Assert
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void WhenEndDateIsTodayOrFuture_ReturnsFalse()
+    public void UnknownStatus_ThrowsArgumentException()
     {
         // Arrange
-        var utcNow = DateTimeOffset.UtcNow;
+        var endDate = new DateOnly(2025, 4, 30);
+        var unknownStatus = Guid.NewGuid().ToString();
+        var utcNow = new DateTimeOffset(2025, 5, 1, 0, 0, 0, TimeSpan.Zero);
 
         _timeProvider.GetUtcNow()
             .Returns(utcNow);
 
-        var endDate = new DateOnly(utcNow.Year, utcNow.Month, utcNow.Day);
-        var status = BookingStatusTypes.Paid.ToString();
-
-        // Act
-        var result = InvokeIsOverdue(endDate, status);
-
-        // Assert
-        Assert.That(result, Is.False);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() =>
+        {
+            try
+            {
+                InvokeIsOverdue(endDate, unknownStatus);
+            }
+            catch (TargetInvocationException exception)
+            {
+                throw exception.InnerException!;
+            }
+        });
     }
 }
