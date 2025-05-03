@@ -247,6 +247,35 @@ function updateCartCount() {
   }
 }
 
+function calculateDaysBetween() {
+  const startDateInput = document.getElementById("start-date");
+  const endDateInput = document.getElementById("end-date");
+
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
+
+  if (!isNaN(startDate) && !isNaN(endDate)) {
+      const timeDiff = endDate - startDate;
+      const MS_PER_DAY = 1000 * 60 * 60 * 24; // ms * s * m * h
+      const daysDiff = Math.ceil(timeDiff / MS_PER_DAY) + 1;
+      return daysDiff;
+  }
+}
+
+function calculateGrandTotal() {
+  const cartItems = JSON.parse(sessionStorage.getItem("cartItems") || "[]");
+
+  let days = calculateDaysBetween() ?? 1;
+  if (days <= 0) days = 1;
+
+  const grandTotal = cartItems.reduce((total, item) => {
+    return total + item.quantity * item.pricePerDay * days;
+  }, 0);
+
+  const output = document.getElementById('grand-total');
+  output.innerText = `${(grandTotal).toLocaleString()} Ft (${days} napra)`;
+}
+
 // Kosárba gomb kattintás kezelése
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("add-to-cart-button")) {
@@ -365,26 +394,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startDateInput.classList.remove("is-invalid");
     endDateInput.classList.remove("is-invalid");
     errorMsg.style.display = "none";
-  }
-
-
-  function calculateDaysBetween() {
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-
-    if (!isNaN(startDate) && !isNaN(endDate)) {
-        const timeDiff = endDate - startDate;
-        const MS_PER_DAY = 1000 * 60 * 60 * 24; // ms * s * m * h
-        const daysDiff = Math.ceil(timeDiff / MS_PER_DAY) + 1;
-        return daysDiff;
-    }
-  }
-
-  function calculateGrandTotal() {
-    const output = document.getElementById('grand-total');
-    let days = calculateDaysBetween() ?? 1;
-    if (days <= 0) days = 1;
-    output.innerText = `${(grandTotal * days).toLocaleString()} Ft (${days} napra)`;
   }
 
   if (startDateInput && endDateInput && checkoutBtn) {
@@ -507,9 +516,11 @@ function handleItemDeletion(button) {
     // DOM-frissítés
     button.closest("tr").remove();
     const tableBody = document.querySelector("#cart-table tbody");
-    if (tableBody.children.length === 0) {
+    if (cartItems.length <= 1) {
       tableBody.innerHTML =
         "<tr><td colspan='6' class='text-center'>A kosár üres.</td></tr>";
+    } else {
+      calculateGrandTotal();
     }
 
     // Értesítő
