@@ -367,9 +367,32 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMsg.style.display = "none";
   }
 
+
+  function calculateDaysBetween() {
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    if (!isNaN(startDate) && !isNaN(endDate)) {
+        const timeDiff = endDate - startDate;
+        const MS_PER_DAY = 1000 * 60 * 60 * 24; // ms * s * m * h
+        const daysDiff = Math.ceil(timeDiff / MS_PER_DAY) + 1;
+        return daysDiff;
+    }
+  }
+
+  function calculateGrandTotal() {
+    const output = document.getElementById('grand-total');
+    let days = calculateDaysBetween() ?? 1;
+    if (days <= 0) days = 1;
+    output.innerText = `${(grandTotal * days).toLocaleString()} Ft (${days} napra)`;
+  }
+
   if (startDateInput && endDateInput && checkoutBtn) {
     startDateInput.addEventListener("input", validateDates);
+    startDateInput.addEventListener("input", calculateGrandTotal);
+
     endDateInput.addEventListener("input", validateDates);
+    endDateInput.addEventListener("input", calculateGrandTotal);
 
     checkoutBtn.addEventListener("click", () => {
       sessionStorage.setItem("startDate", startDateInput.value);
@@ -428,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
     <td colspan="4" class="text-end fw-bold">Végösszeg:</td>
-    <td colspan="2" class="fw-bold text-success">${grandTotal.toLocaleString()} Ft</td>
+    <td id="grand-total" colspan="2" class="fw-bold text-success">${grandTotal.toLocaleString()} Ft (1 napra)</td>
 `;
   cartTableBody.appendChild(totalRow);
   // 3. TÖRLÉS kezelése

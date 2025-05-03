@@ -49,17 +49,19 @@
         <!-- Foglalási dátumok és gomb -->
         <div class="container mt-5">
             <h4 class="mb-3">Foglalási időszak kiválasztása</h4>
-            <div class="row">
-                <div class="mb-3 col-md-6">
-                    <label for="start-date">Kezdő dátum</label>
-                    <input type="date" class="form-control" id="start-date">
+            <form autocomplete="off">
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="start-date">Kezdő dátum</label>
+                        <input type="date" class="form-control" id="start-date" name="start-date">
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="end-date">Záró dátum</label>
+                        <input type="date" class="form-control" id="end-date" name="end-date">
+                    </div>
                 </div>
-                <div class="mb-3 col-md-6">
-                    <label for="end-date">Záró dátum</label>
-                    <input type="date" class="form-control" id="end-date">
-                </div>
-            </div>
-            <button id="checkout-btn" class="btn btn-success mt-3" disabled>Foglalás és fizetés</button>
+                <button id="checkout-btn" class="btn btn-success mt-3" type="button" disabled>Foglalás és fizetés</button>
+            </form>
         </div>
 
 
