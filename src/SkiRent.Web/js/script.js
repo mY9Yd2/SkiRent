@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function getNavItem(label, href, extraClass = "", id = "") {
     return `
             <li class="nav-item">
-                <a class="nav-link ${extraClass}" href="${href}" ${
+                <a class="nav-link ${extraClass}" href="${window.location.origin + "/SkiRent.Web/pages/"}${href}" ${
       id ? `id="${id}"` : ""
     }>${label}</a>
             </li>`;
@@ -93,29 +93,28 @@ document.addEventListener("DOMContentLoaded", () => {
       // index.php-n NEM jelenik meg a "vissza a kezdőoldalra"
       const path = window.location.pathname;
       const currentPage = path.split("/").pop();
-      const isInPages = path.includes("/pages/");
       const showHome = !(currentPage === "index.php" || currentPage === "");
 
       navbarMenu.innerHTML = `
             ${getNavItem(
               "Eszközök",
-              isInPages ? "products.php" : "pages/products.php"
+              "products.php"
             )}
             ${
               showHome
                 ? getNavItem(
                     "Vissza a kezdőoldalra",
-                    isInPages ? "../index.php" : "index.php"
+                    "../index.php"
                   )
                 : ""
             }
             ${getNavItem(
               "Bejelentkezés",
-              isInPages ? "login.php" : "pages/login.php"
+              "login.php"
             )}
             ${getNavItem(
               "Regisztráció",
-              isInPages ? "reg.php" : "pages/reg.php"
+              "reg.php"
             )}
         `;
     });
