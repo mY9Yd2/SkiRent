@@ -396,17 +396,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (startDateInput && endDateInput && checkoutBtn) {
-    startDateInput.addEventListener("input", validateDates);
     startDateInput.addEventListener("input", calculateGrandTotal);
-
-    endDateInput.addEventListener("input", validateDates);
     endDateInput.addEventListener("input", calculateGrandTotal);
 
-    checkoutBtn.addEventListener("click", () => {
-      sessionStorage.setItem("startDate", startDateInput.value);
-      sessionStorage.setItem("endDate", endDateInput.value);
-      window.location.href = "checkout.php";
-    });
+    const items = JSON.parse(sessionStorage.getItem("cartItems") || "[]");
+    if (items.length > 0) {
+      startDateInput.addEventListener("input", validateDates);
+      endDateInput.addEventListener("input", validateDates);
+      checkoutBtn.addEventListener("click", () => {
+        sessionStorage.setItem("startDate", startDateInput.value);
+        sessionStorage.setItem("endDate", endDateInput.value);
+        window.location.href = "checkout.php";
+      });
+    }
   }
 
   // 2. KOSÁR tartalom megjelenítés
@@ -427,6 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const rows = Object.values(groupedItems);
 
   if (rows.length === 0) {
+    document.getElementById("checkout-btn").disabled = true;
     cartTableBody.innerHTML =
       "<tr><td colspan='6' class='text-center'>A kosár üres.</td></tr>";
     return;
@@ -516,6 +519,7 @@ function handleItemDeletion(button) {
     button.closest("tr").remove();
     const tableBody = document.querySelector("#cart-table tbody");
     if (cartItems.length <= 1) {
+      document.getElementById("checkout-btn").disabled = true;
       tableBody.innerHTML =
         "<tr><td colspan='6' class='text-center'>A kosár üres.</td></tr>";
     } else {
