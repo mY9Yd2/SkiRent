@@ -38,7 +38,7 @@ Minden egyéb dolog, ami a KKK megkövetelt: diagram, wireframe, dokumentáció,
 Az adatbázishoz szükséges SQL-fájlok a [src/SkiRent.Database](./src/SkiRent.Database/) mappában találhatók.  
 A szoftver dokumentációja és a fejlesztés során készült diagramok, ábrák stb. amit felhasználtunk a fejlesztés és dokumentáció során megtalálható a [docs/](./docs/) mappában.
 
-## Alkalmazás futtatása, röviden
+## Alkalmazás futtatása
 
 Az alkalmazás 4 fő részből áll:
 
@@ -52,6 +52,26 @@ A frontendet (SkiRent.Web) mappástól a XAMPP-on belül a htdocs/ mappában kel
 
 A termék képeket a [src/SkiRent.Web/assets/pictures/Images](./src/SkiRent.Web/assets/pictures/Images/) mappában található. Ezeket az *Images* mappába kell elhelyezni.
 Ha az API-nál nincs beállítva hova tegye a fájlokat (DataDirectoryPath), akkor alapértelmezetten a TEMP mappában fog létrehozni egy *Images* mappát.
+
+Pontokba szedve a lépések:
+
+1) Repository klónozása vagy letöltése
+2) 'data' mappa létrehozása a SkiRent-main/ mappán belül
+3) src\SkiRent.Web\assets\pictures\Images mappát átmásolni a data/ mappába (15 darab JPG képpel együtt)
+4) src\SkiRent.Web-et átmásolni a htdocs mappába (SkiRent.Web mappástól)
+5) XAMPP elindítása: Apache, MySQL
+6) src\SkiRent.Database mappában található schema.sql és seed.sql lefuttatása/importálása, ebben a sorrendben
+7) SkiRent.sln megnyitása Visual Studioval
+8) SkiRent.Api/appsettings.json-ban a 'DataDirectoryPath' módosítása pl.:
+
+```json
+"DataDirectoryPath": "C:\\Users\\vboxuser\\Downloads\\SkiRent-main\\data"
+```
+
+10) Configura Startup Projects... -> Multiple startup projects: Api, Desktop, FakePay-et Start-ra rakni. Apply és OK
+11) Böngészőben: localhost/SkiRent.Web/
+
+Összesen ennyi lépést igényel a projekt elindítása.
 
 ## Tesztek
 
